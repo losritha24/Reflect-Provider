@@ -1,0 +1,52 @@
+@model PatientIndexViewModel
+@{
+    ViewData["Title"] = "Patients";
+}
+<div class="mb-4">
+    <h1 class="page-title mb-1">Patients</h1>
+    <p class="text-muted fs-13 mb-0">Caseload engagement summary (synthetic records).</p>
+</div>
+
+<div class="card custom-card">
+    <div class="card-header">
+        <div class="card-title">Caseload</div>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table dt-client text-nowrap align-middle">
+            <thead>
+            <tr>
+                <th>Patient</th>
+                <th>ID</th>
+                <th>Sessions</th>
+                <th>Last session</th>
+                <th>Primary platform</th>
+                <th>Engagement</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var row in Model.Rows)
+            {
+                <tr class="row-link" data-patient-row="true" data-patient-id="@row.PatientId" tabindex="0">
+                    <td>@row.DisplayName</td>
+                    <td>@row.ExternalPatientId</td>
+                    <td>@row.TotalSessions</td>
+                    <td>@row.LastSessionDisplay</td>
+                    <td>@row.PrimaryPlatformLabel</td>
+                    <td>
+                        <span class="badge bg-@row.TrendBadgeColor-transparent text-@row.TrendBadgeColor">@row.TrendLabel</span>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/controllers/provider/patientsIndexController.js"></script>
+    <script nonce="@Context.GetCspNonce()">
+        PatientsIndexController.init({
+            detailsUrlTemplate: '@Url.Action("Details", "Patients", new { area = "Provider", id = "__ID__" })'
+        });
+    </script>
+}

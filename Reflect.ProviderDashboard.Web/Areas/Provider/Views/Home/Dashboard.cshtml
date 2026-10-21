@@ -1,0 +1,66 @@
+@model ProviderDashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<div class="mb-4">
+    <h1 class="page-title mb-1">Provider dashboard</h1>
+    <p class="text-muted fs-13 mb-0">Longitudinal engagement across Reflect XR and Reflect Mobile.</p>
+</div>
+
+<div class="stat-grid">
+    <div class="card custom-card card-clickable" data-href="@Url.Action("Index", "Patients", new { area = "Provider" })">
+        <div class="card-body">
+            <div class="text-muted fs-13">Active patients</div>
+            <div class="stat-value">@Model.ActivePatientCount</div>
+        </div>
+    </div>
+    <div class="card custom-card">
+        <div class="card-body">
+            <div class="text-muted fs-13">Sessions (last 7 days)</div>
+            <div class="stat-value">@Model.SessionsLast7Days</div>
+        </div>
+    </div>
+    <div class="card custom-card">
+        <div class="card-body">
+            <div class="text-muted fs-13">Reflect XR (VR)</div>
+            <div class="stat-value">@Model.VrSessionsLast7Days</div>
+        </div>
+    </div>
+    <div class="card custom-card">
+        <div class="card-body">
+            <div class="text-muted fs-13">Reflect Mobile</div>
+            <div class="stat-value">@Model.MobileSessionsLast7Days</div>
+        </div>
+    </div>
+</div>
+
+<div class="card custom-card">
+    <div class="card-header">
+        <div class="card-title">Recent sessions</div>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table dt-client text-nowrap align-middle">
+            <thead>
+            <tr>
+                <th>Patient</th>
+                <th>Date &amp; time (ET)</th>
+                <th>Duration</th>
+                <th>Platform</th>
+                <th>Module</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var row in Model.RecentSessions)
+            {
+                <tr class="row-link" tabindex="0" data-href="@Url.Action("Details", "Patients", new { area = "Provider", id = row.PatientId })">
+                    <td>@row.PatientName</td>
+                    <td>@row.SessionDateTimeDisplay</td>
+                    <td>@row.DurationMinutes min</td>
+                    <td>@row.PlatformLabel</td>
+                    <td>@row.ModuleName</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

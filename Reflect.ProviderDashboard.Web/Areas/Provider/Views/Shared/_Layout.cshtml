@@ -1,0 +1,79 @@
+@{
+    var title = ViewData["Title"] as string ?? "Provider Dashboard";
+    var area = ViewContext.RouteData.Values["area"]?.ToString() ?? "Provider";
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Home";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "Dashboard";
+}
+<!DOCTYPE html>
+<html lang="en" data-theme-mode="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@title · Reflect Provider</title>
+    <link rel="stylesheet" href="~/standins/css/reflect-theme.css" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+<div id="loadingOverlay" role="status" aria-live="polite"></div>
+<div class="offcanvas-backdrop" id="a11yBackdrop"></div>
+<aside class="offcanvas-panel" id="a11yPanel" aria-label="Accessibility settings">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <strong>Accessibility</strong>
+        <button type="button" class="btn btn-outline-secondary" id="a11yPanelClose">Close</button>
+    </div>
+    <label class="fs-13 text-muted" for="panelThemeSelect">Theme</label>
+    <select id="panelThemeSelect" class="btn w-100 mb-3">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+    <label class="fs-13 text-muted" for="textSizeSelect">Text size</label>
+    <select id="textSizeSelect" class="btn w-100 mb-3">
+        <option value="100%">Default</option>
+        <option value="112.5%">Large</option>
+        <option value="125%">Extra large</option>
+    </select>
+    <label class="fs-13">
+        <input type="checkbox" id="colorBlindToggle" />
+        Color-blind friendly mode
+    </label>
+</aside>
+
+<div class="app-shell">
+    <nav class="sidebar" aria-label="Provider navigation">
+        <div class="sidebar-brand">Reflect Provider</div>
+        <div class="category">Overview</div>
+        <a class="nav-link @(controller == "Home" ? "active" : "")" href="@Url.Action("Dashboard", "Home", new { area = "Provider" })">
+            <span aria-hidden="true">▣</span> Dashboard
+        </a>
+        <div class="category">Caseload</div>
+        <a class="nav-link @(controller == "Patients" ? "active" : "")" href="@Url.Action("Index", "Patients", new { area = "Provider" })">
+            <span aria-hidden="true">👥</span> Patients
+        </a>
+    </nav>
+    <div class="main-column">
+        <header class="app-header">
+            <div>
+                <strong>Immersive Arts for Wellness</strong>
+                <div class="fs-13 text-muted">HIPAA-ready prototype · synthetic data only</div>
+            </div>
+            <div class="header-actions">
+                <button type="button" class="btn btn-outline-secondary" id="a11yPanelToggle">Accessibility</button>
+                <button type="button" class="btn btn-primary-light" id="themeToggle">Toggle theme</button>
+                <span class="fs-13 text-muted">Dr. Morgan Lee</span>
+            </div>
+        </header>
+        <div class="demo-banner">Demo mode — clinical and product analytics layers are separated in the target architecture (Firebase Analytics → BigQuery → clinical API).</div>
+        <div class="breadcrumb-bar">
+            Provider / @controller / @action
+        </div>
+        <main class="page-content">
+            @RenderBody()
+        </main>
+    </div>
+</div>
+
+<script src="~/standins/js/messageService.js"></script>
+<script src="~/standins/js/layoutController.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

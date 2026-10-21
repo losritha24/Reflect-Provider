@@ -1,0 +1,6 @@
+[
+  { "isCategory": true, "label": "Overview" },
+  { "label": "Dashboard", "url": "/Provider/Home/Dashboard", "icon": "ri-dashboard-line" },
+  { "isCategory": true, "label": "Caseload" },
+  { "label": "Patients", "url": "/Provider/Patients/Index", "icon": "ri-team-line" }
+]

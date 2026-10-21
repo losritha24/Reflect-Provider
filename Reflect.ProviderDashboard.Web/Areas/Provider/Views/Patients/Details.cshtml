@@ -1,0 +1,104 @@
+@model PatientDetailsViewModel
+@{
+    ViewData["Title"] = Model.DisplayName;
+}
+<div class="mb-4">
+    <h1 class="page-title mb-1">@Model.DisplayName</h1>
+    <p class="text-muted fs-13 mb-0">@Model.ExternalPatientId · DOB @Model.DateOfBirthDisplay</p>
+    <div class="mt-2">
+        <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Patients", new { area = "Provider" })">Back to patients</a>
+    </div>
+</div>
+
+<ul class="nav nav-tabs" id="patientTabs" role="tablist">
+    <li><button type="button" class="nav-link active" data-tab="overview" id="tab-overview">Overview</button></li>
+    <li><button type="button" class="nav-link" data-tab="sessions" id="tab-sessions">Sessions</button></li>
+</ul>
+
+<div id="panel-overview">
+    <div class="stat-grid">
+        <div class="card custom-card">
+            <div class="card-body">
+                <div class="text-muted fs-13">Total sessions</div>
+                <div class="stat-value">@Model.TotalSessions</div>
+            </div>
+        </div>
+        <div class="card custom-card">
+            <div class="card-body">
+                <div class="text-muted fs-13">Reflect XR (VR)</div>
+                <div class="stat-value">@Model.VrSessionCount</div>
+            </div>
+        </div>
+        <div class="card custom-card">
+            <div class="card-body">
+                <div class="text-muted fs-13">Reflect Mobile</div>
+                <div class="stat-value">@Model.MobileSessionCount</div>
+            </div>
+        </div>
+        <div class="card custom-card">
+            <div class="card-body">
+                <div class="text-muted fs-13">Total minutes</div>
+                <div class="stat-value">@Model.TotalMinutes</div>
+            </div>
+        </div>
+    </div>
+    <div class="card custom-card">
+        <div class="card-header"><div class="card-title">Clinical notes (synthetic)</div></div>
+        <div class="card-body">
+            <p class="mb-2">
+                <span class="badge bg-@Model.TrendBadgeColor-transparent text-@Model.TrendBadgeColor">@Model.TrendLabel</span>
+            </p>
+            <p class="mb-0">@Model.NotesSummary</p>
+        </div>
+    </div>
+</div>
+
+<div id="panel-sessions" hidden>
+    <div class="card custom-card">
+        <div class="card-header"><div class="card-title">Session history</div></div>
+        <div class="card-body table-responsive">
+            <table class="table dt-client text-nowrap align-middle">
+                <thead>
+                <tr>
+                    <th>Date &amp; time (ET)</th>
+                    <th>Duration</th>
+                    <th>Platform</th>
+                    <th>Module</th>
+                    <th>Reflection summary</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var session in Model.Sessions)
+                {
+                    <tr>
+                        <td>@session.SessionDateTimeDisplay</td>
+                        <td>@session.DurationMinutes min</td>
+                        <td>@session.PlatformLabel</td>
+                        <td>@session.ModuleName</td>
+                        <td>@session.ReflectionSummary</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script nonce="@Context.GetCspNonce()">
+        (function () {
+            var tabs = document.querySelectorAll('#patientTabs .nav-link');
+            var overview = document.getElementById('panel-overview');
+            var sessions = document.getElementById('panel-sessions');
+            tabs.forEach(function (tab) {
+                tab.addEventListener('click', function () {
+                    tabs.forEach(function (t) { t.classList.remove('active'); });
+                    tab.classList.add('active');
+                    var name = tab.getAttribute('data-tab');
+                    overview.hidden = name !== 'overview';
+                    sessions.hidden = name !== 'sessions';
+                });
+            });
+        })();
+    </script>
+}
