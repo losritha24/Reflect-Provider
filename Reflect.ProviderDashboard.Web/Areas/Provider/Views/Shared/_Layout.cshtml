@@ -9,8 +9,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@title · Reflect Provider</title>
-    <link rel="stylesheet" href="~/standins/css/reflect-theme.css" />
+    <title>@title · Reflect XR Provider</title>
+    <link rel="icon" type="image/png" href="~/brand/icons/favicon.png" />
+    <link rel="stylesheet" href="~/standins/css/reflect-theme.css?v=20261026" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -40,29 +41,36 @@
 
 <div class="app-shell">
     <nav class="sidebar" aria-label="Provider navigation">
-        <div class="sidebar-brand">Reflect Provider</div>
+        <a class="sidebar-brand" href="@Url.Action("Dashboard", "Home", new { area = "Provider" })">
+            <img src="~/brand/logos/logo-mark-soft-coral.svg" alt="Reflect XR" />
+            <span class="sidebar-brand-copy">
+                <span class="sidebar-brand-name">Reflect XR</span>
+                <span class="sidebar-brand-sub">Provider</span>
+            </span>
+        </a>
         <div class="category">Overview</div>
         <a class="nav-link @(controller == "Home" ? "active" : "")" href="@Url.Action("Dashboard", "Home", new { area = "Provider" })">
-            <span aria-hidden="true">▣</span> Dashboard
+            Dashboard
         </a>
         <div class="category">Caseload</div>
         <a class="nav-link @(controller == "Patients" ? "active" : "")" href="@Url.Action("Index", "Patients", new { area = "Provider" })">
-            <span aria-hidden="true">👥</span> Patients
+            Patients
         </a>
+        <div class="sidebar-footer">Persistent Technology · 2026</div>
     </nav>
     <div class="main-column">
         <header class="app-header">
             <div>
-                <strong>Immersive Arts for Wellness</strong>
-                <div class="fs-13 text-muted">HIPAA-ready prototype · synthetic data only</div>
+                <div class="header-kicker">Immersive Arts for Wellness</div>
+                <div class="fs-13 text-muted">Remember who it’s for. Synthetic data only.</div>
             </div>
             <div class="header-actions">
                 <button type="button" class="btn btn-outline-secondary" id="a11yPanelToggle">Accessibility</button>
                 <button type="button" class="btn btn-primary-light" id="themeToggle">Toggle theme</button>
-                <span class="fs-13 text-muted">Dr. Morgan Lee</span>
+                <span class="provider-chip">Dr. Morgan Lee</span>
             </div>
         </header>
-        <div class="demo-banner">Demo mode — clinical and product analytics layers are separated in the target architecture (Firebase Analytics → BigQuery → clinical API).</div>
+        <div class="demo-banner">Demo mode — clinical documentation stays separate from product analytics (Firebase → BigQuery → clinical API).</div>
         <div class="breadcrumb-bar">
             Provider / @controller / @action
         </div>

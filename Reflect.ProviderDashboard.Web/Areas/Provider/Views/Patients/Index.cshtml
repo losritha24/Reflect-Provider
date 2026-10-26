@@ -3,8 +3,9 @@
     ViewData["Title"] = "Patients";
 }
 <div class="mb-4">
+    <p class="eyebrow">Caseload</p>
     <h1 class="page-title mb-1">Patients</h1>
-    <p class="text-muted fs-13 mb-0">Caseload engagement summary (synthetic records).</p>
+    <p class="text-muted fs-13 mb-0">Engagement across Reflect XR and Reflect Mobile (synthetic records).</p>
 </div>
 
 <div class="card custom-card">
@@ -31,7 +32,9 @@
                     <td>@row.ExternalPatientId</td>
                     <td>@row.TotalSessions</td>
                     <td>@row.LastSessionDisplay</td>
-                    <td>@row.PrimaryPlatformLabel</td>
+                    <td>
+                        <span class="badge @(row.PrimaryPlatformLabel.Contains("VR") ? "bg-primary-transparent" : "bg-info-transparent")">@row.PrimaryPlatformLabel</span>
+                    </td>
                     <td>
                         <span class="badge bg-@row.TrendBadgeColor-transparent text-@row.TrendBadgeColor">@row.TrendLabel</span>
                     </td>

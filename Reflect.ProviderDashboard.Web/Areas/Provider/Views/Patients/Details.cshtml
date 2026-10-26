@@ -3,6 +3,7 @@
     ViewData["Title"] = Model.DisplayName;
 }
 <div class="mb-4">
+    <p class="eyebrow">Patient record</p>
     <h1 class="page-title mb-1">@Model.DisplayName</h1>
     <p class="text-muted fs-13 mb-0">@Model.ExternalPatientId · DOB @Model.DateOfBirthDisplay</p>
     <div class="mt-2">
@@ -19,25 +20,25 @@
     <div class="stat-grid">
         <div class="card custom-card">
             <div class="card-body">
-                <div class="text-muted fs-13">Total sessions</div>
+                <div class="stat-label">Total sessions</div>
                 <div class="stat-value">@Model.TotalSessions</div>
             </div>
         </div>
         <div class="card custom-card">
             <div class="card-body">
-                <div class="text-muted fs-13">Reflect XR (VR)</div>
+                <div class="stat-label">Reflect XR (VR)</div>
                 <div class="stat-value">@Model.VrSessionCount</div>
             </div>
         </div>
         <div class="card custom-card">
             <div class="card-body">
-                <div class="text-muted fs-13">Reflect Mobile</div>
+                <div class="stat-label">Reflect Mobile</div>
                 <div class="stat-value">@Model.MobileSessionCount</div>
             </div>
         </div>
         <div class="card custom-card">
             <div class="card-body">
-                <div class="text-muted fs-13">Total minutes</div>
+                <div class="stat-label">Total minutes</div>
                 <div class="stat-value">@Model.TotalMinutes</div>
             </div>
         </div>
