@@ -38,18 +38,19 @@
   --slate-blue: #586F8A;
   --cool-gray: #E6E8EB;
   --off-white: #FAFAFB;
+  --sidebar-brand-color: #FAFAFB;
   --brand-gradient: linear-gradient(135deg, #FF8282 0%, #1F305E 100%);
 
   --primary-rgb: 255, 130, 130;
   --danger-rgb: 255, 130, 130;
   --success-rgb: 31, 48, 94;
-  --warning-rgb: 244, 170, 155;
+  --warning-rgb: 232, 163, 61;
   --info-rgb: 88, 111, 138;
   --default-text-color: #1F305E;
   --text-muted: #586F8A;
-  --custom-white: #FAFAFB;
-  --default-border: #E6E8EB;
-  --bootstrap-card-border: #E6E8EB;
+  --custom-white: #F5F6F8;
+  --default-border: #D8DCE1;
+  --bootstrap-card-border: rgb(var(--info-rgb));
   --header-bg: #FAFAFB;
   --heading-font-family: "IBM Plex Sans Condensed", system-ui, sans-serif;
   --default-font-family: "IBM Plex Sans", system-ui, sans-serif;
@@ -58,14 +59,15 @@
 
 [data-theme-mode="dark"] {
   --success-rgb: 154, 168, 218;
-  --warning-rgb: 244, 170, 155;
+  --warning-rgb: 240, 185, 104;
   --info-rgb: 141, 163, 194;
-  --default-text-color: rgba(250, 250, 251, 0.92);
-  --text-muted: rgba(250, 250, 251, 0.62);
+  --default-text-color: rgba(255, 255, 255, 0.85);
+  --text-muted: rgba(255, 255, 255, 0.55);
   --custom-white: #243566;
-  --default-border: rgba(250, 250, 251, 0.12);
+  --default-border: rgba(255, 255, 255, 0.12);
+  --bootstrap-card-border: rgb(var(--info-rgb));
   --header-bg: #1F305E;
-  --cool-gray: #182544;
+  --cool-gray: #1F305E;
   --off-white: #1F305E;
 }
 
@@ -84,7 +86,7 @@ html {
 
 [data-theme-mode="dark"] html,
 [data-theme-mode="dark"] body {
-  background: #182544;
+  background: #1F305E;
 }
 
 body {
@@ -135,6 +137,7 @@ h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-li
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: width 0.2s ease, transform 0.2s ease;
 }
 .sidebar-brand {
   display: flex;
@@ -144,11 +147,11 @@ h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-li
   border-bottom: 1px solid rgba(250, 250, 251, 0.12);
   margin-bottom: 1rem;
   text-decoration: none;
-  color: var(--off-white);
+  color: var(--sidebar-brand-color);
 }
 .sidebar-brand:hover,
 .sidebar-brand:focus {
-  color: var(--off-white);
+  color: var(--sidebar-brand-color);
 }
 .sidebar-brand img {
   width: 40px;
@@ -170,6 +173,7 @@ h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-li
   letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.1;
+  color: var(--sidebar-brand-color);
 }
 .sidebar-brand-sub {
   font-size: 0.6875rem;
@@ -191,6 +195,7 @@ h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-li
   letter-spacing: 0.08em;
   font-size: 0.8125rem;
 }
+.sidebar .nav-link::before { content: none; }
 .sidebar .nav-link.active,
 .sidebar .nav-link:hover {
   background: rgba(255, 130, 130, 0.16);
@@ -322,9 +327,8 @@ h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-li
   font-family: var(--heading-font-family);
   font-size: 2rem;
   line-height: 1.15;
-  color: var(--twilight-indigo);
+  color: var(--default-text-color);
 }
-[data-theme-mode="dark"] .stat-value { color: var(--off-white); }
 .stat-label {
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -525,10 +529,65 @@ table.table tbody tr:last-child td { border-bottom: none; }
 .login-account-link a:hover { color: var(--twilight-indigo); }
 .logout-form { margin: 0; }
 
+.mobile-menu-toggle { display: none; }
+.sidebar-collapse-toggle { flex-shrink: 0; }
+.sidebar-backdrop { display: none; }
+.app-shell.sidebar-collapsed .sidebar { width: 5rem; }
+.app-shell.sidebar-collapsed .sidebar-brand { justify-content: center; padding-inline: 0; }
+.app-shell.sidebar-collapsed .sidebar-brand-copy,
+.app-shell.sidebar-collapsed .sidebar .category,
+.app-shell.sidebar-collapsed .sidebar-footer,
+.app-shell.sidebar-collapsed .nav-link-label { display: none; }
+.app-shell.sidebar-collapsed .sidebar .nav-link {
+  justify-content: center;
+  padding-inline: 0;
+  font-size: 0;
+  letter-spacing: 0;
+}
+.app-shell.sidebar-collapsed .sidebar .nav-link::before {
+  content: attr(data-short);
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  letter-spacing: 0;
+}
+
 @media (max-width: 991.98px) {
-  .app-shell { flex-direction: column; }
-  .sidebar { width: 100%; }
-  .header-actions .btn { width: 100%; }
+  .app-shell { min-height: 100vh; }
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 1300;
+    width: min(var(--sidebar-width), 86vw);
+    height: 100dvh;
+    overflow-y: auto;
+    transform: translateX(-105%);
+    visibility: hidden;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
+  }
+  .app-shell.mobile-menu-open .sidebar { transform: translateX(0); visibility: visible; }
+  .app-shell.sidebar-collapsed .sidebar { width: min(var(--sidebar-width), 86vw); }
+  .app-shell.sidebar-collapsed .sidebar-brand { justify-content: flex-start; padding-inline: 0.5rem; }
+  .app-shell.sidebar-collapsed .sidebar-brand-copy,
+  .app-shell.sidebar-collapsed .sidebar .category,
+  .app-shell.sidebar-collapsed .sidebar-footer,
+  .app-shell.sidebar-collapsed .nav-link-label { display: revert; }
+  .app-shell.sidebar-collapsed .sidebar .nav-link { justify-content: flex-start; padding-inline: 0.75rem; font-size: 0.8125rem; }
+  .app-shell.sidebar-collapsed .sidebar .nav-link::before { content: none; }
+  .sidebar-backdrop.open { display: block; position: fixed; inset: 0; z-index: 1200; background: rgba(31, 48, 94, 0.45); }
+  .mobile-menu-toggle { display: inline-flex; }
+  .sidebar-collapse-toggle { display: none; }
+  .app-header { align-items: flex-start; }
+  .header-actions { width: 100%; }
+  .header-actions .btn { flex: 1 1 auto; }
+  .provider-chip { max-width: 100%; overflow-wrap: anywhere; }
+  .logout-form { flex: 1 1 auto; }
+  .logout-form .btn { width: 100%; }
+  .page-content { padding: 1rem; }
   .login-page { grid-template-columns: 1fr; }
   .login-story { min-height: auto; gap: 3rem; padding: 2rem 1.5rem; }
   .login-story-copy { margin: 0; }

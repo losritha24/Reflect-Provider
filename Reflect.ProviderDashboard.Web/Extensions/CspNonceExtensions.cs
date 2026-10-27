@@ -11,7 +11,7 @@ public static class CspNonceExtensions
             return nonce;
         }
 
-        nonce = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+        nonce = Convert.ToBase64String(System.Security.Cryptography.RandomNumberGenerator.GetBytes(32));
         context.Items[NonceKey] = nonce;
         return nonce;
     }

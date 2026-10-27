@@ -11,12 +11,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@title · Reflect XR Provider</title>
     <link rel="icon" type="image/png" href="~/brand/icons/favicon.png" />
-    <link rel="stylesheet" href="~/standins/css/reflect-theme.css?v=20261027-login" />
+    <script nonce="@Context.GetCspNonce()">
+        try {
+            const savedTheme = localStorage.getItem('reflect-provider-theme');
+            if (savedTheme === 'light' || savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme-mode', savedTheme);
+            }
+        } catch { }
+    </script>
+    <link rel="stylesheet" href="~/standins/css/reflect-theme.css?v=20261027-spec-review" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
 <div id="loadingOverlay" role="status" aria-live="polite"></div>
 <div class="offcanvas-backdrop" id="a11yBackdrop"></div>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <aside class="offcanvas-panel" id="a11yPanel" aria-label="Accessibility settings">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <strong>Accessibility</strong>
@@ -39,8 +48,8 @@
     </label>
 </aside>
 
-<div class="app-shell">
-    <nav class="sidebar" aria-label="Provider navigation">
+<div class="app-shell" id="appShell">
+    <nav class="sidebar" id="providerSidebar" aria-label="Provider navigation">
         <a class="sidebar-brand" href="@Url.Action("Dashboard", "Home", new { area = "Provider" })">
             <img src="~/brand/logos/logo-mark-soft-coral.svg" alt="Reflect XR" />
             <span class="sidebar-brand-copy">
@@ -49,17 +58,19 @@
             </span>
         </a>
         <div class="category">Overview</div>
-        <a class="nav-link @(controller == "Home" ? "active" : "")" href="@Url.Action("Dashboard", "Home", new { area = "Provider" })">
-            Dashboard
+        <a class="nav-link @(controller == "Home" ? "active" : "")" data-short="D" aria-label="Dashboard" href="@Url.Action("Dashboard", "Home", new { area = "Provider" })">
+            <span class="nav-link-label">Dashboard</span>
         </a>
         <div class="category">Caseload</div>
-        <a class="nav-link @(controller == "Patients" ? "active" : "")" href="@Url.Action("Index", "Patients", new { area = "Provider" })">
-            Patients
+        <a class="nav-link @(controller == "Patients" ? "active" : "")" data-short="P" aria-label="Patients" href="@Url.Action("Index", "Patients", new { area = "Provider" })">
+            <span class="nav-link-label">Patients</span>
         </a>
         <div class="sidebar-footer">Persistent Technology · 2026</div>
     </nav>
     <div class="main-column">
         <header class="app-header">
+            <button type="button" class="btn btn-outline-secondary mobile-menu-toggle" id="mobileMenuToggle" aria-controls="providerSidebar" aria-expanded="false">Menu</button>
+            <button type="button" class="btn btn-outline-secondary sidebar-collapse-toggle" id="sidebarCollapseToggle" aria-controls="providerSidebar" aria-expanded="true">Collapse navigation</button>
             <div>
                 <div class="header-kicker">Immersive Arts for Wellness</div>
                 <div class="fs-13 text-muted">Remember who it’s for. Synthetic data only.</div>
@@ -84,7 +95,7 @@
 </div>
 
 <script src="~/standins/js/messageService.js"></script>
-<script src="~/standins/js/layoutController.js"></script>
+<script src="~/standins/js/layoutController.js?v=20261027-spec-review"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
