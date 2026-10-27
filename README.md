@@ -16,6 +16,12 @@ dotnet run --project Reflect.ProviderDashboard.Web
 
 Open the URL shown in the console (default `https://localhost:7150`). Root `/` redirects to the provider dashboard.
 
+### Doctor accounts
+
+Create a local account from the sign-in page. Accounts are stored in `App_Data/provider-accounts.db` under the app's content root; the directory is private to the current OS user and excluded from Git. ASP.NET Core Identity stores salted password hashes, applies password complexity requirements, and temporarily locks accounts after repeated failed sign-in attempts.
+
+Account creation and sign-in are enabled only in the Development environment. This self-registration flow assigns the provider role and uses fictional patient data; replace it with the facility's verified identity provider and controlled clinician onboarding before production use.
+
 ## Screens and URLs
 
 | Screen | URL |
@@ -37,7 +43,7 @@ Example patient: `aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3` (Sam Patel — declining
 **This prototype:**
 
 - `Reflect.ProviderDashboard.Domain` — entities, enums, repository interfaces
-- `Reflect.ProviderDashboard.Web` — MVC `Provider` area, in-memory repositories, demo auth
+- `Reflect.ProviderDashboard.Web` — MVC `Provider` area, in-memory patient repositories, local Identity accounts in SQLite
 - Stand-in layout/CSS/JS under `wwwroot/standins/` (delete on merge into Reflect XR)
 
 ## Entities added

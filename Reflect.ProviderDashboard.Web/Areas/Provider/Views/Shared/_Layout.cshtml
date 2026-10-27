@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@title · Reflect XR Provider</title>
     <link rel="icon" type="image/png" href="~/brand/icons/favicon.png" />
-    <link rel="stylesheet" href="~/standins/css/reflect-theme.css?v=20261026" />
+    <link rel="stylesheet" href="~/standins/css/reflect-theme.css?v=20261027-login" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -67,7 +67,10 @@
             <div class="header-actions">
                 <button type="button" class="btn btn-outline-secondary" id="a11yPanelToggle">Accessibility</button>
                 <button type="button" class="btn btn-primary-light" id="themeToggle">Toggle theme</button>
-                <span class="provider-chip">Dr. Morgan Lee</span>
+                <span class="provider-chip">@(User.FindFirst("display_name")?.Value ?? User.Identity?.Name)</span>
+                <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
+                    <button type="submit" class="btn btn-outline-secondary">Sign out</button>
+                </form>
             </div>
         </header>
         <div class="demo-banner">Demo mode — clinical documentation stays separate from product analytics (Firebase → BigQuery → clinical API).</div>

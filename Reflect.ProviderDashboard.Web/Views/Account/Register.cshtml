@@ -1,0 +1,67 @@
+@model Reflect.ProviderDashboard.Web.Models.ViewModels.Account.RegisterViewModel
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Create doctor account";
+}
+
+<main class="login-page">
+    <section class="login-story" aria-label="Reflect XR provider dashboard">
+        <a class="login-brand" href="/">
+            <img src="~/brand/logos/logo-horizontal-full-color.svg" alt="Reflect XR" />
+        </a>
+        <div class="login-story-copy">
+            <p class="eyebrow">Provider workspace</p>
+            <h1>A clearer view of care between sessions.</h1>
+            <p>Create your provider account to review engagement across Reflect XR and Reflect Mobile.</p>
+        </div>
+        <p class="login-story-footnote">Reflect Provider Dashboard · Prototype</p>
+    </section>
+
+    <section class="login-panel" aria-labelledby="register-heading">
+        <div class="login-form-wrap">
+            <p class="eyebrow">Get started</p>
+            <h2 id="register-heading" class="page-title">Create an account</h2>
+            <p class="text-muted login-intro">Set up your doctor profile for this development demo.</p>
+
+            <div class="login-demo-note" role="note">
+                <strong>Private local storage</strong>
+                <span>Your account is saved in this app's local database. Passwords are stored as secure hashes.</span>
+            </div>
+
+            <form asp-controller="Account" asp-action="Register" method="post" class="login-form">
+                <input asp-for="ReturnUrl" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="login-validation" role="alert"></div>
+
+                <div class="login-field">
+                    <label asp-for="DisplayName"></label>
+                    <input asp-for="DisplayName" autocomplete="name" autofocus />
+                    <span asp-validation-for="DisplayName" class="login-field-error"></span>
+                </div>
+
+                <div class="login-field">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" autocomplete="email" inputmode="email" />
+                    <span asp-validation-for="Email" class="login-field-error"></span>
+                </div>
+
+                <div class="login-field">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" autocomplete="new-password" aria-describedby="password-help" />
+                    <span id="password-help" class="text-muted fs-13">12+ characters with upper and lowercase letters, a number, and a symbol.</span>
+                    <span asp-validation-for="Password" class="login-field-error"></span>
+                </div>
+
+                <div class="login-field">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" autocomplete="new-password" />
+                    <span asp-validation-for="ConfirmPassword" class="login-field-error"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary login-submit">Create account</button>
+            </form>
+
+            <p class="login-account-link">Already have an account? <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">Sign in</a></p>
+            <p class="login-security-note">Development-only account registration. Connect a verified identity provider before production use.</p>
+        </div>
+    </section>
+</main>

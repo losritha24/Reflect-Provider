@@ -461,8 +461,78 @@ table.table tbody tr:last-child td { border-bottom: none; }
   max-width: 40rem;
 }
 
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.9fr) minmax(22rem, 1.1fr);
+  background: var(--custom-white);
+}
+.login-story {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding: clamp(2rem, 6vw, 5.5rem);
+  overflow: hidden;
+  color: #fff;
+  background: var(--twilight-indigo);
+}
+.login-story::after {
+  content: "";
+  position: absolute;
+  width: 26rem;
+  height: 26rem;
+  right: -11rem;
+  bottom: -10rem;
+  border: 1px solid rgba(250, 250, 251, 0.16);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3rem rgba(250, 250, 251, 0.035), 0 0 0 6rem rgba(250, 250, 251, 0.025);
+  pointer-events: none;
+}
+.login-brand { position: relative; z-index: 1; display: inline-flex; width: min(13rem, 70%); }
+.login-brand img { width: 100%; height: auto; }
+.login-story-copy { position: relative; z-index: 1; max-width: 34rem; margin: 5rem 0; }
+.login-story-copy .eyebrow { color: var(--light-coral); }
+.login-story-copy h1 {
+  max-width: 12ch;
+  margin: 0 0 1rem;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.03;
+  letter-spacing: 0.01em;
+}
+.login-story-copy > p:last-child { max-width: 28rem; color: rgba(250, 250, 251, 0.76); font-size: 1.05rem; }
+.login-story-footnote { position: relative; z-index: 1; margin: 0; color: rgba(250, 250, 251, 0.56); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.login-panel { display: grid; place-items: center; padding: clamp(1.5rem, 5vw, 5rem); }
+.login-form-wrap { width: min(100%, 27rem); }
+.login-intro { margin: 0.65rem 0 1.75rem; }
+.login-demo-note { display: grid; gap: 0.2rem; margin-bottom: 1.5rem; padding: 0.85rem 1rem; border-left: 3px solid var(--soft-coral); border-radius: 0.25rem 0.75rem 0.75rem 0.25rem; background: var(--off-white); font-size: 0.8125rem; }
+.login-demo-note strong { color: var(--twilight-indigo); font-family: var(--heading-font-family); letter-spacing: 0.06em; text-transform: uppercase; }
+.login-demo-note span { color: var(--text-muted); }
+.login-form { display: grid; gap: 1.15rem; }
+.login-field { display: grid; gap: 0.4rem; }
+.login-field label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.login-field input { width: 100%; min-height: 3rem; padding: 0.7rem 0.85rem; border: 1px solid var(--default-border); border-radius: 0.6rem; background: var(--custom-white); color: var(--default-text-color); font: inherit; }
+.login-field input:focus { outline: 3px solid rgba(255, 130, 130, 0.24); border-color: var(--soft-coral); }
+.login-remember { display: inline-flex; align-items: center; gap: 0.55rem; color: var(--text-muted); font-size: 0.8125rem; cursor: pointer; }
+.login-remember input { width: 1rem; height: 1rem; accent-color: var(--twilight-indigo); }
+.login-submit { width: 100%; min-height: 3rem; margin-top: 0.2rem; }
+.login-validation, .login-field-error { color: #a43e3e; font-size: 0.8125rem; }
+.login-validation:empty, .login-field-error:empty { display: none; }
+.login-security-note { margin: 1.5rem 0 0; color: var(--text-muted); font-size: 0.75rem; line-height: 1.6; }
+.login-account-link { margin: 1.25rem 0 0; text-align: center; color: var(--text-muted); font-size: 0.8125rem; }
+.login-account-link a { color: #b94f4f; font-weight: 600; text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+.login-account-link a:hover { color: var(--twilight-indigo); }
+.logout-form { margin: 0; }
+
 @media (max-width: 991.98px) {
   .app-shell { flex-direction: column; }
   .sidebar { width: 100%; }
   .header-actions .btn { width: 100%; }
+  .login-page { grid-template-columns: 1fr; }
+  .login-story { min-height: auto; gap: 3rem; padding: 2rem 1.5rem; }
+  .login-story-copy { margin: 0; }
+  .login-story-copy h1 { max-width: 14ch; font-size: clamp(2.2rem, 8vw, 3.5rem); }
+  .login-story-footnote { display: none; }
+  .login-panel { padding: 2.5rem 1.5rem 3.5rem; }
 }

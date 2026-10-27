@@ -26,7 +26,10 @@ The MVP implements only the dashboard UI and domain shapes; repositories are in-
 
 ## Security notes (prototype)
 
-- Demo authentication handler assigns a fixed provider role.
+- Development-only account creation and sign-in use ASP.NET Core Identity with a SQLite store under the app content root's `App_Data/` directory.
+- Passwords are stored as Identity password hashes, and repeated failed sign-in attempts trigger a temporary lockout.
+- The SQLite directory and database file are restricted to the current OS user on Unix-like systems and excluded from Git.
+- Registration assigns the provider role and does not verify email or professional credentials. Replace it with verified clinician onboarding and the facility identity provider (for example, Entra ID) before production use.
 - CSP header matches Reflect XR demo policy (stand-in scripts use nonces on inline blocks).
 - No real PHI—seed data is fictional.
 

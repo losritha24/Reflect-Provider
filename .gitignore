@@ -5,3 +5,5 @@ obj/
 *.suo
 .DS_Store
 Reflect Provider/
+/App_Data/
+/Reflect.ProviderDashboard.Web/App_Data/

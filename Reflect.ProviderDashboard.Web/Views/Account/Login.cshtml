@@ -1,0 +1,59 @@
+@model Reflect.ProviderDashboard.Web.Models.ViewModels.Account.LoginViewModel
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Doctor sign in";
+}
+
+<main class="login-page">
+    <section class="login-story" aria-label="Reflect XR provider dashboard">
+        <a class="login-brand" href="/">
+            <img src="~/brand/logos/logo-horizontal-full-color.svg" alt="Reflect XR" />
+        </a>
+        <div class="login-story-copy">
+            <p class="eyebrow">Provider workspace</p>
+            <h1>Support that continues beyond the session.</h1>
+            <p>Review engagement across Reflect XR and Reflect Mobile in one secure provider workspace.</p>
+        </div>
+        <p class="login-story-footnote">Reflect Provider Dashboard · Prototype</p>
+    </section>
+
+    <section class="login-panel" aria-labelledby="login-heading">
+        <div class="login-form-wrap">
+            <p class="eyebrow">Welcome back</p>
+            <h2 id="login-heading" class="page-title">Doctor sign in</h2>
+            <p class="text-muted login-intro">Sign in with your provider account to continue.</p>
+
+            <div class="login-demo-note" role="note">
+                <strong>Prototype access</strong>
+                <span>This local account system is for fictional data.</span>
+            </div>
+
+            <form asp-controller="Account" asp-action="Login" method="post" class="login-form">
+                <input asp-for="ReturnUrl" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="login-validation" role="alert"></div>
+
+                <div class="login-field">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" autocomplete="username" inputmode="email" autofocus />
+                    <span asp-validation-for="Email" class="login-field-error"></span>
+                </div>
+
+                <div class="login-field">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" autocomplete="current-password" />
+                    <span asp-validation-for="Password" class="login-field-error"></span>
+                </div>
+
+                <label class="login-remember">
+                    <input asp-for="RememberMe" />
+                    <span>Keep me signed in on this device</span>
+                </label>
+
+                <button type="submit" class="btn btn-primary login-submit">Sign in</button>
+            </form>
+
+            <p class="login-security-note">Forgot your password? Contact your system administrator. This prototype does not send account recovery email.</p>
+            <p class="login-account-link">New to the provider dashboard? <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Create an account</a></p>
+        </div>
+    </section>
+</main>
