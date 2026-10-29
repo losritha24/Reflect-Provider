@@ -1,0 +1,20 @@
+name: Build and regression checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: dotnet run --project tests/Reflect.ProviderDashboard.Checks -p:UseSharedCompilation=false
+      - run: node --test tests/layoutController.test.cjs
+      - run: python3 tests/hosted_demo_smoke.py
+      - run: python3 tests/deployment_config_checks.py
+      - run: dotnet publish Reflect.ProviderDashboard.Web -c Release --no-restore -o /tmp/reflect-publish

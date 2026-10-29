@@ -1,0 +1,14 @@
+**/bin
+**/obj
+**/App_Data
+.git
+.github
+.agents
+.codex
+.aws
+**/.env*
+**/*.db*
+**/*.pfx
+**/*.pem
+**/*.key
+tests

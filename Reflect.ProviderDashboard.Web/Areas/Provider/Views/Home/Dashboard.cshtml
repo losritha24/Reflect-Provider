@@ -1,69 +1,60 @@
 @model ProviderDashboardViewModel
+@using Reflect.ProviderDashboard.Web.Extensions
 @{
     ViewData["Title"] = "Dashboard";
 }
-<div class="mb-4 hero-copy">
-    <p class="eyebrow">Stay the course</p>
-    <h1 class="page-title mb-1">Provider dashboard</h1>
-    <p class="text-muted fs-13 mb-0">Longitudinal engagement across Reflect XR and Reflect Mobile.</p>
+<div class="dashboard-workspace">
+<header class="workspace-heading">
+    <div><p class="eyebrow">Remember who it’s for</p><h1 class="page-title">Care between sessions.</h1>
+    <p class="text-muted">A clearer view of engagement. A more informed next conversation.</p></div>
+    <a class="btn btn-outline-secondary" asp-controller="Patients" asp-action="Index">View caseload</a>
+</header>
+<div class="summary-strip" aria-label="Caseload summary">
+    <div><span class="stat-value">@Model.ActivePatientCount</span><span>Assigned patients</span></div>
+    <div><span class="stat-value">@Model.SessionsLast7Days</span><span>Sessions · last 7 days</span></div>
+    <div><span class="stat-value">@Model.NeedsAttention.Count</span><span>Follow-up signals</span></div>
+    <div class="snapshot-note"><span class="status-dot" aria-hidden="true"></span><span>Synthetic snapshot<br /><small>Generated @Reflect.ProviderDashboard.Web.Infrastructure.InMemoryDataStore.SeededAtUtc.ToUsDateTimeString() ET</small></span></div>
 </div>
-
-<div class="stat-grid">
-    <div class="card custom-card card-clickable" data-href="@Url.Action("Index", "Patients", new { area = "Provider" })">
-        <div class="card-body">
-            <div class="stat-label">Active patients</div>
-            <div class="stat-value">@Model.ActivePatientCount</div>
-        </div>
-    </div>
-    <div class="card custom-card">
-        <div class="card-body">
-            <div class="stat-label">Sessions (last 7 days)</div>
-            <div class="stat-value">@Model.SessionsLast7Days</div>
-        </div>
-    </div>
-    <div class="card custom-card">
-        <div class="card-body">
-            <div class="stat-label">Reflect XR (VR)</div>
-            <div class="stat-value">@Model.VrSessionsLast7Days</div>
-        </div>
-    </div>
-    <div class="card custom-card">
-        <div class="card-body">
-            <div class="stat-label">Reflect Mobile</div>
-            <div class="stat-value">@Model.MobileSessionsLast7Days</div>
-        </div>
-    </div>
+<div class="workspace-grid">
+<section class="work-panel" aria-labelledby="attention-heading">
+    <div class="section-heading"><h2 id="attention-heading">Needs attention</h2><span class="badge bg-warning-transparent">@Model.NeedsAttention.Count @(Model.NeedsAttention.Count == 1 ? "signal" : "signals")</span></div>
+    <p class="text-muted">A change in activity is a starting point for a conversation.</p>
+    @if (Model.NeedsAttention.Count == 0)
+    {
+        <div class="empty-state"><h3>No falling activity signals</h3><p>No patients have fewer sessions than in the previous seven-day period.</p><a asp-controller="Patients" asp-action="Index">Explore your caseload</a></div>
+    }
+    @foreach (var signal in Model.NeedsAttention)
+    {
+        <article class="signal-card">
+            <div class="signal-person"><span class="patient-avatar" aria-hidden="true">@signal.PatientName.Substring(0, 1)</span><div>
+                <a class="patient-name" asp-controller="Patients" asp-action="Details" asp-route-id="@signal.PatientId">@signal.PatientName</a>
+                <p class="text-muted">Last activity: @(signal.LastActivity?.ToUsDateTimeString() ?? "None recorded") ET</p>
+            </div></div>
+            <div class="signal-comparison"><div><strong>@signal.PreviousSessions</strong><span>Previous 7 days</span></div><span aria-hidden="true">→</span><div><strong>@signal.CurrentSessions</strong><span>Last 7 days</span></div><span class="badge bg-warning-transparent">Fewer sessions</span></div>
+            <p>Check in about barriers to participation and review the latest reflection.</p>
+            <a class="btn btn-primary" asp-controller="Patients" asp-action="Details" asp-route-id="@signal.PatientId">Review patient <span class="visually-hidden">@signal.PatientName</span></a>
+        </article>
+    }
+    <details class="signal-explainer"><summary>Why these signals?</summary><p>We compare session counts in consecutive seven-day windows. A lower count recommends review; it does not indicate a diagnosis.</p>
+        <p class="text-muted">UTC windows: @Model.AsOfUtc.AddDays(-7).ToString("MMM d, HH:mm")–@Model.AsOfUtc.ToString("MMM d, HH:mm"), compared with @Model.AsOfUtc.AddDays(-14).ToString("MMM d, HH:mm")–@Model.AsOfUtc.AddDays(-7).ToString("MMM d, HH:mm"). No live synchronization.</p></details>
+</section>
+<aside class="work-panel platform-panel" aria-labelledby="platform-heading">
+    <p class="eyebrow">Across both experiences</p><h2 id="platform-heading">One connected view.</h2><p class="text-muted">Sessions across immersive and mobile experiences in the last seven days.</p>
+    <div class="platform-meter"><label for="xr-meter">Reflect XR <strong>@Model.VrSessionsLast7Days</strong></label><progress id="xr-meter" value="@Model.VrSessionsLast7Days" max="@Math.Max(1, Model.SessionsLast7Days)">@Model.VrSessionsLast7Days</progress></div>
+    <div class="platform-meter"><label for="mobile-meter">Reflect Mobile <strong>@Model.MobileSessionsLast7Days</strong></label><progress id="mobile-meter" value="@Model.MobileSessionsLast7Days" max="@Math.Max(1, Model.SessionsLast7Days)">@Model.MobileSessionsLast7Days</progress></div>
+    <details class="signal-explainer"><summary>View data table</summary><table class="table"><caption>Sessions in the last seven days</caption><thead><tr><th scope="col">Platform</th><th scope="col">Sessions</th></tr></thead><tbody><tr><th scope="row">XR</th><td>@Model.VrSessionsLast7Days</td></tr><tr><th scope="row">Mobile</th><td>@Model.MobileSessionsLast7Days</td></tr></tbody></table></details>
+    <p class="platform-footnote">Different ways to engage.<br /><strong>The same person at the center.</strong></p>
+</aside>
 </div>
+<section class="work-panel recent-panel" aria-labelledby="recent-heading">
+    <div class="section-heading"><div><h2 id="recent-heading">Recent activity</h2><p class="text-muted">The latest sessions in your assigned caseload. Times shown in ET.</p></div><a asp-controller="Patients" asp-action="Index">All patients</a></div>
+    <div class="activity-feed">
+    @foreach (var row in Model.RecentSessions)
+    {
+        <article class="activity-item"><span class="activity-marker" aria-hidden="true"></span><div><a class="patient-name" asp-action="Details" asp-controller="Patients" asp-route-id="@row.PatientId">@row.PatientName</a><p>@row.ModuleName</p></div><span class="badge @(row.PlatformLabel.Contains("VR") ? "bg-primary-transparent" : "bg-info-transparent")">@row.PlatformLabel</span><div class="activity-time">@row.SessionDateTimeDisplay<span>@row.DurationMinutes minutes</span></div></article>
+    }
+    @if (Model.RecentSessions.Count == 0) { <p class="empty-state">No sessions recorded for your assigned patients yet.</p> }
+    </div>
+</section>
 
-<div class="card custom-card">
-    <div class="card-header">
-        <div class="card-title">Recent sessions</div>
-    </div>
-    <div class="card-body table-responsive">
-        <table class="table dt-client text-nowrap align-middle">
-            <thead>
-            <tr>
-                <th>Patient</th>
-                <th>Date &amp; time (ET)</th>
-                <th>Duration</th>
-                <th>Platform</th>
-                <th>Module</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var row in Model.RecentSessions)
-            {
-                <tr class="row-link" tabindex="0" data-href="@Url.Action("Details", "Patients", new { area = "Provider", id = row.PatientId })">
-                    <td>@row.PatientName</td>
-                    <td>@row.SessionDateTimeDisplay</td>
-                    <td>@row.DurationMinutes min</td>
-                    <td>
-                        <span class="badge @(row.PlatformLabel.Contains("VR") ? "bg-primary-transparent" : "bg-info-transparent")">@row.PlatformLabel</span>
-                    </td>
-                    <td>@row.ModuleName</td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
 </div>

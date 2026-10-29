@@ -12,11 +12,11 @@
 </div>
 
 <ul class="nav nav-tabs" id="patientTabs" role="tablist">
-    <li><button type="button" class="nav-link active" data-tab="overview" id="tab-overview">Overview</button></li>
-    <li><button type="button" class="nav-link" data-tab="sessions" id="tab-sessions">Sessions</button></li>
+    <li><button type="button" class="nav-link active" data-tab="overview" id="tab-overview" role="tab" aria-selected="true" aria-controls="panel-overview" tabindex="0">Overview</button></li>
+    <li><button type="button" class="nav-link" data-tab="sessions" id="tab-sessions" role="tab" aria-selected="false" aria-controls="panel-sessions" tabindex="-1">Timeline</button></li>
 </ul>
 
-<div id="panel-overview">
+<div id="panel-overview" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
     <div class="stat-grid">
         <div class="card custom-card">
             <div class="card-body">
@@ -47,14 +47,29 @@
         <div class="card-header"><div class="card-title">Clinical notes (synthetic)</div></div>
         <div class="card-body">
             <p class="mb-2">
-                <span class="badge bg-@Model.TrendBadgeColor-transparent text-@Model.TrendBadgeColor">@Model.TrendLabel</span>
+                <span class="badge bg-@Model.TrendBadgeColor-transparent text-@Model.TrendBadgeColor">@Model.TrendLabel</span> <span class="text-muted fs-13">Synthetic scenario label</span>
             </p>
             <p class="mb-0">@Model.NotesSummary</p>
         </div>
     </div>
 </div>
 
-<div id="panel-sessions" hidden>
+<div id="panel-sessions" role="tabpanel" aria-labelledby="tab-sessions" tabindex="0" hidden>
+    <section class="work-panel" aria-labelledby="timeline-heading">
+        <div class="section-heading"><div><h2 id="timeline-heading">The story between sessions</h2><p class="text-muted">Newest first · Eastern Time · Synthetic session records</p></div><span class="badge bg-info-transparent">@Model.TotalSessions sessions</span></div>
+        <ol class="patient-timeline">
+        @foreach (var session in Model.Sessions)
+        {
+            <li><time datetime="@session.StartedAtUtc.ToString("O")">@session.SessionDateTimeDisplay ET</time><article>
+                <span class="badge bg-info-transparent">@session.PlatformLabel · @session.DurationMinutes min</span>
+                <h3>@session.ModuleName</h3><p>@session.ReflectionSummary</p>
+                <details><summary>Source details</summary><p class="text-muted">Synthetic demo seed · @session.StartedAtUtc.ToString("yyyy-MM-dd HH:mm 'UTC'") · No live synchronization</p></details>
+            </article></li>
+        }
+        </ol>
+        @if (Model.Sessions.Count == 0) { <p class="empty-state">No sessions yet. Activity will appear here when sessions are available.</p> }
+    </section>
+    <details class="work-panel"><summary>View session table</summary>
     <div class="card custom-card">
         <div class="card-header"><div class="card-title">Session history</div></div>
         <div class="card-body table-responsive">
@@ -83,6 +98,7 @@
             </table>
         </div>
     </div>
+    </details>
 </div>
 
 @section Scripts {
@@ -91,9 +107,21 @@
             var tabs = document.querySelectorAll('#patientTabs .nav-link');
             var overview = document.getElementById('panel-overview');
             var sessions = document.getElementById('panel-sessions');
-            tabs.forEach(function (tab) {
+            tabs.forEach(function (tab, index) {
+                tab.addEventListener('keydown', function (event) {
+                    var target;
+                    if (event.key === 'ArrowRight') target = (index + 1) % tabs.length;
+                    if (event.key === 'ArrowLeft') target = (index + tabs.length - 1) % tabs.length;
+                    if (event.key === 'Home') target = 0;
+                    if (event.key === 'End') target = tabs.length - 1;
+                    if (target !== undefined) { event.preventDefault(); tabs[target].focus(); tabs[target].click(); }
+                });
                 tab.addEventListener('click', function () {
-                    tabs.forEach(function (t) { t.classList.remove('active'); });
+                    tabs.forEach(function (t) {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', String(t === tab));
+                        t.tabIndex = t === tab ? 0 : -1;
+                    });
                     tab.classList.add('active');
                     var name = tab.getAttribute('data-tab');
                     overview.hidden = name !== 'overview';

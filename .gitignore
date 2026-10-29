@@ -7,3 +7,6 @@ obj/
 Reflect Provider/
 /App_Data/
 /Reflect.ProviderDashboard.Web/App_Data/
+
+__pycache__/
+*.pyc

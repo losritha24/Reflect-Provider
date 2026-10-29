@@ -5,36 +5,35 @@ using Reflect.ProviderDashboard.Web.Infrastructure;
 
 namespace Reflect.ProviderDashboard.Web.Services;
 
-public class InMemoryTherapySessionRepository : ITherapySessionRepository
+public class InMemoryTherapySessionRepository(IPatientRepository patients) : ITherapySessionRepository
 {
-    public Task<IReadOnlyList<TherapySession>> GetAllAsync(CancellationToken ct)
+    private async Task<IEnumerable<TherapySession>> AccessibleSessions(CancellationToken ct)
     {
-        var list = InMemoryDataStore.Sessions
-            .Where(s => !s.IsDeleted)
-            .OrderByDescending(s => s.StartedAtUtc)
-            .ToList();
-        return Task.FromResult<IReadOnlyList<TherapySession>>(list);
+        ct.ThrowIfCancellationRequested();
+        var ids = (await patients.GetAllAsync(ct)).Select(p => p.Id).ToHashSet();
+        return InMemoryDataStore.Sessions.Where(s => !s.IsDeleted && ids.Contains(s.PatientId));
     }
 
-    public Task<IReadOnlyList<TherapySession>> GetByPatientIdAsync(Guid patientId, CancellationToken ct)
+    public async Task<IReadOnlyList<TherapySession>> GetAllAsync(CancellationToken ct) =>
+        (await AccessibleSessions(ct)).OrderByDescending(s => s.StartedAtUtc).ToList();
+
+    public async Task<IReadOnlyList<TherapySession>> GetByPatientIdAsync(Guid patientId, CancellationToken ct)
     {
-        var list = InMemoryDataStore.Sessions
-            .Where(s => s.PatientId == patientId && !s.IsDeleted)
-            .OrderByDescending(s => s.StartedAtUtc)
-            .ToList();
-        return Task.FromResult<IReadOnlyList<TherapySession>>(list);
+        await patients.GetByIdAsync(patientId, ct);
+        return InMemoryDataStore.Sessions.Where(s => !s.IsDeleted && s.PatientId == patientId)
+            .OrderByDescending(s => s.StartedAtUtc).ToList();
     }
 
-    public Task<int> CountSinceAsync(DateTimeOffset sinceUtc, CancellationToken ct)
+    public async Task<int> CountSinceAsync(DateTimeOffset sinceUtc, CancellationToken ct)
     {
-        var count = InMemoryDataStore.Sessions.Count(s => !s.IsDeleted && s.StartedAtUtc >= sinceUtc);
-        return Task.FromResult(count);
+        var now = DateTimeOffset.UtcNow;
+        return (await AccessibleSessions(ct)).Count(s => s.StartedAtUtc >= sinceUtc && s.StartedAtUtc <= now);
     }
 
-    public Task<int> CountByPlatformSinceAsync(TherapyPlatform platform, DateTimeOffset sinceUtc, CancellationToken ct)
+    public async Task<int> CountByPlatformSinceAsync(TherapyPlatform platform, DateTimeOffset sinceUtc, CancellationToken ct)
     {
-        var count = InMemoryDataStore.Sessions.Count(s =>
-            !s.IsDeleted && s.Platform == platform && s.StartedAtUtc >= sinceUtc);
-        return Task.FromResult(count);
+        var now = DateTimeOffset.UtcNow;
+        return (await AccessibleSessions(ct)).Count(s => s.Platform == platform
+            && s.StartedAtUtc >= sinceUtc && s.StartedAtUtc <= now);
     }
 }

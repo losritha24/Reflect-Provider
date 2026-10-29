@@ -9,7 +9,7 @@ Prototype **mental health provider dashboard** for Persistent Technology’s Imm
 ## Run locally
 
 ```bash
-cd /Users/losrinallamala/Projects/reflect-provider-dashboard
+cd Reflect-Provider
 dotnet build
 dotnet run --project Reflect.ProviderDashboard.Web
 ```
@@ -20,7 +20,7 @@ Open the URL shown in the console (default `https://localhost:7150`). Root `/` r
 
 Create a local account from the sign-in page. Accounts are stored in `App_Data/provider-accounts.db` under the app's content root; the directory is private to the current OS user and excluded from Git. ASP.NET Core Identity stores salted password hashes, applies password complexity requirements, and temporarily locks accounts after repeated failed sign-in attempts.
 
-Account creation and sign-in are enabled only in the Development environment. This self-registration flow assigns the provider role and uses fictional patient data; replace it with the facility's verified identity provider and controlled clinician onboarding before production use.
+Account creation is enabled only in Development. Sign-in is also available in Production when explicitly configured for the seeded synthetic competition demo (see the deployment guide). This self-registration flow assigns the provider role but does not assign patients; use the configured seeded demo account to view the fictional caseload. Replace it with the facility's verified identity provider and controlled clinician onboarding before production use.
 
 ## Screens and URLs
 
@@ -62,3 +62,43 @@ Copy Bootstrap 5.3.3, jQuery 3.7.1, DataTables, RemixIcon v4.2, and IBM Plex fon
 ## Documentation
 
 See `docs/ARCHITECTURE.md` and `CHANGELOG.md`.
+
+## Development checks
+
+```bash
+dotnet run --project tests/Reflect.ProviderDashboard.Checks
+node --test tests/layoutController.test.cjs
+```
+
+The dependency-free check runner covers patient search, paging, cancellation,
+and controller handling of invalid, missing, and deleted patients. The Node tests
+cover accessibility focus and preference storage; they do not replace browser
+or screen-reader testing.
+
+Patient search supports name or external ID, engagement filters, and pages of
+10 records. Display preferences (theme, text size, color-blind mode) are stored
+locally in this browser; patient data is not stored in browser storage.
+
+## Competition hosting and review
+
+See [free hosting options and deployment steps](docs/COMPETITION-DEPLOYMENT.md)
+and the [UI/backend/security review](docs/REVIEW.md). A Dockerfile and CI workflow
+are included. Hosted demo mode requires explicit configuration; never expose the
+Development environment publicly. `/health/live` reports process liveness only.
+
+## Shared skills, security assessment, and UI roadmap
+
+- [Installed shared skills](skills/README.md)
+- [Latest local vulnerability assessment](docs/SECURITY-TEST-REPORT.md)
+- [Brand-constrained UI implementation plan](docs/UI-IMPLEMENTATION-PLAN.md)
+
+### Stable local demo login
+
+In Development, the app seeds `doctor@reflect.demo` with password
+`ReflectDemo2026!` and assigns the synthetic caseload. These intentionally public
+demo credentials are configured only in `appsettings.Development.json`.
+Run `dotnet run --project Reflect.ProviderDashboard.Web` and use the displayed URL.
+New self-registered accounts start with no assigned patients. Existing account
+passwords are not overwritten by startup seeding. Hosted Production deployments
+must explicitly supply their own `Demo__Enabled`, `Demo__Email`, and
+`Demo__Password` settings; the Development file is not loaded there.

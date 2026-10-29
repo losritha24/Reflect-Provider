@@ -1,3 +1,5 @@
+using Reflect.ProviderDashboard.Domain.Exceptions;
+using Reflect.ProviderDashboard.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Reflect.ProviderDashboard.Domain.Interfaces;
@@ -19,17 +21,26 @@ public class PatientsController : Controller
         _sessions = sessions;
     }
 
-    public async Task<IActionResult> Index(CancellationToken ct)
+    public async Task<IActionResult> Index(CancellationToken ct, string search = null, EngagementTrend? trend = null, int page = 1)
     {
-        var vm = new PatientIndexViewModel();
+        if (!ModelState.IsValid || (trend.HasValue && !Enum.IsDefined(trend.Value))) return BadRequest();
+        var vm = new PatientIndexViewModel { Search = search?.Trim(), Trend = trend, Page = page };
         await vm.PrepareData(_patients, _sessions, ct);
         return View(vm);
     }
 
     public async Task<IActionResult> Details(Guid id, CancellationToken ct)
     {
+        if (!ModelState.IsValid || id == Guid.Empty) return NotFound();
         var vm = new PatientDetailsViewModel();
-        await vm.PrepareData(id, _patients, _sessions, ct);
-        return View(vm);
+        try
+        {
+            await vm.PrepareData(id, _patients, _sessions, ct);
+            return View(vm);
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound();
+        }
     }
 }

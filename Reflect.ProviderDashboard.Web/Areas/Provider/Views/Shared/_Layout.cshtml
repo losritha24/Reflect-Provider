@@ -19,14 +19,16 @@
             }
         } catch { }
     </script>
-    <link rel="stylesheet" href="~/standins/css/reflect-theme.css?v=20261027-spec-review" />
+    <link rel="stylesheet" href="~/standins/css/reflect-theme.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
+    <link rel="stylesheet" href="~/standins/css/provider-workspace.css" asp-append-version="true" />
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <div id="loadingOverlay" role="status" aria-live="polite"></div>
 <div class="offcanvas-backdrop" id="a11yBackdrop"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-<aside class="offcanvas-panel" id="a11yPanel" aria-label="Accessibility settings">
+<aside class="offcanvas-panel" id="a11yPanel" role="dialog" aria-modal="true" aria-hidden="true" inert aria-label="Accessibility settings">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <strong>Accessibility</strong>
         <button type="button" class="btn btn-outline-secondary" id="a11yPanelClose">Close</button>
@@ -73,29 +75,32 @@
             <button type="button" class="btn btn-outline-secondary sidebar-collapse-toggle" id="sidebarCollapseToggle" aria-controls="providerSidebar" aria-expanded="true">Collapse navigation</button>
             <div>
                 <div class="header-kicker">Immersive Arts for Wellness</div>
-                <div class="fs-13 text-muted">Remember who it’s for. Synthetic data only.</div>
+                <div class="fs-13 text-muted">Provider workspace</div>
             </div>
-            <div class="header-actions">
-                <button type="button" class="btn btn-outline-secondary" id="a11yPanelToggle">Accessibility</button>
+            <details class="account-menu">
+                <summary class="btn btn-outline-secondary">Account &amp; display</summary>
+                <div class="header-actions">
+                <button type="button" class="btn btn-outline-secondary" id="a11yPanelToggle" aria-controls="a11yPanel" aria-expanded="false">Accessibility</button>
                 <button type="button" class="btn btn-primary-light" id="themeToggle">Toggle theme</button>
                 <span class="provider-chip">@(User.FindFirst("display_name")?.Value ?? User.Identity?.Name)</span>
                 <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
                     <button type="submit" class="btn btn-outline-secondary">Sign out</button>
                 </form>
-            </div>
+                </div>
+            </details>
         </header>
-        <div class="demo-banner">Demo mode — clinical documentation stays separate from product analytics (Firebase → BigQuery → clinical API).</div>
+        <div class="demo-banner">Synthetic demo · Fictional patient records</div>
         <div class="breadcrumb-bar">
             Provider / @controller / @action
         </div>
-        <main class="page-content">
+        <main class="page-content" id="main-content" tabindex="-1">
             @RenderBody()
         </main>
     </div>
 </div>
 
 <script src="~/standins/js/messageService.js"></script>
-<script src="~/standins/js/layoutController.js?v=20261027-spec-review"></script>
+<script src="~/standins/js/layoutController.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

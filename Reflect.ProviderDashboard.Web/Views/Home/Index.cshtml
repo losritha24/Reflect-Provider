@@ -1,0 +1,15 @@
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Care between sessions";
+}
+<div class="demo-landing">
+    <header class="landing-nav"><a href="/" aria-label="Reflect home"><img src="~/brand/logos/logo-horizontal-full-color.svg" alt="Reflect XR" /></a><a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Login">Provider sign in</a></header>
+    <main>
+        <section class="landing-hero">
+            <div><p class="eyebrow">Remember who it’s for</p><h1>Care doesn’t end<br />at the session.</h1><p class="landing-lead">Bring Reflect XR and Mobile activity into one provider workspace. Notice changes, understand the context, and make the next conversation count.</p><a class="btn btn-primary" asp-controller="Account" asp-action="Login">Explore the demo</a><p class="text-muted fs-13">A working prototype. Every patient record is fictional.</p></div>
+            <aside class="landing-preview" aria-label="Illustrative synthetic follow-up preview"><div class="preview-top">Reflect / Provider workspace<span>Synthetic preview</span></div><h2>See the change.<br />Keep the person in view.</h2><div class="preview-patient"><span class="patient-avatar" aria-hidden="true">S</span><div><strong>Sam Patel</strong><p>Follow-up recommended</p></div></div><div class="preview-evidence"><span>Previous 7 days<strong>1 session</strong></span><span>Last 7 days<strong>0 sessions</strong></span></div><p>Review the latest session and check in about barriers to participation.</p><span class="preview-caption">Illustrative sample · Not a diagnosis</span></aside>
+        </section>
+        <section class="landing-benefits" aria-label="What you can explore"><article><h2>Notice</h2><p>An explainable worklist brings changes in engagement into focus.</p></article><article><h2>Understand</h2><p>A patient timeline puts sessions and reflections in context.</p></article><article><h2>Connect</h2><p>XR and Mobile activity share one view, with clear dates and sources.</p></article></section>
+    </main>
+    <footer class="landing-footer">Reflect Provider · Competition demo<span>Built around people. Designed for follow-up.</span></footer>
+</div>

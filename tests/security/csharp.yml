@@ -1,0 +1,30 @@
+rules:
+  - id: unsafe-deserialization
+    languages: [csharp]
+    severity: ERROR
+    message: Review unsafe binary deserialization.
+    pattern-either:
+      - pattern: new BinaryFormatter(...)
+      - pattern: new NetDataContractSerializer(...)
+  - id: raw-sql-concatenation
+    languages: [csharp]
+    severity: ERROR
+    message: Untrusted input must not be concatenated into raw SQL.
+    pattern-either:
+      - pattern: $DB.FromSqlRaw($X + $Y, ...)
+      - pattern: $DB.ExecuteSqlRaw($X + $Y, ...)
+  - id: disable-csrf
+    languages: [csharp]
+    severity: WARNING
+    message: Explicit CSRF bypass requires review.
+    pattern: '[IgnoreAntiforgeryToken]'
+  - id: disable-tls-validation
+    languages: [csharp]
+    severity: ERROR
+    message: Certificate validation must not accept every certificate.
+    pattern-regex: 'ServerCertificateCustomValidationCallback\s*=.*(?:true|DangerousAcceptAnyServerCertificateValidator)'
+  - id: process-execution
+    languages: [csharp]
+    severity: WARNING
+    message: Review whether untrusted input reaches command execution.
+    pattern: Process.Start(...)

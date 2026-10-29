@@ -26,7 +26,7 @@ The MVP implements only the dashboard UI and domain shapes; repositories are in-
 
 ## Security notes (prototype)
 
-- Development-only account creation and sign-in use ASP.NET Core Identity with a SQLite store under the app content root's `App_Data/` directory.
+- Development-only account creation and opt-in hosted synthetic demo sign-in use ASP.NET Core Identity with a SQLite store under the app content root's `App_Data/` directory.
 - Passwords are stored as Identity password hashes, and repeated failed sign-in attempts trigger a temporary lockout.
 - The SQLite directory and database file are restricted to the current OS user on Unix-like systems and excluded from Git.
 - Registration assigns the provider role and does not verify email or professional credentials. Replace it with verified clinician onboarding and the facility identity provider (for example, Entra ID) before production use.
@@ -40,3 +40,12 @@ The MVP implements only the dashboard UI and domain shapes; repositories are in-
 3. Replace in-memory repositories with EF Core + clinical API clients.
 4. Drop `wwwroot/standins/` layout; views use production `_Layout.cshtml`.
 5. Append `provider-menu.json` items to the facility/provider sidebar config.
+
+## Patient browsing (prototype)
+
+`IPatientRepository.SearchAsync` filters non-deleted synthetic patients by name,
+external ID, and engagement signal, then applies stable name/ID ordering and
+bounded pagination. The patient list loads session summaries only for patients
+on the requested page. The dashboard still uses full-population reads. This is
+an in-memory implementation with provider assignment checks on patient/session access, not tenant-scoped clinical data access; production
+authorization, database-side aggregation, and audit work remain in TODO.md.

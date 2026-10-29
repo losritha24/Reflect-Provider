@@ -8,6 +8,17 @@ public static class InMemoryDataStore
     public static IReadOnlyList<Patient> Patients { get; private set; } = new List<Patient>();
     public static IReadOnlyList<TherapySession> Sessions { get; private set; } = new List<TherapySession>();
 
+    public static DateTimeOffset SeededAtUtc { get; private set; }
+
+    public static void AssignPatientsToProvider(string providerId)
+    {
+        if (string.IsNullOrWhiteSpace(providerId))
+            throw new ArgumentException("A provider ID is required.", nameof(providerId));
+
+        foreach (var patient in Patients)
+            patient.AssignedProviderId = providerId;
+    }
+
     public static void Seed()
     {
         var patients = new List<Patient>
@@ -60,6 +71,7 @@ public static class InMemoryDataStore
         };
 
         var now = DateTimeOffset.UtcNow;
+        SeededAtUtc = now;
         var sessions = new List<TherapySession>
         {
             Session(patients[0].Id, now.AddDays(-1).AddHours(-2), 28, TherapyPlatform.Vr, "Mandala Emotions", "Named anxiety as a color wheel; chose cool tones for regulation."),

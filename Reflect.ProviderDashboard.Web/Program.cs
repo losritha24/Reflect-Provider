@@ -1,4 +1,8 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Reflect.ProviderDashboard.Domain.Interfaces;
@@ -10,23 +14,46 @@ using Reflect.ProviderDashboard.Web.Models.Identity;
 InMemoryDataStore.Seed();
 
 var builder = WebApplication.CreateBuilder(args);
+var demoEnabled = builder.Configuration.GetValue<bool>("Demo:Enabled");
+if (demoEnabled && (string.IsNullOrWhiteSpace(builder.Configuration["Demo:Email"])
+    || string.IsNullOrWhiteSpace(builder.Configuration["Demo:Password"])))
+    throw new InvalidOperationException("Demo mode requires Demo:Email and Demo:Password supplied through host secrets.");
+if (!builder.Environment.IsDevelopment())
+{
+    var hosts = (builder.Configuration["AllowedHosts"] ?? "").Split(';', StringSplitOptions.TrimEntries);
+    if (hosts.Any(host => string.IsNullOrWhiteSpace(host) || host.Contains('*')
+        || Uri.CheckHostName(host) == UriHostNameType.Unknown))
+        throw new InvalidOperationException("AllowedHosts must contain explicit hostnames or IP addresses separated by semicolons, without wildcards, schemes, paths, or ports.");
+}
+builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    // A bounded global budget is intentional for this single-instance competition demo.
+    options.AddFixedWindowLimiter("account", limiter =>
+    {
+        limiter.PermitLimit = 30;
+        limiter.Window = TimeSpan.FromMinutes(1);
+        limiter.QueueLimit = 0;
+    });
+});
+builder.Services.AddHealthChecks();
 
 var configuredAccountDatabasePath = builder.Configuration["AccountStore:Path"];
 var accountDatabasePath = Path.GetFullPath(
     configuredAccountDatabasePath ?? Path.Combine("App_Data", "provider-accounts.db"),
     builder.Environment.ContentRootPath);
 var accountDatabaseDirectory = Path.GetDirectoryName(accountDatabasePath)!;
-Directory.CreateDirectory(accountDatabaseDirectory);
-if (!OperatingSystem.IsWindows())
-{
-    File.SetUnixFileMode(
-        accountDatabaseDirectory,
+if (OperatingSystem.IsWindows())
+    Directory.CreateDirectory(accountDatabaseDirectory);
+else
+    Directory.CreateDirectory(accountDatabaseDirectory,
         UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
-}
 
 builder.Services.AddControllersWithViews(options =>
 {
     options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
 });
 builder.Services.AddRazorPages();
 
@@ -56,21 +83,33 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Account/Login";
     options.Cookie.Name = "ReflectProvider.Auth";
     options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
+        ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always;
     options.Cookie.SameSite = SameSiteMode.Lax;
-    options.SlidingExpiration = true;
-    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    options.SlidingExpiration = false;
+    options.ExpireTimeSpan = TimeSpan.FromHours(1);
 });
+
+builder.Services.AddMemoryCache();
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddSingleton<ITicketStore, InMemoryTicketStore>();
+builder.Services.AddOptions<CookieAuthenticationOptions>(IdentityConstants.ApplicationScheme)
+    .Configure<ITicketStore>((options, store) => options.SessionStore = store);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-builder.Services.AddSingleton<IPatientRepository, InMemoryPatientRepository>();
-builder.Services.AddSingleton<ITherapySessionRepository, InMemoryTherapySessionRepository>();
+builder.Services.AddScoped<IPatientRepository, InMemoryPatientRepository>();
+builder.Services.AddScoped<ITherapySessionRepository, InMemoryTherapySessionRepository>();
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy(ProviderAuthorization.PolicyName, policy =>
         policy.RequireRole(ProviderAuthorization.ProviderRole));
 });
+
+builder.Services.AddAntiforgery(options =>
+    options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
+        ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always);
 
 var app = builder.Build();
 
@@ -96,7 +135,29 @@ await using (var scope = app.Services.CreateAsyncScope())
                 $"Could not initialize the provider role: {string.Join(", ", roleResult.Errors.Select(error => error.Description))}");
         }
     }
+    if (demoEnabled)
+    {
+        var users = scope.ServiceProvider.GetRequiredService<UserManager<ProviderUser>>();
+        var email = builder.Configuration["Demo:Email"].Trim();
+        var user = await users.FindByEmailAsync(email);
+        if (user is null)
+        {
+            user = new ProviderUser { UserName = email, Email = email, DisplayName = "Competition reviewer (synthetic demo)" };
+            var created = await users.CreateAsync(user, builder.Configuration["Demo:Password"]);
+            if (!created.Succeeded) throw new InvalidOperationException("Demo account creation failed. Check email and password policy.");
+        }
+        if (!await users.IsInRoleAsync(user, ProviderAuthorization.ProviderRole))
+        {
+            var assigned = await users.AddToRoleAsync(user, ProviderAuthorization.ProviderRole);
+            if (!assigned.Succeeded) throw new InvalidOperationException("Demo role assignment failed.");
+        }
+        InMemoryDataStore.AssignPatientsToProvider(user.Id);
+    }
 }
+
+// Enable only behind a host that enforces HTTPS and blocks direct public access to this port.
+if (builder.Configuration.GetValue<bool>("Hosting:HttpsAtEdge"))
+    app.Use((context, next) => { context.Request.Scheme = "https"; return next(context); });
 
 if (!app.Environment.IsDevelopment())
 {
@@ -108,8 +169,11 @@ app.UseMiddleware<CspMiddleware>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapHealthChecks("/health/live").AllowAnonymous();
 
 app.MapControllerRoute(
     name: "areas",

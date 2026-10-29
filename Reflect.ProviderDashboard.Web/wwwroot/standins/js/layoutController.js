@@ -13,6 +13,43 @@ window.LayoutController = {
     var sidebarCollapseToggle = document.getElementById('sidebarCollapseToggle');
     var sidebarBackdrop = document.getElementById('sidebarBackdrop');
     var themeStorageKey = 'reflect-provider-theme';
+    var preferencesKey = 'reflect-provider-accessibility';
+    var returnFocus;
+    var preferences = {};
+    try {
+      preferences = JSON.parse(window.localStorage.getItem(preferencesKey)) || {};
+    } catch { }
+    function savePreferences() {
+      try {
+        window.localStorage.setItem(preferencesKey, JSON.stringify({
+          textSize: textSizeSelect?.value || '100%',
+          colorBlind: colorBlindToggle?.checked || false
+        }));
+      } catch { }
+    }
+    if (textSizeSelect && ['100%', '112.5%', '125%'].includes(preferences.textSize)) {
+      textSizeSelect.value = preferences.textSize;
+      root.style.fontSize = preferences.textSize;
+    }
+    if (colorBlindToggle && preferences.colorBlind === true) {
+      colorBlindToggle.checked = true;
+      root.setAttribute('data-a11y-colorblind', 'true');
+    }
+
+    document.querySelectorAll('[data-navigation-link]').forEach(function (link) {
+      link.addEventListener('keydown', function (event) {
+        if (event.key === ' ') {
+          event.preventDefault();
+          link.click();
+        }
+      });
+    });
+    document.querySelectorAll('[data-navigation-row]').forEach(function (row) {
+      row.addEventListener('click', function (event) {
+        if (event.target.closest('a, button, input, select, textarea')) return;
+        row.querySelector('[data-navigation-link]')?.click();
+      });
+    });
 
     function closeMobileMenu() {
       if (!appShell || !sidebarBackdrop || !mobileMenuToggle) return;
@@ -73,14 +110,43 @@ window.LayoutController = {
 
     if (a11yToggle && a11yPanel && a11yBackdrop) {
       a11yToggle.addEventListener('click', function () {
+        returnFocus = document.activeElement;
+        a11yPanel.inert = false;
+        a11yPanel.removeAttribute('aria-hidden');
+        a11yToggle.setAttribute('aria-expanded', 'true');
+        if (appShell) appShell.inert = true;
         a11yPanel.classList.add('open');
         a11yBackdrop.classList.add('open');
+        document.getElementById('a11yPanelClose')?.focus();
+      });
+      a11yPanel.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          closePanel();
+        }
+        if (event.key !== 'Tab') return;
+        var controls = Array.from(a11yPanel.querySelectorAll('button, select, input, a[href], [tabindex="0"]'))
+          .filter(function (control) { return !control.disabled && !control.hidden; });
+        var first = controls[0];
+        var last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
       });
       a11yBackdrop.addEventListener('click', closePanel);
       document.getElementById('a11yPanelClose')?.addEventListener('click', closePanel);
     }
 
     function closePanel() {
+      if (appShell) appShell.inert = false;
+      returnFocus?.focus();
+      a11yPanel.inert = true;
+      a11yPanel.setAttribute('aria-hidden', 'true');
+      a11yToggle.setAttribute('aria-expanded', 'false');
       a11yPanel.classList.remove('open');
       a11yBackdrop.classList.remove('open');
     }
@@ -88,6 +154,7 @@ window.LayoutController = {
     if (textSizeSelect) {
       textSizeSelect.addEventListener('change', function () {
         root.style.fontSize = textSizeSelect.value;
+        savePreferences();
       });
     }
 
@@ -98,6 +165,7 @@ window.LayoutController = {
         } else {
           root.removeAttribute('data-a11y-colorblind');
         }
+        savePreferences();
       });
     }
   }

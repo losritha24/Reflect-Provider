@@ -36,7 +36,10 @@ window.hideDisplayLoading = function () {
 
 window.renderBadge = function (color, text, iconClass) {
   var icon = iconClass ? '<span aria-hidden="true">●</span> ' : '';
-  return '<span class="badge bg-' + color + '-transparent text-' + color + '">' + icon + text + '</span>';
+  var safeColor = ['primary', 'info', 'success', 'warning', 'danger', 'secondary'].includes(color) ? color : 'secondary';
+  var span = document.createElement('span');
+  span.textContent = String(text ?? '');
+  return '<span class="badge bg-' + safeColor + '-transparent text-' + safeColor + '">' + icon + span.innerHTML + '</span>';
 };
 
 document.addEventListener('DOMContentLoaded', function () {

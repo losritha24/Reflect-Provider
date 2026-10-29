@@ -6,7 +6,9 @@ public class HomeController : Controller
 {
     public IActionResult Index()
     {
-        return RedirectToAction("Dashboard", "Home", new { area = "Provider" });
+        return User.Identity?.IsAuthenticated == true
+            ? RedirectToAction("Dashboard", "Home", new { area = "Provider" })
+            : View();
     }
 
     public IActionResult Error()

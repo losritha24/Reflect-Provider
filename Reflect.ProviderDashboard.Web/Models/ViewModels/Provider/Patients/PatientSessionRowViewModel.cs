@@ -6,6 +6,7 @@ namespace Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Patients;
 
 public class PatientSessionRowViewModel
 {
+    public DateTimeOffset StartedAtUtc { get; set; }
     public string SessionDateTimeDisplay { get; set; } = string.Empty;
     public int DurationMinutes { get; set; }
     public string PlatformLabel { get; set; } = string.Empty;
@@ -16,6 +17,7 @@ public class PatientSessionRowViewModel
     {
         return new PatientSessionRowViewModel
         {
+            StartedAtUtc = session.StartedAtUtc,
             SessionDateTimeDisplay = session.StartedAtUtc.ToUsDateTimeString(),
             DurationMinutes = session.DurationMinutes,
             PlatformLabel = session.Platform == TherapyPlatform.Vr ? "Reflect XR (VR)" : "Reflect Mobile",

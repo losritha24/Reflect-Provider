@@ -1,4 +1,5 @@
 @model Reflect.ProviderDashboard.Web.Models.ViewModels.Account.LoginViewModel
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment HostEnvironment
 @{
     Layout = "_LoginLayout";
     ViewData["Title"] = "Doctor sign in";
@@ -11,8 +12,8 @@
         </a>
         <div class="login-story-copy">
             <p class="eyebrow">Provider workspace</p>
-            <h1>Support that continues beyond the session.</h1>
-            <p>Review engagement across Reflect XR and Reflect Mobile in one secure provider workspace.</p>
+            <h1>A clearer next step.</h1>
+            <p>See what changed between sessions. Start a more informed conversation.</p>
         </div>
         <p class="login-story-footnote">Reflect Provider Dashboard · Prototype</p>
     </section>
@@ -21,7 +22,7 @@
         <div class="login-form-wrap">
             <p class="eyebrow">Welcome back</p>
             <h2 id="login-heading" class="page-title">Doctor sign in</h2>
-            <p class="text-muted login-intro">Sign in with your provider account to continue.</p>
+            <p class="text-muted login-intro">Use the demo credentials supplied by the presenter. All patient records are fictional.</p>
 
             <div class="login-demo-note" role="note">
                 <strong>Prototype access</strong>
@@ -53,7 +54,10 @@
             </form>
 
             <p class="login-security-note">Forgot your password? Contact your system administrator. This prototype does not send account recovery email.</p>
+            @if (HostEnvironment.IsDevelopment())
+            {
             <p class="login-account-link">New to the provider dashboard? <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Create an account</a></p>
+            }
         </div>
     </section>
 </main>
