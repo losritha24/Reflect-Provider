@@ -10,3 +10,33 @@ Reflect Provider/
 
 __pycache__/
 *.pyc
+
+# Local environment and developer credentials
+.env
+.env.*
+!.env.example
+!.env.sample
+.aws/
+.codex/
+.claude/
+.agents/
+*.pfx
+*.p12
+*.pem
+*.key
+appsettings.Local.json
+appsettings.*.Local.json
+
+# Local databases, including journals and write-ahead logs
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+
+# Local logs and test output
+*.log
+TestResults/
+playwright-report/
+test-results/
