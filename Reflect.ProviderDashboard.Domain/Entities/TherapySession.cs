@@ -10,4 +10,6 @@ public class TherapySession : BaseEntity
     public TherapyPlatform Platform { get; set; }
     public string ModuleName { get; set; } = string.Empty;
     public string ReflectionSummary { get; set; } = string.Empty;
+    public int? AffectScore { get; set; }
+    public Guid? DeviceId { get; set; }
 }

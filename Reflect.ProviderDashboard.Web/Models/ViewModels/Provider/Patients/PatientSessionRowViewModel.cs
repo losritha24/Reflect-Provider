@@ -12,6 +12,7 @@ public class PatientSessionRowViewModel
     public string PlatformLabel { get; set; } = string.Empty;
     public string ModuleName { get; set; } = string.Empty;
     public string ReflectionSummary { get; set; } = string.Empty;
+    public int? AffectScore { get; set; }
 
     public static PatientSessionRowViewModel FromEntity(TherapySession session)
     {
@@ -22,7 +23,8 @@ public class PatientSessionRowViewModel
             DurationMinutes = session.DurationMinutes,
             PlatformLabel = session.Platform == TherapyPlatform.Vr ? "Reflect XR (VR)" : "Reflect Mobile",
             ModuleName = session.ModuleName,
-            ReflectionSummary = session.ReflectionSummary
+            ReflectionSummary = session.ReflectionSummary,
+            AffectScore = session.AffectScore
         };
     }
 }

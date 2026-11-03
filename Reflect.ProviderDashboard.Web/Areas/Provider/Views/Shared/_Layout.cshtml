@@ -67,6 +67,9 @@
         <a class="nav-link @(controller == "Patients" ? "active" : "")" data-short="P" aria-label="Patients" href="@Url.Action("Index", "Patients", new { area = "Provider" })">
             <span class="nav-link-label">Patients</span>
         </a>
+        <a class="nav-link @(controller == "Devices" ? "active" : "")" data-short="V" aria-label="Devices" href="@Url.Action("Index", "Devices", new { area = "Provider" })">
+            <span class="nav-link-label">Devices</span>
+        </a>
         <div class="sidebar-footer">Persistent Technology · 2026</div>
     </nav>
     <div class="main-column">

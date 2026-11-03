@@ -1,0 +1,69 @@
+@model Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Devices.DeviceIndexViewModel
+@{
+    ViewData["Title"] = "Devices";
+}
+<div class="mb-4">
+    <p class="eyebrow">Composition</p>
+    <h1 class="page-title mb-1">Devices</h1>
+    <p class="text-muted fs-13 mb-0">Headsets and mobile installs are independent of a patient’s record. Moving a device to another caseload member does not delete it or rewrite past sessions.</p>
+</div>
+
+<div class="work-panel">
+    <p class="text-muted">Same rule as moving a fixture during a renovation: the device keeps its own lifecycle. Assignment is a relationship, not ownership.</p>
+</div>
+
+@foreach (var row in Model.Rows)
+{
+    <article class="work-panel device-card">
+        <div class="section-heading">
+            <div>
+                <h2>@row.Device.DisplayName</h2>
+                <p class="text-muted">@row.Device.Kind · @row.Device.HardwareId · Currently with @row.CurrentPatientName</p>
+            </div>
+        </div>
+        <form asp-action="Reassign" method="post" class="filter-toolbar">
+            <input type="hidden" name="id" value="@row.Device.Id" />
+            <div class="filter-field">
+                <label for="patient-@row.Device.Id">Assign to patient</label>
+                <select id="patient-@row.Device.Id" name="patientId">
+                    <option value="">Unassigned / storage</option>
+                    @foreach (var patient in Model.Patients)
+                    {
+                        if (row.Device.CurrentPatientId == patient.Id)
+                        {
+                            <option value="@patient.Id" selected>@patient.DisplayName</option>
+                        }
+                        else
+                        {
+                            <option value="@patient.Id">@patient.DisplayName</option>
+                        }
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Move device</button>
+        </form>
+        <details class="signal-explainer">
+            <summary>Assignment history</summary>
+            <table class="table">
+                <caption>Where this device has been assigned</caption>
+                <thead>
+                <tr>
+                    <th scope="col">Care context</th>
+                    <th scope="col">Assigned (ET)</th>
+                    <th scope="col">Unassigned (ET)</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var assignment in row.History)
+                {
+                    <tr>
+                        <td>@assignment.PatientName</td>
+                        <td>@assignment.AssignedDisplay</td>
+                        <td>@(assignment.UnassignedDisplay ?? "Current")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </details>
+    </article>
+}

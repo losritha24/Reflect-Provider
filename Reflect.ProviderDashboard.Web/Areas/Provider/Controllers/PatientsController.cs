@@ -14,11 +14,13 @@ public class PatientsController : Controller
 {
     private readonly IPatientRepository _patients;
     private readonly ITherapySessionRepository _sessions;
+    private readonly ICareDeviceRepository _devices;
 
-    public PatientsController(IPatientRepository patients, ITherapySessionRepository sessions)
+    public PatientsController(IPatientRepository patients, ITherapySessionRepository sessions, ICareDeviceRepository devices)
     {
         _patients = patients;
         _sessions = sessions;
+        _devices = devices;
     }
 
     public async Task<IActionResult> Index(CancellationToken ct, string search = null, EngagementTrend? trend = null, int page = 1)
@@ -35,7 +37,7 @@ public class PatientsController : Controller
         var vm = new PatientDetailsViewModel();
         try
         {
-            await vm.PrepareData(id, _patients, _sessions, ct);
+            await vm.PrepareData(id, _patients, _sessions, _devices, ct);
             return View(vm);
         }
         catch (EntityNotFoundException)

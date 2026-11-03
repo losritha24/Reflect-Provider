@@ -100,6 +100,16 @@ summary { cursor:pointer; }
 }
 
 .eyebrow { color:var(--link-color); }
+.affect-chart { width:100%; max-width:40rem; height:auto; display:block; margin:.5rem 0 1rem; }
+.affect-grid { stroke:var(--default-border); stroke-width:1; }
+.affect-axis { fill:var(--text-muted); font-size:11px; font-family:var(--default-font-family); }
+.affect-line { stroke:var(--twilight-indigo); stroke-width:2.5; stroke-linejoin:round; stroke-linecap:round; }
+.affect-baseline { stroke:var(--soft-coral); stroke-width:2; stroke-dasharray:5 4; }
+.affect-point { fill:var(--twilight-indigo); }
+.affect-point.is-deviation { fill:var(--soft-coral); stroke:var(--twilight-indigo); stroke-width:1.5; }
+.device-card .filter-toolbar { margin:0 0 1rem; padding:0; border:0; background:transparent; }
+[data-theme-mode="dark"] .affect-line { stroke:var(--off-white); }
+[data-theme-mode="dark"] .affect-point { fill:var(--off-white); }
 @media (max-width:600px) {
  .dashboard-workspace { display:flex; flex-direction:column; }
  .dashboard-workspace > .workspace-heading { order:0; }

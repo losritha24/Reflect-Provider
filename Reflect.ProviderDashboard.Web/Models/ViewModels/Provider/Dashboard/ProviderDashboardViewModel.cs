@@ -1,4 +1,5 @@
 using Reflect.ProviderDashboard.Domain.Interfaces;
+using Reflect.ProviderDashboard.Domain.Services;
 
 namespace Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Dashboard;
 
@@ -6,7 +7,9 @@ public class ProviderDashboardViewModel
 {
     public DateTimeOffset AsOfUtc { get; private set; }
     public List<AttentionRow> NeedsAttention { get; private set; } = new();
+    public List<AffectDeviationRow> AffectDeviations { get; private set; } = new();
     public record AttentionRow(Guid PatientId, string PatientName, int CurrentSessions, int PreviousSessions, DateTimeOffset? LastActivity);
+    public record AffectDeviationRow(Guid PatientId, string PatientName, int LatestScore, double PersonalBaseline, DateTimeOffset LastActivity);
     public int ActivePatientCount { get; set; }
     public int SessionsLast7Days { get; set; }
     public int VrSessionsLast7Days { get; set; }
@@ -47,5 +50,18 @@ public class ProviderDashboardViewModel
             .Take(8)
             .Select(s => RecentSessionRowViewModel.FromEntity(s, patientLookup.GetValueOrDefault(s.PatientId, "Unknown")))
             .ToList();
+
+        AffectDeviations = allPatients.Select(patient =>
+        {
+            var trajectory = EmotionalTrajectoryCalculator.Build(activityLookup[patient.Id]);
+            if (!trajectory.LatestDeviatesFromSelf || trajectory.LatestScore is null || trajectory.LatestPersonalBaseline is null)
+                return null;
+            var last = trajectory.Points[^1];
+            return new AffectDeviationRow(patient.Id, patient.DisplayName, last.Score, trajectory.LatestPersonalBaseline.Value, last.StartedAtUtc);
+        }).Where(row => row is not null)
+          .Select(row => row!)
+          .OrderBy(row => row.LatestScore - row.PersonalBaseline)
+          .ThenBy(row => row.PatientName)
+          .ToList();
     }
 }

@@ -52,6 +52,76 @@
             <p class="mb-0">@Model.NotesSummary</p>
         </div>
     </div>
+    <section class="work-panel" aria-labelledby="trajectory-heading">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Compared with self</p>
+                <h2 id="trajectory-heading">Emotional trajectory</h2>
+                <p class="text-muted">Session affect markers (1–10) against this patient’s rolling baseline. Not a population norm.</p>
+            </div>
+            @if (Model.Trajectory.LatestDeviatesFromSelf)
+            {
+                <span class="badge bg-warning-transparent">Below personal baseline</span>
+            }
+        </div>
+        @if (Model.Trajectory.Points.Count == 0)
+        {
+            <p class="empty-state">No affect markers recorded yet.</p>
+        }
+        else
+        {
+            @Html.Raw(Model.TrajectoryChartSvg)
+            <details class="signal-explainer">
+                <summary>View data table</summary>
+                <table class="table">
+                    <caption>Affect markers for @Model.DisplayName</caption>
+                    <thead>
+                    <tr>
+                        <th scope="col">Session (ET)</th>
+                        <th scope="col">Affect</th>
+                        <th scope="col">Personal baseline</th>
+                        <th scope="col">Usual range</th>
+                        <th scope="col">Vs self</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var point in Model.Trajectory.Points.Reverse())
+                    {
+                        <tr>
+                            <td>@point.StartedAtUtc.ToUsDateTimeString()</td>
+                            <td>@point.Score</td>
+                            <td>@(point.RollingBaseline?.ToString("0.0") ?? "Building")</td>
+                            <td>@(point.UsualLow is null ? "—" : $"{point.UsualLow:0.0}–{point.UsualHigh:0.0}")</td>
+                            <td>@(point.DeviatesBelowSelf ? "Below usual range" : "Within personal range")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </details>
+        }
+    </section>
+    <section class="work-panel" aria-labelledby="devices-heading">
+        <div class="section-heading">
+            <div>
+                <h2 id="devices-heading">Assigned devices</h2>
+                <p class="text-muted">Hardware can be moved to another patient without deleting it or rewriting this record.</p>
+            </div>
+            <a class="btn btn-outline-secondary" asp-controller="Devices" asp-action="Index">Manage devices</a>
+        </div>
+        @if (Model.Devices.Count == 0)
+        {
+            <p class="empty-state">No headset or mobile install is currently assigned here.</p>
+        }
+        else
+        {
+            <ul>
+            @foreach (var device in Model.Devices)
+            {
+                <li>@device.DisplayName · @device.HardwareId</li>
+            }
+            </ul>
+        }
+    </section>
 </div>
 
 <div id="panel-sessions" role="tabpanel" aria-labelledby="tab-sessions" tabindex="0" hidden>
@@ -62,6 +132,10 @@
         {
             <li><time datetime="@session.StartedAtUtc.ToString("O")">@session.SessionDateTimeDisplay ET</time><article>
                 <span class="badge bg-info-transparent">@session.PlatformLabel · @session.DurationMinutes min</span>
+                @if (session.AffectScore.HasValue)
+                {
+                    <span class="badge bg-primary-transparent">Affect @session.AffectScore / 10</span>
+                }
                 <h3>@session.ModuleName</h3><p>@session.ReflectionSummary</p>
                 <details><summary>Source details</summary><p class="text-muted">Synthetic demo seed · @session.StartedAtUtc.ToString("yyyy-MM-dd HH:mm 'UTC'") · No live synchronization</p></details>
             </article></li>

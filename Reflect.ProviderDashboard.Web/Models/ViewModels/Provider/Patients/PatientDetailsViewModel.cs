@@ -1,4 +1,7 @@
+using Reflect.ProviderDashboard.Domain.Entities;
 using Reflect.ProviderDashboard.Domain.Interfaces;
+using Reflect.ProviderDashboard.Domain.Services;
+using Reflect.ProviderDashboard.Web.Services;
 
 namespace Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Patients;
 
@@ -16,11 +19,15 @@ public class PatientDetailsViewModel
     public int MobileSessionCount { get; set; }
     public int TotalMinutes { get; set; }
     public List<PatientSessionRowViewModel> Sessions { get; set; } = new();
+    public EmotionalTrajectory Trajectory { get; set; } = new(Array.Empty<AffectPoint>(), false, null, null);
+    public string TrajectoryChartSvg { get; set; } = string.Empty;
+    public List<CareDevice> Devices { get; set; } = new();
 
     public async Task PrepareData(
         Guid patientId,
         IPatientRepository patients,
         ITherapySessionRepository sessions,
+        ICareDeviceRepository devices,
         CancellationToken ct)
     {
         var patient = await patients.GetByIdAsync(patientId, ct);
@@ -43,5 +50,8 @@ public class PatientDetailsViewModel
         MobileSessionCount = patientSessions.Count(s => s.Platform == Domain.Enums.TherapyPlatform.Mobile);
         TotalMinutes = patientSessions.Sum(s => s.DurationMinutes);
         Sessions = patientSessions.Select(PatientSessionRowViewModel.FromEntity).ToList();
+        Trajectory = EmotionalTrajectoryCalculator.Build(patientSessions);
+        TrajectoryChartSvg = AffectChartSvg.From(Trajectory);
+        Devices = (await devices.GetByPatientIdAsync(patientId, ct)).ToList();
     }
 }

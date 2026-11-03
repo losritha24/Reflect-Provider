@@ -100,6 +100,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IPatientRepository, InMemoryPatientRepository>();
 builder.Services.AddScoped<ITherapySessionRepository, InMemoryTherapySessionRepository>();
+builder.Services.AddScoped<ICareDeviceRepository, InMemoryCareDeviceRepository>();
 
 builder.Services.AddAuthorization(options =>
 {

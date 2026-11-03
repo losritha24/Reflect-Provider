@@ -36,7 +36,8 @@ try
     throw new Exception("Cancellation was ignored");
 }
 catch (OperationCanceledException) { Console.WriteLine("PASS: Search honors cancellation"); }
-var controller = new PatientsController(patients, sessions);
+var devices = new InMemoryCareDeviceRepository(patients);
+var controller = new PatientsController(patients, sessions, devices);
 Check(await controller.Details(Guid.NewGuid(), ct) is NotFoundResult, "Unknown patient returns 404");
 Check(await controller.Details(Guid.Empty, ct) is NotFoundResult, "Missing patient ID returns 404");
 controller.ModelState.AddModelError("id", "Invalid GUID");
@@ -72,6 +73,34 @@ await dashboard.PrepareData(patients, sessions, ct);
 Check(dashboard.NeedsAttention.Count == 1 && dashboard.NeedsAttention[0].PatientName == "Sam Patel"
     && dashboard.NeedsAttention[0].CurrentSessions == 0 && dashboard.NeedsAttention[0].PreviousSessions > 0,
     "Attention queue reflects a real decrease in the seeded session windows");
+Check(dashboard.AffectDeviations.Any(row => row.PatientName == "Casey Nguyen" && row.LatestScore < row.PersonalBaseline),
+    "Affect flags use each patient's own baseline rather than a caseload average");
+
+var casey = (await patients.SearchAsync("Casey", null, 1, 10, ct)).Items[0];
+var caseySessions = await sessions.GetByPatientIdAsync(casey.Id, ct);
+var caseyTrajectory = Reflect.ProviderDashboard.Domain.Services.EmotionalTrajectoryCalculator.Build(caseySessions);
+Check(caseyTrajectory.LatestDeviatesFromSelf && caseyTrajectory.Points.Count(point => point.DeviatesBelowSelf) >= 1,
+    "Casey Nguyen's latest affect is below their personal rolling baseline");
+
+var otherPatientMean = caseySessions.Average(session => session.AffectScore!.Value);
+var taylor = (await patients.SearchAsync("Taylor", null, 1, 10, ct)).Items[0];
+var taylorTrajectory = Reflect.ProviderDashboard.Domain.Services.EmotionalTrajectoryCalculator.Build(
+    await sessions.GetByPatientIdAsync(taylor.Id, ct));
+Check(!taylorTrajectory.LatestDeviatesFromSelf,
+    "A high personal baseline does not flag a patient whose latest score stays near their own range");
+Check(taylorTrajectory.LatestScore != otherPatientMean,
+    "Trajectory calculation does not substitute another patient's mean");
+
+var alex = (await patients.SearchAsync("Alex", null, 1, 10, ct)).Items[0];
+var unassignedHeadset = InMemoryDataStore.Devices.Single(device => device.Id == InMemoryDataStore.HeadsetUnassignedId);
+Check(unassignedHeadset.CurrentPatientId is null, "XR-090 remains a device after leaving Alex's assignment");
+await devices.ReassignAsync(unassignedHeadset.Id, casey.Id, ct);
+Check(unassignedHeadset.CurrentPatientId == casey.Id, "A device can move to another patient without being recreated");
+Check((await sessions.GetByPatientIdAsync(alex.Id, ct)).Any(session => session.DeviceId == InMemoryDataStore.HeadsetUnassignedId),
+    "Past sessions keep the original device reference after reassignment");
+Check((await devices.GetHistoryAsync(unassignedHeadset.Id, ct)).Count >= 2,
+    "Reassignment appends history instead of binding the device to one patient lifecycle");
+await devices.ReassignAsync(unassignedHeadset.Id, null, ct);
 
 var otherSessions = new InMemoryTherapySessionRepository(otherProvider);
 Check((await otherSessions.GetAllAsync(ct)).Count == 0 && await otherSessions.CountSinceAsync(DateTimeOffset.MinValue, ct) == 0,
