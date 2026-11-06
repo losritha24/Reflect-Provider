@@ -3,7 +3,9 @@ using Reflect.ProviderDashboard.Domain.Enums;
 using Reflect.ProviderDashboard.Domain.Exceptions;
 using Reflect.ProviderDashboard.Domain.Interfaces;
 using Reflect.ProviderDashboard.Web.Areas.Provider.Controllers;
+using Reflect.ProviderDashboard.Web.Controllers;
 using Reflect.ProviderDashboard.Web.Infrastructure;
+using Reflect.ProviderDashboard.Web.Models.Integration;
 using Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Patients;
 using Reflect.ProviderDashboard.Web.Services;
 
@@ -68,6 +70,15 @@ catch (EntityNotFoundException)
     Console.WriteLine("PASS: Unassigned patient access is denied");
 }
 
+var graph = new Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Graph.KnowledgeGraphViewModel();
+await graph.PrepareData(patients, sessions, devices, ct);
+Check(graph.PatientCount == 5 && graph.Nodes.Count(node => node.Kind == "patient") == 5,
+    "Knowledge graph includes every assigned patient");
+Check(graph.Edges.Any(edge => edge.To == "attention" || edge.Label.Contains("quieter", StringComparison.OrdinalIgnoreCase)),
+    "Knowledge graph links quieter patients to the attention signal");
+Check(graph.Svg.Contains("Caseload activity knowledge graph", StringComparison.Ordinal),
+    "Knowledge graph renders an accessible SVG");
+
 var dashboard = new Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Dashboard.ProviderDashboardViewModel();
 await dashboard.PrepareData(patients, sessions, ct);
 Check(dashboard.NeedsAttention.Count == 1 && dashboard.NeedsAttention[0].PatientName == "Sam Patel"
@@ -118,6 +129,50 @@ Check((await anonymousWithClaim.GetAllAsync(ct)).Count == 0,
 
 Check((await new InMemoryPatientRepository(new TestCurrentUserService(null)).GetAllAsync(ct)).Count == 0,
     "A missing provider ID fails closed");
+
+var clock = new CompanyClock("America/New_York", "ET");
+var offsetStamp = DateTimeOffset.Parse("2026-11-06T16:00:00-05:00");
+Check(clock.ToUtc(offsetStamp).Offset == TimeSpan.Zero
+    && clock.ToUtc(offsetStamp).UtcDateTime == new DateTime(2026, 11, 6, 21, 0, 0, DateTimeKind.Utc),
+    "Ingest timestamps are normalized to UTC for RDS timestamptz");
+Check(clock.FormatDateTime(offsetStamp).Contains("4:00 PM", StringComparison.Ordinal)
+    && clock.Abbreviation == "ET",
+    "Company display uses the configured IANA zone rather than the browser clock");
+
+Check(!IngestController.KeyMatches("", "secret") && !IngestController.KeyMatches("secret", "secre"),
+    "Integration keys reject empty and length-mismatched values");
+Check(IngestController.KeyMatches("reflect-demo-ingest-key", "reflect-demo-ingest-key"),
+    "A matching integration key is accepted");
+
+var ingest = new SessionIngestService(clock);
+var beforeCount = InMemoryDataStore.Sessions.Count;
+var ingested = ingest.Ingest(new SessionIngestRequest
+{
+    ExternalPatientId = "PT-10085",
+    StartedAt = offsetStamp,
+    DurationMinutes = 12,
+    Platform = "Mobile",
+    ModuleName = "Ingest Check",
+    ReflectionSummary = "UTC normalize",
+    AffectScore = 6,
+    HardwareId = "MOB-7740"
+});
+Check(ingested.StartedAtUtc.Offset == TimeSpan.Zero && ingested.StartedAtUtc.Hour == 21,
+    "Accepted ingest rows are stored in UTC");
+Check(InMemoryDataStore.Sessions.Count == beforeCount + 1, "Ingest appends a session without rewriting history");
+try
+{
+    ingest.Ingest(new SessionIngestRequest
+    {
+        ExternalPatientId = "NO-SUCH",
+        StartedAt = offsetStamp,
+        DurationMinutes = 10,
+        Platform = "Mobile",
+        ModuleName = "Missing"
+    });
+    throw new Exception("Unknown patient ingest was allowed");
+}
+catch (EntityNotFoundException) { Console.WriteLine("PASS: Unknown patient ingest is rejected"); }
 Check((await new InMemoryPatientRepository(new TestCurrentUserService(currentUser.UserId, true, false)).GetAllAsync(ct)).Count == 0,
     "An authenticated identity without the provider role fails closed");
 

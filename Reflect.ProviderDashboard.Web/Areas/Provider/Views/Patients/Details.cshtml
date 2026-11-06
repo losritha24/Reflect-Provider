@@ -126,11 +126,11 @@
 
 <div id="panel-sessions" role="tabpanel" aria-labelledby="tab-sessions" tabindex="0" hidden>
     <section class="work-panel" aria-labelledby="timeline-heading">
-        <div class="section-heading"><div><h2 id="timeline-heading">The story between sessions</h2><p class="text-muted">Newest first · Eastern Time · Synthetic session records</p></div><span class="badge bg-info-transparent">@Model.TotalSessions sessions</span></div>
+        <div class="section-heading"><div><h2 id="timeline-heading">The story between sessions</h2><p class="text-muted">Newest first · @Clock.Abbreviation (@Clock.IanaId) · stored UTC · Synthetic session records</p></div><span class="badge bg-info-transparent">@Model.TotalSessions sessions</span></div>
         <ol class="patient-timeline">
         @foreach (var session in Model.Sessions)
         {
-            <li><time datetime="@session.StartedAtUtc.ToString("O")">@session.SessionDateTimeDisplay ET</time><article>
+            <li><time datetime="@session.StartedAtUtc.ToUniversalTime().ToString("O")">@session.SessionDateTimeDisplay @Clock.Abbreviation</time><article>
                 <span class="badge bg-info-transparent">@session.PlatformLabel · @session.DurationMinutes min</span>
                 @if (session.AffectScore.HasValue)
                 {

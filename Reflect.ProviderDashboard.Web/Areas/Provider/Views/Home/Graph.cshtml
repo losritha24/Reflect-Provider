@@ -1,0 +1,61 @@
+@model Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Graph.KnowledgeGraphViewModel
+@{
+    ViewData["Title"] = "Activity graph";
+}
+<div class="mb-4">
+    <p class="eyebrow">Reporting home</p>
+    <h1 class="page-title mb-1">Caseload activity</h1>
+    <p class="text-muted fs-13 mb-0">A knowledge graph of everyone in your caseload, their XR and mobile sessions, assigned devices, and follow-up signals. Click a person to open their record, or use the sidebar to go anywhere else.</p>
+</div>
+
+<div class="summary-strip" aria-label="Graph summary">
+    <div><span class="stat-value">@Model.PatientCount</span><span>People</span></div>
+    <div><span class="stat-value">@Model.SessionCount</span><span>Sessions</span></div>
+    <div><span class="stat-value">@Model.DeviceCount</span><span>Assigned devices</span></div>
+    <div class="snapshot-note"><span class="status-dot" aria-hidden="true"></span><span>Coral marks a change from that person’s usual pattern.<br /><small>Not a diagnosis · Synthetic records</small></span></div>
+</div>
+
+<section class="work-panel knowledge-graph-panel" aria-labelledby="graph-heading">
+    <div class="section-heading">
+        <h2 id="graph-heading">Knowledge graph</h2>
+        <a class="btn btn-outline-secondary" asp-action="Dashboard">Open dashboard</a>
+    </div>
+    <div class="knowledge-graph-frame">
+        @Html.Raw(Model.Svg)
+    </div>
+    <ul class="kg-legend">
+        <li><span class="kg-swatch kg-swatch-patient"></span> Patient</li>
+        <li><span class="kg-swatch kg-swatch-platform"></span> Experience</li>
+        <li><span class="kg-swatch kg-swatch-device"></span> Device</li>
+        <li><span class="kg-swatch kg-swatch-alert"></span> Follow-up signal</li>
+    </ul>
+</section>
+
+<section class="work-panel" aria-labelledby="graph-table-heading">
+    <h2 id="graph-table-heading">Relationships</h2>
+    <p class="text-muted">Same graph as a table. Times and scores stay on each patient record.</p>
+    <div class="table-responsive">
+        <table class="table">
+            <caption>How caseload activity is connected</caption>
+            <thead>
+            <tr>
+                <th scope="col">From</th>
+                <th scope="col">Relation</th>
+                <th scope="col">To</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var edge in Model.Edges)
+            {
+                var from = Model.Nodes.First(node => node.Id == edge.From);
+                var to = Model.Nodes.First(node => node.Id == edge.To);
+                <tr>
+                    <td>@from.Label</td>
+                    <td>@(edge.Alert ? $"{edge.Label} · review" : edge.Label)</td>
+                    <td>@to.Label</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -6,7 +6,7 @@ namespace Reflect.ProviderDashboard.Web.Infrastructure;
 public static class InMemoryDataStore
 {
     public static IReadOnlyList<Patient> Patients { get; private set; } = new List<Patient>();
-    public static IReadOnlyList<TherapySession> Sessions { get; private set; } = new List<TherapySession>();
+    public static List<TherapySession> Sessions { get; private set; } = new();
     public static List<CareDevice> Devices { get; private set; } = new();
     public static List<DeviceAssignment> DeviceAssignments { get; private set; } = new();
 
@@ -159,7 +159,7 @@ public static class InMemoryDataStore
         return new TherapySession
         {
             PatientId = patientId,
-            StartedAtUtc = startedAtUtc,
+            StartedAtUtc = startedAtUtc.ToUniversalTime(),
             DurationMinutes = durationMinutes,
             Platform = platform,
             ModuleName = moduleName,
@@ -175,8 +175,8 @@ public static class InMemoryDataStore
         {
             DeviceId = deviceId,
             PatientId = patientId,
-            AssignedAtUtc = assignedAt,
-            UnassignedAtUtc = unassignedAt
+            AssignedAtUtc = assignedAt.ToUniversalTime(),
+            UnassignedAtUtc = unassignedAt?.ToUniversalTime()
         };
     }
 }

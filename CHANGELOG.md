@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-06
+
+- After sign-in, clinicians land on a caseload knowledge graph of patients, sessions, devices, and follow-up signals.
+- Normalized timestamps to UTC for RDS PostgreSQL; display uses the configurable company time zone.
+- Added signed session ingest (`POST /api/v1/ingest/sessions`) and a Trust page covering HIPAA, CIA, TLS, and upload options.
+
 ## 2026-10-29
 
 - Added calculated Needs Attention signals, comparison windows, and synthetic freshness.

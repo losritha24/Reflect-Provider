@@ -2,7 +2,7 @@
     var title = ViewData["Title"] as string ?? "Provider Dashboard";
     var area = ViewContext.RouteData.Values["area"]?.ToString() ?? "Provider";
     var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Home";
-    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "Dashboard";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "Graph";
 }
 <!DOCTYPE html>
 <html lang="en" data-theme-mode="light">
@@ -52,7 +52,7 @@
 
 <div class="app-shell" id="appShell">
     <nav class="sidebar" id="providerSidebar" aria-label="Provider navigation">
-        <a class="sidebar-brand" href="@Url.Action("Dashboard", "Home", new { area = "Provider" })">
+        <a class="sidebar-brand" href="@Url.Action("Graph", "Home", new { area = "Provider" })">
             <img src="~/brand/logos/logo-mark-soft-coral.svg" alt="Reflect XR" />
             <span class="sidebar-brand-copy">
                 <span class="sidebar-brand-name">Reflect XR</span>
@@ -60,8 +60,14 @@
             </span>
         </a>
         <div class="category">Overview</div>
-        <a class="nav-link @(controller == "Home" ? "active" : "")" data-short="D" aria-label="Dashboard" href="@Url.Action("Dashboard", "Home", new { area = "Provider" })">
+        <a class="nav-link @(controller == "Home" && action == "Graph" ? "active" : "")" data-short="G" aria-label="Activity graph" href="@Url.Action("Graph", "Home", new { area = "Provider" })">
+            <span class="nav-link-label">Graph</span>
+        </a>
+        <a class="nav-link @(controller == "Home" && action == "Dashboard" ? "active" : "")" data-short="D" aria-label="Dashboard" href="@Url.Action("Dashboard", "Home", new { area = "Provider" })">
             <span class="nav-link-label">Dashboard</span>
+        </a>
+        <a class="nav-link @(controller == "Home" && action == "Trust" ? "active" : "")" data-short="T" aria-label="Trust and connectivity" href="@Url.Action("Trust", "Home", new { area = "Provider" })">
+            <span class="nav-link-label">Trust</span>
         </a>
         <div class="category">Caseload</div>
         <a class="nav-link @(controller == "Patients" ? "active" : "")" data-short="P" aria-label="Patients" href="@Url.Action("Index", "Patients", new { area = "Provider" })">
@@ -99,6 +105,7 @@
         <main class="page-content" id="main-content" tabindex="-1">
             @RenderBody()
         </main>
+        <p class="legal-fineprint">Designed around HIPAA privacy and security safeguards (TLS, unique clinician sign-in, assigned-caseload access). Records here are fictional; this demo is not a HIPAA-covered production system.</p>
     </div>
 </div>
 

@@ -26,9 +26,13 @@ Account creation is enabled only in Development. Sign-in is also available in Pr
 
 | Screen | URL |
 |--------|-----|
+| Activity knowledge graph (post-login home) | `/Provider/Home/Graph` |
 | Provider dashboard | `/Provider/Home/Dashboard` |
+| Trust, time zones, HIPAA, ingest | `/Provider/Home/Trust` |
 | Patient list | `/Provider/Patients/Index` |
 | Patient detail (overview + sessions) | `/Provider/Patients/Details/{patientId}` |
+| Devices | `/Provider/Devices/Index` |
+| Session ingest (API key) | `POST /api/v1/ingest/sessions` |
 
 Example patient: `aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3` (Sam Patel — declining engagement).
 
@@ -36,8 +40,9 @@ Example patient: `aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3` (Sam Patel — declining
 
 **Production (Challenge X):**
 
-- Reflect XR / Reflect Mobile → Firebase Analytics → BigQuery
-- Secure clinical API/backend (HIPAA) → Provider Dashboard
+- Reflect XR / Reflect Mobile → signed ingest (HTTPS JSON, encrypted batch, or future FHIR)
+- Amazon RDS for PostgreSQL with `timestamptz` in UTC; dashboard displays the company time zone
+- Secure clinical API (HIPAA boundary, TLS certificate) → Provider Dashboard
 - Separate **product analytics** from **clinical/RTM documentation** layers
 
 **This prototype:**

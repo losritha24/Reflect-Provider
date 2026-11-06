@@ -96,11 +96,14 @@ builder.Services.AddSingleton<ITicketStore, InMemoryTicketStore>();
 builder.Services.AddOptions<CookieAuthenticationOptions>(IdentityConstants.ApplicationScheme)
     .Configure<ITicketStore>((options, store) => options.SessionStore = store);
 
+builder.Services.Configure<CompanyOptions>(builder.Configuration.GetSection(CompanyOptions.SectionName));
+builder.Services.AddSingleton<ICompanyClock, CompanyClock>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IPatientRepository, InMemoryPatientRepository>();
 builder.Services.AddScoped<ITherapySessionRepository, InMemoryTherapySessionRepository>();
 builder.Services.AddScoped<ICareDeviceRepository, InMemoryCareDeviceRepository>();
+builder.Services.AddScoped<SessionIngestService>();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -175,10 +178,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapHealthChecks("/health/live").AllowAnonymous();
+app.MapControllers();
 
 app.MapControllerRoute(
     name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Dashboard}/{id?}");
+    pattern: "{area:exists}/{controller=Home}/{action=Graph}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

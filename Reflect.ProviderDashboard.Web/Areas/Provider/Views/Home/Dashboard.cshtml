@@ -13,7 +13,7 @@
     <div><span class="stat-value">@Model.ActivePatientCount</span><span>Assigned patients</span></div>
     <div><span class="stat-value">@Model.SessionsLast7Days</span><span>Sessions · last 7 days</span></div>
     <div><span class="stat-value">@Model.NeedsAttention.Count</span><span>Follow-up signals</span></div>
-    <div class="snapshot-note"><span class="status-dot" aria-hidden="true"></span><span>Synthetic snapshot<br /><small>Generated @Reflect.ProviderDashboard.Web.Infrastructure.InMemoryDataStore.SeededAtUtc.ToUsDateTimeString() ET</small></span></div>
+    <div class="snapshot-note"><span class="status-dot" aria-hidden="true"></span><span>Synthetic snapshot<br /><small>Generated @Reflect.ProviderDashboard.Web.Infrastructure.InMemoryDataStore.SeededAtUtc.ToUsDateTimeString() @Clock.Abbreviation</small></span></div>
 </div>
 <div class="workspace-grid">
 <section class="work-panel" aria-labelledby="attention-heading">
@@ -28,7 +28,7 @@
         <article class="signal-card">
             <div class="signal-person"><span class="patient-avatar" aria-hidden="true">@signal.PatientName.Substring(0, 1)</span><div>
                 <a class="patient-name" asp-controller="Patients" asp-action="Details" asp-route-id="@signal.PatientId">@signal.PatientName</a>
-                <p class="text-muted">Last activity: @(signal.LastActivity?.ToUsDateTimeString() ?? "None recorded") ET</p>
+                <p class="text-muted">Last activity: @(signal.LastActivity?.ToUsDateTimeString() ?? "None recorded") @Clock.Abbreviation</p>
             </div></div>
             <div class="signal-comparison"><div><strong>@signal.PreviousSessions</strong><span>Previous 7 days</span></div><span aria-hidden="true">→</span><div><strong>@signal.CurrentSessions</strong><span>Last 7 days</span></div><span class="badge bg-warning-transparent">Fewer sessions</span></div>
             <p>Check in about barriers to participation and review the latest reflection.</p>
@@ -36,7 +36,7 @@
         </article>
     }
     <details class="signal-explainer"><summary>Why these signals?</summary><p>We compare session counts in consecutive seven-day windows. A lower count recommends review; it does not indicate a diagnosis.</p>
-        <p class="text-muted">UTC windows: @Model.AsOfUtc.AddDays(-7).ToString("MMM d, HH:mm")–@Model.AsOfUtc.ToString("MMM d, HH:mm"), compared with @Model.AsOfUtc.AddDays(-14).ToString("MMM d, HH:mm")–@Model.AsOfUtc.AddDays(-7).ToString("MMM d, HH:mm"). No live synchronization.</p></details>
+        <p class="text-muted">Windows are stored and compared in UTC, then shown in @Clock.Abbreviation (@Clock.IanaId). UTC: @Model.AsOfUtc.AddDays(-7).UtcDateTime.ToString("MMM d, HH:mm")–@Model.AsOfUtc.UtcDateTime.ToString("MMM d, HH:mm"), compared with @Model.AsOfUtc.AddDays(-14).UtcDateTime.ToString("MMM d, HH:mm")–@Model.AsOfUtc.AddDays(-7).UtcDateTime.ToString("MMM d, HH:mm"). No live synchronization.</p></details>
 </section>
 <aside class="work-panel platform-panel" aria-labelledby="platform-heading">
     <p class="eyebrow">Across both experiences</p><h2 id="platform-heading">One connected view.</h2><p class="text-muted">Sessions across immersive and mobile experiences in the last seven days.</p>
@@ -58,7 +58,7 @@
         <article class="signal-card">
             <div class="signal-person"><span class="patient-avatar" aria-hidden="true">@row.PatientName.Substring(0, 1)</span><div>
                 <a class="patient-name" asp-controller="Patients" asp-action="Details" asp-route-id="@row.PatientId">@row.PatientName</a>
-                <p class="text-muted">Latest marker @row.LastActivity.ToUsDateTimeString() ET</p>
+                <p class="text-muted">Latest marker @row.LastActivity.ToUsDateTimeString() @Clock.Abbreviation</p>
             </div></div>
             <div class="signal-comparison"><div><strong>@row.PersonalBaseline.ToString("0.0")</strong><span>Personal baseline</span></div><span aria-hidden="true">→</span><div><strong>@row.LatestScore</strong><span>Latest affect (1–10)</span></div><span class="badge bg-warning-transparent">Below self</span></div>
             <p>This is a change from their own recent range. It is not a diagnosis and is not compared with other patients.</p>
@@ -70,7 +70,7 @@
     </details>
 </section>
 <section class="work-panel recent-panel" aria-labelledby="recent-heading">
-    <div class="section-heading"><div><h2 id="recent-heading">Recent activity</h2><p class="text-muted">The latest sessions in your assigned caseload. Times shown in ET.</p></div><a asp-controller="Patients" asp-action="Index">All patients</a></div>
+    <div class="section-heading"><div><h2 id="recent-heading">Recent activity</h2><p class="text-muted">The latest sessions in your assigned caseload. Times shown in @Clock.Abbreviation (stored UTC).</p></div><a asp-controller="Patients" asp-action="Index">All patients</a></div>
     <div class="activity-feed">
     @foreach (var row in Model.RecentSessions)
     {
