@@ -31,6 +31,7 @@ Account creation is enabled only in Development. Sign-in is also available in Pr
 | Trust, time zones, HIPAA, ingest | `/Provider/Home/Trust` |
 | Patient list | `/Provider/Patients/Index` |
 | Patient detail (overview + sessions) | `/Provider/Patients/Details/{patientId}` |
+| Reports (print and PDF) | `/Provider/Reports/Index` |
 | Devices | `/Provider/Devices/Index` |
 | Session ingest (API key) | `POST /api/v1/ingest/sessions` |
 

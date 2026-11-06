@@ -15,9 +15,10 @@ public sealed class StubChatResponder : IChatResponder
         var reply =
             text.Contains("engage") ? "Engagement trends compare recent sessions with earlier ones. Open Patients and use the engagement filter to narrow the list."
             : text.Contains("time") || text.Contains("zone") ? "Timestamps are stored in UTC and shown in Eastern Time for this demo."
+            : text.Contains("report") || text.Contains("print") || text.Contains("pdf") ? "Open Reports in the sidebar. Choose a patient and date range, then print the preview or download a PDF."
             : text.Contains("patient") ? "Open Patients in the sidebar to search the caseload, then select a name for the session timeline."
             : text.Contains("session") ? "Sessions combine mobile and XR usage. The dashboard shows the last seven days by platform."
-            : "This assistant is a prototype and is not connected to a language model yet. Try asking about patients, sessions, engagement or time zones.";
+            : "This assistant is a prototype and is not connected to a language model yet. Try asking about patients, sessions, engagement, reports or time zones.";
         return Task.FromResult(reply);
     }
 }

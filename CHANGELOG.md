@@ -2,6 +2,8 @@
 
 ## 2026-11-06
 
+- Seeded sessions now use official Reflect Mobile and Reflect XR Home module titles (Breathing Mandala, Color Psychology, Flow, and so on).
+- Added a Reports page: pick a patient and date range, preview name / period / main module, then print or download a PDF.
 - After sign-in, clinicians land on a caseload knowledge graph of patients, sessions, devices, and follow-up signals.
 - Normalized timestamps to UTC for RDS PostgreSQL; display uses the configurable company time zone.
 - Added signed session ingest (`POST /api/v1/ingest/sessions`) and a Trust page covering HIPAA, CIA, TLS, and upload options.

@@ -9,4 +9,5 @@ public interface ICompanyClock
     string FormatDate(DateTimeOffset value);
     string FormatDateTime(DateTimeOffset value);
     string ZoneAbbreviation(DateTimeOffset value);
+    DateTimeOffset StartOfCompanyDay(DateOnly date);
 }

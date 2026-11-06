@@ -5,7 +5,7 @@
     const steps = [
         ['Welcome', 'This dashboard shows how your clients use Reflect on mobile and in XR. All records here are synthetic.'],
         ['Dashboard', 'Start here. The follow-up queue explains why each person needs attention, and recent activity lists the latest sessions.'],
-        ['Patients', 'Search your caseload, filter by engagement trend, then open a person to see their session timeline. Back returns you to the same list.'],
+        ['Patients', 'Search your caseload, filter by engagement trend, then open a person to see their session timeline. Reports lets you pick a date range, then print or download a PDF.'],
         ['Assistant', 'Ask how to use the dashboard. It is a prototype: identifiers are removed from your message and nothing is saved.'],
         ['Display options', 'Use Account & display to change theme and text size, or to sign out. Times are shown with their time zone (EST/EDT).']
     ];

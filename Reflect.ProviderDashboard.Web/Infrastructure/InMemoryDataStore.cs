@@ -39,7 +39,7 @@ public static class InMemoryDataStore
                 ExternalPatientId = "PT-10041",
                 DateOfBirth = new DateOnly(1994, 3, 12),
                 Trend = EngagementTrend.Improving,
-                NotesSummary = "Increased VR use; reports clearer emotional labeling after Mandala module."
+                NotesSummary = "Increased XR use; reports clearer emotional labeling after Color Psychology and Breathing Mandala."
             },
             new()
             {
@@ -48,7 +48,7 @@ public static class InMemoryDataStore
                 ExternalPatientId = "PT-10052",
                 DateOfBirth = new DateOnly(1988, 7, 22),
                 Trend = EngagementTrend.Stable,
-                NotesSummary = "Steady mobile journaling; prefers evening sessions."
+                NotesSummary = "Steady Reflection Journals on mobile; prefers evening sessions."
             },
             new()
             {
@@ -66,7 +66,7 @@ public static class InMemoryDataStore
                 ExternalPatientId = "PT-10074",
                 DateOfBirth = new DateOnly(1979, 1, 30),
                 Trend = EngagementTrend.Improving,
-                NotesSummary = "Strong engagement with VR grounding exercises."
+                NotesSummary = "Strong engagement with Flow and Containment in Reflect XR."
             },
             new()
             {
@@ -75,7 +75,7 @@ public static class InMemoryDataStore
                 ExternalPatientId = "PT-10085",
                 DateOfBirth = new DateOnly(1996, 9, 18),
                 Trend = EngagementTrend.Stable,
-                NotesSummary = "Balanced VR and mobile use; working through grief narrative module."
+                NotesSummary = "Balanced XR and mobile use; working through Journey and Catharsis."
             }
         };
 
@@ -89,35 +89,35 @@ public static class InMemoryDataStore
 
         var sessions = new List<TherapySession>
         {
-            Session(alex, now.AddDays(-18), 20, TherapyPlatform.Mobile, "Mood Check-in", "Rated the week as manageable.", 5, MobileAlexId),
-            Session(alex, now.AddDays(-12), 24, TherapyPlatform.Vr, "Mandala Emotions", "Began linking color choices to mood.", 6, HeadsetUnassignedId),
-            Session(alex, now.AddDays(-8), 35, TherapyPlatform.Vr, "Safe Place VR", "Built coastal scene; reported 6/10 calm post-session.", 6, HeadsetUnassignedId),
-            Session(alex, now.AddDays(-4), 22, TherapyPlatform.Mobile, "Guided Reflection", "Wrote about workplace stressors and coping plan.", 7, MobileAlexId),
-            Session(alex, now.AddDays(-1).AddHours(-2), 28, TherapyPlatform.Vr, "Mandala Emotions", "Named anxiety as a color wheel; chose cool tones for regulation.", 7, HeadsetUnassignedId),
+            Session(alex, now.AddDays(-18), 20, TherapyPlatform.Mobile, ReflectModules.Mobile.BreathingMandala, "Completed a slow Breathing Mandala cycle; rated the week as manageable.", 5, MobileAlexId),
+            Session(alex, now.AddDays(-12), 24, TherapyPlatform.Vr, ReflectModules.Xr.ColorPsychology, "Linked palette choices in Color Psychology to the week's mood.", 6, HeadsetUnassignedId),
+            Session(alex, now.AddDays(-8), 35, TherapyPlatform.Vr, ReflectModules.Xr.Containment, "Finished Containment; reported 6/10 calm post-session.", 6, HeadsetUnassignedId),
+            Session(alex, now.AddDays(-4), 22, TherapyPlatform.Mobile, ReflectModules.Mobile.ReflectionJournals, "Wrote about workplace stressors and a coping plan in Reflection Journals.", 7, MobileAlexId),
+            Session(alex, now.AddDays(-1).AddHours(-2), 28, TherapyPlatform.Vr, ReflectModules.Xr.ColorPsychology, "Named anxiety as cool tones in Color Psychology.", 7, HeadsetUnassignedId),
 
-            Session(jordan, now.AddDays(-16), 14, TherapyPlatform.Mobile, "Mood Check-in", "Evening check-in after work.", 5, MobileJordanId),
-            Session(jordan, now.AddDays(-10), 16, TherapyPlatform.Mobile, "Guided Reflection", "Wrote about sleep routine.", 5, MobileJordanId),
-            Session(jordan, now.AddDays(-6), 15, TherapyPlatform.Mobile, "AI Imagery Journal", "Generated image for 'hope'; short narrative attached.", 6, MobileJordanId),
-            Session(jordan, now.AddDays(-2), 18, TherapyPlatform.Mobile, "Mood Check-in", "Mood 5→7 after gratitude prompt.", 7, MobileJordanId),
+            Session(jordan, now.AddDays(-16), 14, TherapyPlatform.Mobile, ReflectModules.Mobile.ReflectionJournals, "Evening Reflection Journals entry after work.", 5, MobileJordanId),
+            Session(jordan, now.AddDays(-10), 16, TherapyPlatform.Mobile, ReflectModules.Mobile.BreathingMandala, "Used Breathing Mandala before sleep.", 5, MobileJordanId),
+            Session(jordan, now.AddDays(-6), 15, TherapyPlatform.Mobile, ReflectModules.Mobile.CreateYourOwnPrompt, "Created an image for 'hope' in Create Your Own Prompt.", 6, MobileJordanId),
+            Session(jordan, now.AddDays(-2), 18, TherapyPlatform.Mobile, ReflectModules.Mobile.ReflectionJournals, "Mood 5→7 after a gratitude prompt in Reflection Journals.", 7, MobileJordanId),
 
-            Session(sam, now.AddDays(-28), 26, TherapyPlatform.Vr, "Safe Place VR", "Completed the full scene build.", 7, HeadsetSamId),
-            Session(sam, now.AddDays(-24), 22, TherapyPlatform.Mobile, "Mood Check-in", "Described a typical week.", 7, null),
-            Session(sam, now.AddDays(-20), 24, TherapyPlatform.Vr, "Grounding Garden", "Stayed with the exercise.", 6, HeadsetSamId),
-            Session(sam, now.AddDays(-16), 18, TherapyPlatform.Mobile, "Guided Reflection", "Shorter entry than usual.", 7, null),
-            Session(sam, now.AddDays(-14), 25, TherapyPlatform.Vr, "Body Scan VR", "Ended session early due to discomfort.", 5, HeadsetSamId),
-            Session(sam, now.AddDays(-12), 20, TherapyPlatform.Mobile, "Sleep Wind-down", "Completed breathing; did not finish reflection.", 4, null),
+            Session(sam, now.AddDays(-28), 26, TherapyPlatform.Vr, ReflectModules.Xr.Containment, "Completed the full Containment scene.", 7, HeadsetSamId),
+            Session(sam, now.AddDays(-24), 22, TherapyPlatform.Mobile, ReflectModules.Mobile.ReflectionJournals, "Described a typical week in Reflection Journals.", 7, null),
+            Session(sam, now.AddDays(-20), 24, TherapyPlatform.Vr, ReflectModules.Xr.Flow, "Stayed with Flow through the exercise.", 6, HeadsetSamId),
+            Session(sam, now.AddDays(-16), 18, TherapyPlatform.Mobile, ReflectModules.Mobile.FingerPainting, "Shorter Finger Painting session than usual.", 7, null),
+            Session(sam, now.AddDays(-14), 25, TherapyPlatform.Vr, ReflectModules.Xr.RhythmicRelaxation, "Ended Rhythmic Relaxation early due to discomfort.", 5, HeadsetSamId),
+            Session(sam, now.AddDays(-12), 20, TherapyPlatform.Mobile, ReflectModules.Mobile.BreathingMandala, "Started Breathing Mandala; did not finish the cycle.", 4, null),
 
-            Session(taylor, now.AddDays(-10), 28, TherapyPlatform.Vr, "Safe Place VR", "Returned to a familiar forest scene.", 7, HeadsetTaylorId),
-            Session(taylor, now.AddDays(-6), 32, TherapyPlatform.Vr, "Grounding Garden", "Steady breathing throughout.", 8, HeadsetTaylorId),
-            Session(taylor, now.AddDays(-3), 30, TherapyPlatform.Vr, "Values Compass", "Identified top three values for treatment focus.", 8, HeadsetTaylorId),
-            Session(taylor, now.AddDays(-1).AddHours(-5), 40, TherapyPlatform.Vr, "Grounding Garden", "Longest session this month; positive affect noted.", 8, HeadsetTaylorId),
+            Session(taylor, now.AddDays(-10), 28, TherapyPlatform.Vr, ReflectModules.Xr.Containment, "Returned to a familiar forest scene in Containment.", 7, HeadsetTaylorId),
+            Session(taylor, now.AddDays(-6), 32, TherapyPlatform.Vr, ReflectModules.Xr.Flow, "Steady breathing throughout Flow.", 8, HeadsetTaylorId),
+            Session(taylor, now.AddDays(-3), 30, TherapyPlatform.Vr, ReflectModules.Xr.PersonalStrengths, "Named top strengths in Personal Strengths for treatment focus.", 8, HeadsetTaylorId),
+            Session(taylor, now.AddDays(-1).AddHours(-5), 40, TherapyPlatform.Vr, ReflectModules.Xr.Flow, "Longest Flow session this month; positive affect noted.", 8, HeadsetTaylorId),
 
-            Session(casey, now.AddDays(-20), 21, TherapyPlatform.Mobile, "Gratitude Stack", "Listed weekday supports.", 7, MobileCaseyId),
-            Session(casey, now.AddDays(-16), 22, TherapyPlatform.Vr, "Mandala Emotions", "Used warm colors; described the week as full.", 6, null),
-            Session(casey, now.AddDays(-12), 18, TherapyPlatform.Mobile, "Mood Check-in", "Rated the week near usual.", 6, MobileCaseyId),
-            Session(casey, now.AddDays(-9), 19, TherapyPlatform.Mobile, "Gratitude Stack", "Listed five supports; mood improved.", 6, MobileCaseyId),
-            Session(casey, now.AddDays(-5), 32, TherapyPlatform.Vr, "Emotion River", "Tracked anger→sadness shift during module.", 4, null),
-            Session(casey, now.AddDays(-2).AddHours(-1), 24, TherapyPlatform.Mobile, "Grief Narrative", "Wrote letter to lost family member.", 3, MobileCaseyId)
+            Session(casey, now.AddDays(-20), 21, TherapyPlatform.Mobile, ReflectModules.Mobile.ReflectionJournals, "Listed weekday supports in Reflection Journals.", 7, MobileCaseyId),
+            Session(casey, now.AddDays(-16), 22, TherapyPlatform.Vr, ReflectModules.Xr.EmotionalExpression, "Used warm tones in Emotional Expression; described the week as full.", 6, null),
+            Session(casey, now.AddDays(-12), 18, TherapyPlatform.Mobile, ReflectModules.Mobile.BreathingMandala, "Completed Breathing Mandala; rated the week near usual.", 6, MobileCaseyId),
+            Session(casey, now.AddDays(-9), 19, TherapyPlatform.Mobile, ReflectModules.Mobile.AiCreatedMandala, "Generated a mandala of five supports in AI Created Mandala.", 6, MobileCaseyId),
+            Session(casey, now.AddDays(-5), 32, TherapyPlatform.Vr, ReflectModules.Xr.Catharsis, "Tracked anger→sadness shift during Catharsis.", 4, null),
+            Session(casey, now.AddDays(-2).AddHours(-1), 24, TherapyPlatform.Mobile, ReflectModules.Mobile.Journey, "Wrote a letter to a lost family member in Journey.", 3, MobileCaseyId)
         };
 
         var devices = new List<CareDevice>

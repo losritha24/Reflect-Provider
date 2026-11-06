@@ -43,6 +43,12 @@ public sealed class CompanyClock : ICompanyClock
         return Abbreviation;
     }
 
+    public DateTimeOffset StartOfCompanyDay(DateOnly date)
+    {
+        var local = DateTime.SpecifyKind(date.ToDateTime(TimeOnly.MinValue), DateTimeKind.Unspecified);
+        return new DateTimeOffset(TimeZoneInfo.ConvertTimeToUtc(local, _zone), TimeSpan.Zero);
+    }
+
     private static TimeZoneInfo Resolve(string ianaId)
     {
         try

@@ -7,6 +7,7 @@ using Reflect.ProviderDashboard.Web.Controllers;
 using Reflect.ProviderDashboard.Web.Infrastructure;
 using Reflect.ProviderDashboard.Web.Models.Integration;
 using Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Patients;
+using Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Reports;
 using Reflect.ProviderDashboard.Web.Services;
 
 static void Check(bool condition, string description)
@@ -123,6 +124,40 @@ try
 }
 catch (EntityNotFoundException) { Console.WriteLine("PASS: Unassigned patient session access is denied"); }
 
+var clock = new CompanyClock("America/New_York", "ET");
+var todayEt = DateOnly.FromDateTime(clock.ToCompany(DateTimeOffset.UtcNow).DateTime);
+var reports = new ReportsController(patients, sessions, clock);
+var report = new ClinicalReportViewModel();
+await report.PrepareData(patients, sessions, clock, ct, taylor.Id, todayEt.AddDays(-14), todayEt, true, true, true, "Dr. Demo");
+Check(report.PatientName == "Taylor Brooks" && report.ExternalPatientId == "PT-10074",
+    "Report preview names the selected patient");
+Check(report.ReportingPeriod.Contains(todayEt.ToString("M/d/yyyy"), StringComparison.Ordinal)
+    && report.MainModule == "Flow",
+    "Report preview includes the reporting period and the patient's main module");
+Check(report.SessionCount == 4 && report.Sessions.Count == 4,
+    "Report session history stays inside the selected date range");
+var emptyReport = new ClinicalReportViewModel();
+await emptyReport.PrepareData(patients, sessions, clock, ct, taylor.Id, todayEt.AddDays(-400), todayEt.AddDays(-370), true, true, true, "Dr. Demo");
+Check(emptyReport.SessionCount == 0 && emptyReport.MainModule == "No sessions in range",
+    "An empty date range does not invent sessions");
+Check(await reports.Index(ct, from: todayEt, to: todayEt.AddDays(-1)) is BadRequestResult,
+    "A reversed report date range is rejected");
+Check(await reports.Index(ct, patientId: Guid.NewGuid()) is NotFoundResult,
+    "Unknown patients cannot be reported");
+var otherReports = new ReportsController(otherProvider, otherSessions, clock);
+Check(await otherReports.Index(ct, patientId: taylor.Id) is NotFoundResult,
+    "Providers cannot report on another provider's patient");
+var pdf = await reports.Pdf(ct, patientId: taylor.Id, from: todayEt.AddDays(-14), to: todayEt) as FileContentResult;
+Check(pdf is { ContentType: "application/pdf", FileDownloadName: not null }
+    && pdf.FileContents.AsSpan(0, 5).SequenceEqual("%PDF-"u8.ToArray()),
+    "Report export is a downloadable PDF");
+var pdfText = System.Text.Encoding.Latin1.GetString(pdf!.FileContents);
+Check(pdfText.Contains("Taylor Brooks", StringComparison.Ordinal)
+    && pdfText.Contains("Window:", StringComparison.Ordinal)
+    && pdfText.Contains("Main module", StringComparison.Ordinal)
+    && pdfText.Contains("Flow", StringComparison.Ordinal),
+    "PDF includes patient name, reporting period, and main module");
+
 var anonymousWithClaim = new InMemoryPatientRepository(new TestCurrentUserService(currentUser.UserId.Value, false));
 Check((await anonymousWithClaim.GetAllAsync(ct)).Count == 0,
     "An unauthenticated identity cannot use an assigned provider ID claim");
@@ -130,7 +165,6 @@ Check((await anonymousWithClaim.GetAllAsync(ct)).Count == 0,
 Check((await new InMemoryPatientRepository(new TestCurrentUserService(null)).GetAllAsync(ct)).Count == 0,
     "A missing provider ID fails closed");
 
-var clock = new CompanyClock("America/New_York", "ET");
 var offsetStamp = DateTimeOffset.Parse("2026-11-06T16:00:00-05:00");
 Check(clock.ToUtc(offsetStamp).Offset == TimeSpan.Zero
     && clock.ToUtc(offsetStamp).UtcDateTime == new DateTime(2026, 11, 6, 21, 0, 0, DateTimeKind.Utc),
