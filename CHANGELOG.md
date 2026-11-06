@@ -2,6 +2,7 @@
 
 ## 2026-11-06
 
+- Documented the full architecture: production ingest path, prototype request flow, and clinical data model.
 - Seeded sessions now use official Reflect Mobile and Reflect XR Home module titles (Breathing Mandala, Color Psychology, Flow, and so on).
 - Added a Reports page: pick a patient and date range, preview name / period / main module, then print or download a PDF.
 - After sign-in, clinicians land on a caseload knowledge graph of patients, sessions, devices, and follow-up signals.

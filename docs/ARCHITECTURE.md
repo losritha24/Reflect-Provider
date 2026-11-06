@@ -6,22 +6,53 @@ Clinicians can open **Trust** (`/Provider/Home/Trust`) for the same material.
 
 ## Architecture diagram
 
+Production target: Reflect XR and Reflect Mobile send sessions over TLS into a clinical API, store UTC in RDS PostgreSQL, and the dashboard displays the company time zone.
+
 ```mermaid
 flowchart LR
-  XR["Reflect XR / Mobile"] -->|"TLS 1.2+"| Ingest["Ingest options"]
-  Ingest -->|"HTTPS JSON API"| API["Clinical API"]
-  Ingest -->|"Encrypted S3 / SFTP batch"| API
-  Ingest -->|"FHIR R4 later"| API
-  API -->|"HIPAA boundary"| RDS[("RDS PostgreSQL\ntimestamptz UTC")]
-  RDS --> Dash["Provider dashboard"]
-  Dash -->|"Company zone display\nAmerica/New_York"| Clinician["Clinician"]
-  TLS["ACM / managed TLS certificate"] --- Dash
+  subgraph products [Reflect products]
+    XR["Reflect XR"]
+    Mobile["Reflect Mobile"]
+  end
+
+  subgraph ingest [Ingest]
+    JSON["HTTPS JSON\nPOST /api/v1/ingest/sessions\nimplemented"]
+    Batch["Encrypted S3 / SFTP batch\nfuture"]
+    FHIR["FHIR R4 Encounter / Observation\nlater"]
+  end
+
+  subgraph boundary [Clinical / HIPAA boundary]
+    API["Clinical API"]
+    RDS[("RDS PostgreSQL\ntimestamptz UTC")]
+    Dash["Provider dashboard"]
+  end
+
+  subgraph outside [Outside clinical]
+    FB["Firebase"]
+    BQ["BigQuery"]
+  end
+
+  Clinician["Clinician"]
+  TLS["ACM / managed TLS 1.2+"]
+
+  XR -->|TLS 1.2+| ingest
+  Mobile -->|TLS 1.2+| ingest
+  JSON --> API
+  Batch --> API
+  FHIR --> API
+  API --> RDS
+  RDS --> Dash
+  Dash -->|"Company zone display\nAmerica/New_York"| Clinician
+  TLS --- Dash
   TLS --- API
+  XR -.-> FB
+  Mobile -.-> FB
+  FB --> BQ
 ```
 
 Product analytics (Firebase → BigQuery) stay **outside** the clinical boundary. Clinical sessions, affect markers, and device history do not go to analytics warehouses.
 
-This prototype implements the dashboard, UTC clock, TLS, assignment-scoped access, and a signed JSON ingest hook. Repositories are in-memory until merge into Reflect XR (EF Core against RDS).
+This prototype implements the dashboard, UTC clock, TLS, assignment-scoped access, and a signed JSON ingest hook. Patients and sessions live in `ClinicalDbContext` (SQLite by default, Postgres optional). Devices remain in-memory until merge into Reflect XR against RDS.
 
 ## Time zones (normalized for the company)
 
@@ -81,19 +112,83 @@ Workforce training, facility policies, and the organizational risk analysis rema
 ## Request flow (this prototype)
 
 ```mermaid
-flowchart LR
-  B[Browser<br/>Razor views + vanilla JS] -->|HTTPS| E[Host edge<br/>TLS, trusted proxy]
-  E --> M[ASP.NET Core middleware<br/>CSP, rate limits, auth cookie, antiforgery]
-  M --> C[Provider-area controllers<br/>Home, Patients, Chat]
-  C --> V[View models<br/>validation, as-of-now rule, engagement]
-  V --> R[Repositories<br/>provider-scoped]
-  R --> D[(ClinicalDbContext<br/>SQLite default, Postgres option)]
-  M --> I[(SQLite: Identity accounts)]
-  C --> G[ChatGuardrail<br/>redact, block injection]
-  G --> X[IChatResponder<br/>stub now; model later]
+flowchart TB
+  Browser["Browser\nRazor + vanilla JS"] -->|HTTPS localhost:7150| Edge["Host edge\nTLS, known proxies or HttpsAtEdge"]
+  Edge --> MW["ASP.NET Core middleware\nCSP, rate limits, Identity cookie 1h, antiforgery"]
+
+  MW --> Auth["Account\nIdentity SQLite App_Data/provider-accounts.db"]
+  MW --> IngestCtrl["IngestController\nX-Reflect-Integration-Key"]
+  MW --> Health["/health/live"]
+  MW --> Area["Provider area controllers"]
+
+  Area --> Home["Home: Graph, Dashboard, Trust"]
+  Area --> Patients["Patients"]
+  Area --> Reports["Reports print / PDF"]
+  Area --> Devices["Devices reassign"]
+  Area --> Chat["Chat\nChatGuardrail then stub responder"]
+
+  Home --> VM["View models\nNeeds Attention, emotional trajectory,\nknowledge graph, observation snapshot"]
+  Patients --> VM
+  Reports --> VM
+  Devices --> VM
+
+  VM --> Clock["CompanyClock\nstore UTC, display America/New_York"]
+  VM --> Repos["Provider-scoped repositories"]
+
+  IngestCtrl --> IngestSvc["SessionIngestService\nnormalize to UTC, reject unknown patients"]
+  IngestSvc --> SessRepo["ITherapySessionRepository"]
+
+  Repos --> PatRepo["EfPatientRepository"]
+  Repos --> SessRepo
+  Repos --> DevRepo["InMemoryCareDeviceRepository"]
+
+  PatRepo --> Clinical[("ClinicalDbContext\nSQLite or Postgres")]
+  SessRepo --> Clinical
 ```
 
-Patient and session data now live in a database (`ClinicalDbContext`), seeded with synthetic rows. Target: feed it by file upload (XLS/CSV), then database or API sources, behind the same repository interfaces. The Clinical API / HIPAA boundary in the layering diagram above is where real PHI would enter.
+Patient and session data live in `ClinicalDbContext`, seeded with synthetic rows. Target: feed it by file upload (XLS/CSV), then database or API sources, behind the same repository interfaces. The Clinical API / HIPAA boundary in the layering diagram above is where real PHI would enter.
+
+## Clinical data model (prototype)
+
+Identity accounts stay in a separate SQLite file so clinical data can move to encrypted RDS without touching sign-in. Devices and assignment history are still in-memory.
+
+```mermaid
+erDiagram
+  ProviderUser ||--o{ Patient : assigns
+  Patient ||--o{ TherapySession : has
+  CareDevice ||--o{ DeviceAssignment : history
+  Patient ||--o{ DeviceAssignment : current
+
+  ProviderUser {
+    string Id PK
+    string Email
+    string DisplayName
+  }
+  Patient {
+    guid Id PK
+    string AssignedProviderId FK
+    string DisplayName
+    string ExternalPatientId
+    string EngagementTrend
+  }
+  TherapySession {
+    guid Id PK
+    guid PatientId FK
+    datetime StartedAtUtc
+    string ModuleName
+    int AffectScore
+    string Platform
+  }
+  CareDevice {
+    guid Id PK
+    string Kind
+  }
+  DeviceAssignment {
+    guid DeviceId FK
+    guid PatientId FK
+    datetime AssignedAtUtc
+  }
+```
 
 ## Security notes (prototype)
 
@@ -105,7 +200,7 @@ Patient and session data now live in a database (`ClinicalDbContext`), seeded wi
 
 1. Copy `Areas/Provider/**` into Reflect XR web project.
 2. Register `ProviderOnly` policy against real Entra roles.
-3. Replace in-memory repositories with EF Core + RDS PostgreSQL (`timestamptz`).
+3. Point `ClinicalDbContext` at RDS PostgreSQL (`timestamptz`) and replace the remaining in-memory device store.
 4. Drop `wwwroot/standins/` layout; views use production `_Layout.cshtml`.
 5. Append `provider-menu.json` items to the facility/provider sidebar config.
 6. Point ingest at the clinical API and rotate `Integration:ApiKey` into a secret store.
