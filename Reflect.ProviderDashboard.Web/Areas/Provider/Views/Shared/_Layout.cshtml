@@ -100,7 +100,7 @@
                 <button type="button" class="btn btn-outline-secondary" id="a11yPanelToggle" aria-controls="a11yPanel" aria-expanded="false">Accessibility</button>
                 <button type="button" class="btn btn-primary-light" id="themeToggle">Toggle theme</button>
                 <span class="provider-chip">@(User.FindFirst("display_name")?.Value ?? User.Identity?.Name)</span>
-                <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
+                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
                     <button type="submit" class="btn btn-outline-secondary">Sign out</button>
                 </form>
                 </div>
