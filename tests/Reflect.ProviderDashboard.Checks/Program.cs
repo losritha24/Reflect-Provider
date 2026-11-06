@@ -143,6 +143,11 @@ using (var cache = new Microsoft.Extensions.Caching.Memory.MemoryCache(new Micro
     Check(await store.RetrieveAsync(await store.StoreAsync(ticket)) is null, "Expired tickets cannot authenticate");
 }
 
+await SecurityChecks.RunAsync();
+await Reflect.ProviderDashboard.Checks.TimelineChecks.RunAsync();
+await Reflect.ProviderDashboard.Checks.ChatAndTimeChecks.RunAsync();
+await Reflect.ProviderDashboard.Checks.ClinicalStoreChecks.RunAsync();
+
 sealed class TestCurrentUserService(Guid? userId, bool authenticated = true, bool provider = true) : ICurrentUserService
 {
     public Guid? UserId { get; } = userId;

@@ -70,6 +70,11 @@
         <a class="nav-link @(controller == "Devices" ? "active" : "")" data-short="V" aria-label="Devices" href="@Url.Action("Index", "Devices", new { area = "Provider" })">
             <span class="nav-link-label">Devices</span>
         </a>
+        <div class="category">Help</div>
+        <a class="nav-link @(controller == "Chat" ? "active" : "")" data-short="A" aria-label="Assistant" href="@Url.Action("Index", "Chat", new { area = "Provider" })">
+            <span class="nav-link-label">Assistant</span>
+        </a>
+        <button type="button" class="btn btn-outline-secondary w-100 mt-3" id="tourOpen">Take the tour</button>
         <div class="sidebar-footer">Persistent Technology · 2026</div>
     </nav>
     <div class="main-column">
@@ -102,8 +107,19 @@
     </div>
 </div>
 
+<dialog id="tourDialog" class="tour-dialog" aria-labelledby="tourTitle">
+    <h2 id="tourTitle" class="h4"></h2>
+    <p id="tourBody"></p>
+    <p class="fs-13 text-muted" id="tourStep"></p>
+    <div class="d-flex gap-2 justify-content-end">
+        <button type="button" class="btn btn-outline-secondary" id="tourSkip">Skip</button>
+        <button type="button" class="btn btn-outline-secondary" id="tourBack">Back</button>
+        <button type="button" class="btn btn-primary-light" id="tourNext">Next</button>
+    </div>
+</dialog>
 <script src="~/standins/js/messageService.js"></script>
 <script src="~/standins/js/layoutController.js" asp-append-version="true"></script>
+<script src="~/js/controllers/provider/tourController.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,26 @@
+# Blueprint preparation only. Creating this service is a separate release step.
+services:
+  - type: web
+    name: reflect-provider-demo
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    autoDeployTrigger: 'off'
+    healthCheckPath: /health/ready
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_HTTP_PORTS
+        value: '8080'
+      - key: AllowedHosts
+        sync: false
+      - key: Demo__Enabled
+        value: 'true'
+      - key: Demo__Email
+        sync: false
+      - key: Demo__Password
+        sync: false
+      # Confirm Render enforces TLS and the origin is private before creating.
+      - key: Hosting__HttpsAtEdge
+        value: 'true'

@@ -9,7 +9,6 @@ using Reflect.ProviderDashboard.Web.Models.Identity;
 
 namespace Reflect.ProviderDashboard.Web.Controllers;
 
-[Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("account")]
 [RequestSizeLimit(16_384)]
 public sealed class AccountController : Controller
 {
@@ -50,6 +49,7 @@ public sealed class AccountController : Controller
     [AllowAnonymous]
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("account")]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
         if (!LoginEnabled) return NotFound();
@@ -99,6 +99,7 @@ public sealed class AccountController : Controller
     [AllowAnonymous]
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("account")]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
         if (!_environment.IsDevelopment())

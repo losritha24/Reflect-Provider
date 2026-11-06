@@ -37,7 +37,7 @@ summary { cursor:pointer; }
 .platform-panel > .text-muted { line-height:1.7; }
 .platform-meter { margin:.5rem 0 .9rem; }
 .platform-meter label { display:flex; justify-content:space-between; margin-bottom:.5rem; font-size:.9rem; }
-.platform-meter progress { width:100%; height:.65rem; accent-color:var(--slate-blue); border:0; border-radius:1rem; overflow:hidden; }
+.platform-meter progress { width:100%; height:.65rem; accent-color:var(--text-muted); border:0; border-radius:1rem; overflow:hidden; }
 .platform-meter progress::-webkit-progress-bar { background:var(--cool-gray); }
 .platform-meter progress::-webkit-progress-value { background:var(--slate-blue); }
 .platform-meter progress::-moz-progress-bar { background:var(--slate-blue); }
@@ -68,7 +68,7 @@ summary { cursor:pointer; }
 .landing-nav img { width:180px; height:48px; object-fit:contain; object-position:left; }
 .landing-hero { display:grid; grid-template-columns:1.15fr 1fr; align-items:center; gap:4rem; padding:4rem 0; }
 .landing-hero h1 { font-size:clamp(2.8rem,5vw,4.8rem); line-height:1.04; letter-spacing:-.025em; margin:1rem 0; }
-.landing-lead { max-width:46ch; font-size:1.1rem; line-height:1.8; color:var(--slate-blue); margin-bottom:1.75rem; }
+.landing-lead { max-width:46ch; font-size:1.1rem; line-height:1.8; color:var(--text-muted); margin-bottom:1.75rem; }
 .landing-hero .btn + p { margin-top:1rem; }
 .landing-preview { background:var(--twilight-indigo); color:var(--off-white); padding:2rem; border-radius:1.2rem; box-shadow:0 24px 60px rgba(31,48,94,.15); }
 .preview-top { font-size:.75rem; color:var(--light-coral); border-bottom:1px solid rgba(255,255,255,.2); padding-bottom:1rem; }
@@ -82,8 +82,8 @@ summary { cursor:pointer; }
 .preview-caption { color:var(--light-coral); font-size:.75rem; }
 .landing-benefits { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; border-top:1px solid var(--default-border); padding:2rem 0; }
 .landing-benefits h2 { font-size:1.5rem; margin:.5rem 0; }
-.landing-benefits p { color:var(--slate-blue); line-height:1.7; }
-.landing-footer { border-top:1px solid var(--default-border); font-size:.8rem; color:var(--slate-blue); }
+.landing-benefits p { color:var(--text-muted); line-height:1.7; }
+.landing-footer { border-top:1px solid var(--default-border); font-size:.8rem; color:var(--text-muted); }
 .login-story-copy h1 { font-size:clamp(2.5rem,4vw,4rem); max-width:12ch; }
 @media (max-width:1100px) { .summary-strip { grid-template-columns:repeat(3,1fr); } .summary-strip .snapshot-note { grid-column:1/-1; } .summary-strip > div:nth-child(3) { border:0; } }
 @media (max-width:800px) { .workspace-grid, .landing-hero { grid-template-columns:1fr; } .landing-hero { gap:2rem; padding:2rem 0; } .landing-benefits { gap:1rem; } .demo-landing { padding:0 1.25rem; } .patient-timeline > li { grid-template-columns:1fr; gap:.6rem; } }
@@ -117,3 +117,22 @@ summary { cursor:pointer; }
  .dashboard-workspace > .summary-strip { order:2; }
  .dashboard-workspace > .recent-panel { order:3; }
 }
+
+/* Keep the primary patient link readable when the full table scrolls. */
+.patient-list-table th[scope="row"] { font-family: var(--default-font-family); font-size: 1rem; text-transform: none; letter-spacing: normal; font-weight: 400; white-space: normal; min-width: 10rem; }
+.table-responsive:focus-visible { outline: 3px solid var(--link-color, #1f305e); outline-offset: 2px; }
+@media (max-width: 640px) {
+  .patient-list-table th:first-child { position: sticky; left: 0; background: var(--custom-white, #fafafb); z-index: 1; }
+  .patient-list-table th[scope="row"] { max-width: 12rem; }
+}
+
+.chat-log { min-height: 14rem; max-height: 24rem; overflow-y: auto; display: flex; flex-direction: column; gap: .5rem; margin: 1rem 0; }
+.chat-msg { margin: 0; padding: .6rem .8rem; border-radius: .5rem; max-width: 80%; }
+.chat-user { align-self: flex-end; background: var(--custom-white, #fafafb); border: 1px solid currentColor; }
+.chat-bot { align-self: flex-start; border: 1px solid currentColor; }
+.chat-note { align-self: flex-start; font-size: .8rem; opacity: .8; }
+.chat-form { display: flex; gap: .5rem; }
+.chat-form input { flex: 1; }
+
+.tour-dialog { max-width: 26rem; border: 1px solid currentColor; border-radius: .75rem; padding: 1.5rem; background: var(--custom-white, #fafafb); color: inherit; }
+.tour-dialog::backdrop { background: rgba(0,0,0,.5); }

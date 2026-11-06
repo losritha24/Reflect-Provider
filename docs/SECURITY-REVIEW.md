@@ -1,7 +1,7 @@
 # Security Review
 
 > Update (October 29, 2026): the historical review below is retained. A subsequent
-> [local runtime and scanner assessment](docs/SECURITY-TEST-REPORT.md) reproduced
+> [local runtime and scanner assessment](SECURITY-TEST-REPORT.md) reproduced
 > and fixed host-validation and repository-authentication weaknesses, and records
 > the logout-cookie replay issue, subsequently fixed with server-side tickets. Its results supersede the original runtime
 > validation limitation below.
@@ -17,7 +17,7 @@ No external systems were contacted. Runtime/build validation was not available b
 
 | # | Severity | File | Lines | Vulnerability | Confidence |
 |---|----------|------|-------|---------------|------------|
-| 1 | 🟠 HIGH | [PatientsController.cs](Reflect.ProviderDashboard.Web/Areas/Provider/Controllers/PatientsController.cs#L24-L39) | 24-39 | Broken access control allows any authenticated `Mental_Health_Provider` user to list the global patient population and retrieve arbitrary patients by ID without provider, organization, tenant, or assignment authorization. | 9/10 |
+| 1 | 🟠 HIGH | [PatientsController.cs](../Reflect.ProviderDashboard.Web/Areas/Provider/Controllers/PatientsController.cs#L24-L39) | 24-39 | Broken access control allows any authenticated `Mental_Health_Provider` user to list the global patient population and retrieve arbitrary patients by ID without provider, organization, tenant, or assignment authorization. | 9/10 |
 
 ### 1. Unscoped patient list and detail access
 
@@ -25,7 +25,7 @@ No external systems were contacted. Runtime/build validation was not available b
 
 - `Index` calls `PrepareData`, which performs repository-wide patient search.
 - `Details` accepts any non-empty `Guid` and calls `GetByIdAsync` without an authorization scope.
-- [`InMemoryPatientRepository.cs`](Reflect.ProviderDashboard.Web/Services/InMemoryPatientRepository.cs#L14-L43) filters deletion status and patient ID only; it does not filter by the signed-in provider, organization, tenant, or patient assignment.
+- [`InMemoryPatientRepository.cs`](../Reflect.ProviderDashboard.Web/Services/InMemoryPatientRepository.cs#L14-L43) filters deletion status and patient ID only; it does not filter by the signed-in provider, organization, tenant, or patient assignment.
 
 **Exploit preconditions**
 

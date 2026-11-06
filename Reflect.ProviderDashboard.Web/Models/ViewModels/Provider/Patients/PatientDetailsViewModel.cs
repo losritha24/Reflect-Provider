@@ -1,5 +1,6 @@
 using Reflect.ProviderDashboard.Domain.Entities;
 using Reflect.ProviderDashboard.Domain.Interfaces;
+using Reflect.ProviderDashboard.Domain.Enums;
 using Reflect.ProviderDashboard.Domain.Services;
 using Reflect.ProviderDashboard.Web.Services;
 
@@ -18,6 +19,15 @@ public class PatientDetailsViewModel
     public int VrSessionCount { get; set; }
     public int MobileSessionCount { get; set; }
     public int TotalMinutes { get; set; }
+    public int FilteredSessionCount => Sessions.Count;
+    public TherapyPlatform? Platform { get; set; }
+    public int? Days { get; set; }
+    public DateTimeOffset AsOfUtc { get; private set; }
+    public string Search { get; set; } = string.Empty;
+    public EngagementTrend? Trend { get; set; }
+    public int Page { get; set; } = 1;
+    public bool TimelineSelected => Tab == "timeline";
+    public string Tab { get; set; } = "overview";
     public List<PatientSessionRowViewModel> Sessions { get; set; } = new();
     public EmotionalTrajectory Trajectory { get; set; } = new(Array.Empty<AffectPoint>(), false, null, null);
     public string TrajectoryChartSvg { get; set; } = string.Empty;
@@ -28,8 +38,22 @@ public class PatientDetailsViewModel
         IPatientRepository patients,
         ITherapySessionRepository sessions,
         ICareDeviceRepository devices,
-        CancellationToken ct)
+        CancellationToken ct,
+        DateTimeOffset asOfUtc,
+        TherapyPlatform? platform = null,
+        int? days = null,
+        string search = null,
+        EngagementTrend? trend = null,
+        int page = 1,
+        string tab = "overview")
     {
+        AsOfUtc = asOfUtc;
+        Platform = platform;
+        Days = days;
+        Search = search ?? string.Empty;
+        Trend = trend;
+        Page = page;
+        Tab = platform.HasValue || days.HasValue ? "timeline" : tab;
         var patient = await patients.GetByIdAsync(patientId, ct);
         PatientId = patient.Id;
         DisplayName = patient.DisplayName;
@@ -44,12 +68,18 @@ public class PatientDetailsViewModel
             _ => ("Stable engagement", "info")
         };
 
-        var patientSessions = await sessions.GetByPatientIdAsync(patientId, ct);
+        var patientSessions = (await sessions.GetByPatientIdAsync(patientId, ct))
+            .Where(s => s.StartedAtUtc <= AsOfUtc)
+            .ToList();
         TotalSessions = patientSessions.Count;
-        VrSessionCount = patientSessions.Count(s => s.Platform == Domain.Enums.TherapyPlatform.Vr);
-        MobileSessionCount = patientSessions.Count(s => s.Platform == Domain.Enums.TherapyPlatform.Mobile);
+        VrSessionCount = patientSessions.Count(s => s.Platform == TherapyPlatform.Vr);
+        MobileSessionCount = patientSessions.Count(s => s.Platform == TherapyPlatform.Mobile);
         TotalMinutes = patientSessions.Sum(s => s.DurationMinutes);
-        Sessions = patientSessions.Select(PatientSessionRowViewModel.FromEntity).ToList();
+
+        var timeline = patientSessions.AsEnumerable();
+        if (Platform.HasValue) timeline = timeline.Where(s => s.Platform == Platform.Value);
+        if (Days.HasValue) timeline = timeline.Where(s => s.StartedAtUtc >= AsOfUtc.AddDays(-Days.Value));
+        Sessions = timeline.OrderByDescending(s => s.StartedAtUtc).Select(PatientSessionRowViewModel.FromEntity).ToList();
         Trajectory = EmotionalTrajectoryCalculator.Build(patientSessions);
         TrajectoryChartSvg = AffectChartSvg.From(Trajectory);
         Devices = (await devices.GetByPatientIdAsync(patientId, ct)).ToList();

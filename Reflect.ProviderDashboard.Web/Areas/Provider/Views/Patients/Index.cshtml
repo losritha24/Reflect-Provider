@@ -11,7 +11,7 @@
 <form method="get" class="filter-toolbar">
     <div class="filter-field">
     <label for="Search">Search name or patient ID</label>
-    <input id="Search" name="search" value="@Model.Search" type="search" />
+    <input id="Search" name="search" value="@Model.Search" type="search" maxlength="200" />
     </div><div class="filter-field">
     <label for="Trend">Engagement</label>
     <select asp-for="Trend" asp-items="Html.GetEnumSelectList<Reflect.ProviderDashboard.Domain.Enums.EngagementTrend>()">
@@ -26,23 +26,23 @@
     <div class="card-header">
         <div class="card-title">Caseload</div>
     </div>
-    <div class="card-body table-responsive">
-        <table class="table dt-client text-nowrap align-middle">
+    <div class="card-body table-responsive" tabindex="0" role="region" aria-label="Patient list table; scroll horizontally for more columns">
+        <table class="patient-list-table table dt-client text-nowrap align-middle">
             <thead>
             <tr>
-                <th>Patient</th>
-                <th>ID</th>
-                <th>Sessions</th>
-                <th>Last session</th>
-                <th>Primary platform</th>
-                <th>Engagement (synthetic scenario)</th>
+                <th scope="col">Patient</th>
+                <th scope="col">ID</th>
+                <th scope="col">Sessions</th>
+                <th scope="col">Last session</th>
+                <th scope="col">Primary platform</th>
+                <th scope="col">Engagement (synthetic scenario)</th>
             </tr>
             </thead>
             <tbody>
             @foreach (var row in Model.Rows)
             {
                 <tr class="row-link" data-navigation-row>
-                    <td><a asp-action="Details" asp-route-id="@row.PatientId" data-navigation-link>@row.DisplayName</a></td>
+                    <th scope="row"><a asp-action="Details" asp-route-id="@row.PatientId" asp-route-search="@Model.Search" asp-route-trend="@Model.Trend" asp-route-page="@Model.Page" data-navigation-link>@row.DisplayName</a></th>
                     <td>@row.ExternalPatientId</td>
                     <td>@row.TotalSessions</td>
                     <td>@row.LastSessionDisplay</td>
@@ -64,6 +64,7 @@
     <p>No patients match these filters.</p>
 }
 <nav aria-label="Patient pages">
+    <span aria-current="page">Page @Model.Page of @Model.TotalPages</span>
     @if (Model.Page > 1)
     {
         <a asp-action="Index" asp-route-search="@Model.Search" asp-route-trend="@Model.Trend" asp-route-page="@(Model.Page - 1)">Previous</a>

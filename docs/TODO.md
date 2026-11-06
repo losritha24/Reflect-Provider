@@ -1,202 +1,111 @@
-# Reflect Provider Dashboard — TODO
+# Reflect Provider Dashboard — work queue
 
-This project is currently a synthetic-data prototype. Complete the security,
-data, and deployment work before connecting it to real patient information.
+Updated November 6, 2026. See [NEXT-STEPS.md](NEXT-STEPS.md) for sequencing,
+contracts, acceptance criteria, dependencies and bounded Copilot assignments.
+This prototype contains synthetic records; demo readiness does not establish
+clinical production readiness.
 
-## Product direction
+## Implemented competition foundation
 
-- [x] Add a provider-focused **Needs Attention** queue.
-  - Show explainable engagement signals.
-  - Include the last activity date and suggested follow-up.
-  - Use "signal" or "follow-up recommended" language, not diagnosis claims.
-- [ ] Make engagement trends explainable.
-  - Show the comparison period and metrics used.
-  - Show the sessions or activity changes behind each signal.
-  - Display the data freshness timestamp.
-- [ ] Add a longitudinal patient timeline.
-  - Include sessions, platforms, modules, durations, reflections, notes, and tasks.
-  - Include source and synchronization metadata.
-- [ ] Add a provider workflow.
-  - Create, assign, update, complete, and dismiss follow-up tasks.
-  - Add provider notes with appropriate audit history.
-- [ ] Add accessible activity visualizations.
-  - Provide a table alternative for every chart.
-  - Support keyboard navigation, screen readers, contrast, and reduced motion.
-- [ ] Create a polished synthetic-data demo mode.
-  - Provide a seeded demo account or controlled demo login.
-  - Clearly label all records as synthetic.
-  - Add a way to reset demo data.
-  - Include simulated synchronization status and representative audit events.
+- [x] Judge-facing landing page and opt-in seeded hosted demo login.
+- [x] Keep registration Development-only and newly registered caseloads empty.
+- [x] Provider-scoped patient and session queries with negative authorization tests.
+- [x] Explainable dashboard attention queue, platform summaries and recent activity.
+- [x] Patient search, engagement filter, pagination and empty results.
+- [x] Timeline with platform and rolling 7/30/90-day filters, source timestamps and table alternative.
+- [x] Preserve caseload context through detail, timeline apply/reset and back navigation.
+- [x] Exclude future sessions from dashboard, list and detail summaries.
+- [x] Accessible tabs, skip link, focus styles, display preferences and accessibility dialog.
+- [x] Secure hosted cookies, session revocation, absolute lifetime and replay checks.
+- [x] Default MVC antiforgery, request size limits, no-store and browser security headers.
+- [x] Credential-only rate limits; login pages and logout remain available when exhausted.
+- [x] Explicit trusted-proxy configuration; reject unrestricted forwarding switches.
+- [x] Validate host allowlists, literal SQLite paths and seeded password consistency.
+- [x] Separate `/health/live` and Identity-schema `/health/ready` probes.
+- [x] Exclude Development settings from published output.
+- [x] Add reproducible verification entry point and expanded browser/configuration/state checks.
+- [x] Prepare Render Free blueprint, native Linux container CI and Copilot instructions.
 
-## Identity and authorization
+## Release gates
 
-- [ ] Replace development-only self-registration with the facility identity provider.
-  - Integrate Entra ID/OIDC or the approved equivalent.
-  - Require verified clinician onboarding and MFA.
-  - Map trusted identity claims to provider roles.
-  - Disable automatic provider-role assignment for untrusted registrations.
-- [ ] Implement provider-to-patient authorization.
-  - Add provider, organization/facility, and patient-assignment relationships.
-  - Scope every patient and session query to the signed-in provider and tenant.
-  - Add authorization tests for unauthorized patient IDs and cross-tenant access.
-- [ ] Configure production session security.
-  - Enforce HTTPS-only secure cookies.
-  - Configure persistent, protected Data Protection keys.
-  - Define idle timeout, absolute timeout, and reauthentication behavior.
-  - Restrict `AllowedHosts` to approved production domains.
+- [ ] Run native Linux amd64 CI container check on the reviewed commit.
+- [ ] Scan final container OS/packages and repository history for vulnerabilities/secrets.
+- [ ] Complete manual keyboard/screen-reader/actual browser-zoom review.
+- [ ] Create the selected free-host service and verify its TLS/private-origin boundary.
+- [ ] Rehearse deployed cold start, restart recovery and backup screen recording.
 
-## Clinical data and integrations
+Actual local test evidence and limitations are in [READINESS-REPORT.md](READINESS-REPORT.md).
+Deployment instructions are in [COMPETITION-DEPLOYMENT.md](COMPETITION-DEPLOYMENT.md).
 
-- [ ] Replace in-memory patient and session repositories.
-  - Integrate the approved clinical API or persistent database.
-  - Preserve the separation between product analytics and clinical documentation.
-  - Define synchronization, retry, timeout, outage, and partial-data behavior.
-- [ ] Add production data fields and relationships.
-  - External source identifiers.
-  - Source system and synchronization timestamps.
-  - Provider and organization ownership.
-  - Consent/status fields where required.
-  - Versioning and soft-delete metadata.
-- [ ] Move filtering and aggregation to the data/API layer.
-  - Add server-side search, sorting, date ranges, and pagination.
-  - Avoid loading the complete patient and session population into memory.
-- [ ] Configure and test time zones.
-  - Make the display time zone configurable by facility or user.
-  - Test Windows/Linux time-zone identifiers and daylight-saving transitions.
-- [ ] Document interoperability requirements.
-  - Define mappings for Patient, Practitioner, Organization, Encounter,
-    Observation, CarePlan, and Task if FHIR integration is needed.
-  - Do not claim FHIR compliance until it is implemented and tested.
+## Demo and pitch (competition deadline)
 
-## Privacy, security, and compliance
+- [x] Architecture request-flow diagram (docs/ARCHITECTURE.md).
+- [x] HIPAA safeguards position (docs/HIPAA-SAFEGUARDS.md).
+- [x] Time zone (EST/EDT) shown with every timestamp; DST boundary checks.
+- [x] First-time "Take the tour" dialog (stored in localStorage only).
+- [x] Assistant chatbot skeleton: guardrail, stub responder, rate limit, tests. No model.
+- [x] Remove unused patientsIndexController.js (selector never matched the view).
+- [ ] Run `python3 tests/verify.py --browser` (Playwright not installed on this machine) and confirm the tour/chat pages pass axe.
+- [ ] Tech-stack slide: C#/ASP.NET MVC, JS, SQLite now / Postgres planned, Python test tooling only.
+- [ ] 4-minute talk track and backup screen recording (7-minute slot).
+- [ ] Rehearse cold start on Render Free (sleeps after 15 min; open the URL before presenting).
+- [ ] Prepare security Q&A: data protection, authentication, authorization, chatbot safeguards.
 
-- [ ] Add an immutable audit trail.
-  - Record sign-ins, sign-outs, patient list/detail access, searches, exports,
-    notes, task changes, authorization failures, and administrative changes.
-  - Include actor, organization, patient/resource, timestamp, outcome, and
-    correlation ID.
-- [ ] Define retention and operational policies.
-  - Audit retention and review.
-  - Data retention and deletion.
-  - Backup and restore.
-  - Incident and breach response.
-  - Security monitoring and alerting.
-- [ ] Review clinical-data handling for HIPAA and organizational requirements.
-  - Confirm hosting provider, database, identity provider, and vendors support
-    the required agreements and controls.
-  - Do not use real PHI in the current prototype.
-- [ ] Harden browser and API security.
-  - Review CSP, security headers, CORS, CSRF, XSS, and error disclosure.
-  - Keep sensitive patient data out of browser local storage.
-  - Restrict and audit exports.
-- [ ] Add health and readiness endpoints.
-  - Report application, database, identity, and clinical API dependency health.
-  - Avoid exposing sensitive configuration or patient data.
+## Data platform (Copilot candidates, see COPILOT-HANDOFF.md)
 
-## Reliability and engineering quality
+- [x] Patients and sessions stored in a database (`ClinicalDbContext`, separate from Identity) behind the existing repository interfaces; provider scoping retained; 17 DB-backed checks on real SQLite.
+- [x] Postgres selectable via `Clinical__Provider=Postgres` + `ConnectionStrings__Clinical` (package added; **not yet run against a real Postgres server**).
+- [ ] Replace `EnsureCreated` with versioned EF migrations (install `dotnet-ef`); required before the schema changes on a database that holds data.
+- [ ] Add providers/organizations as a table and replace the single `AssignedProviderId` string with a real relationship.
+- [ ] Verify against a free Neon/Supabase Postgres (case-insensitive search, tick-based date columns, unique index).
+- [ ] Encrypt clinical data at rest (managed Postgres encryption, or SQLCipher for SQLite).
+- [ ] XLS/CSV import for providers, validated and idempotent, with an import report.
+- [ ] Database and API source adapters behind one import interface.
 
-- [ ] Add automated tests.
-  - Domain and view-model unit tests.
-  - Repository and integration tests.
-  - Authentication and authorization tests.
-  - Negative tests for invalid, deleted, unauthorized, and cross-tenant records.
-  - UI smoke and accessibility tests.
-- [ ] Add CI/CD.
-  - Restore, build, test, analyzers, and publish checks.
-  - Dependency and secret scanning.
-  - Preview deployment validation.
-  - Production deployment approval gates.
-- [ ] Add resilience behavior.
-  - Propagate cancellation tokens to database/API calls.
-  - Configure dependency timeouts.
-  - Add appropriate retries and circuit breakers.
-  - Provide user-facing stale-data and dependency-failure states.
-- [ ] Replace `EnsureCreatedAsync()` with versioned database migrations.
-  - Define migration deployment and rollback procedures.
-  - Add backup/restore verification.
-- [ ] Add structured logging and correlation IDs.
-  - Avoid logging PHI, credentials, tokens, or unnecessary identifiers.
-  - Centralize error handling and map missing patients to a proper 404.
+## UI follow-ups from review
 
-## Hosting and deployment
+- [ ] Narrow-screen caseload: show name, last activity and review action at 390px without scrolling (Patients/Index.cshtml `text-nowrap`).
+- [ ] Browser tests: empty search result, boundary pages, keyboard search→filter→patient→back.
+- [ ] Manual screen-reader and keyboard pass (record separately).
+- [ ] Configurable time zone (user/facility setting).
+- [ ] Chat page and tour included in axe/browser coverage.
+- [ ] Orientation beyond the tour: help page or knowledge map.
 
-- [ ] Choose a .NET-compatible production host.
-  - Preferred initial options: Azure App Service or Azure Container Apps.
-  - Evaluate Render, Railway, Fly.io, or another provider for prototype use.
-  - Verify healthcare compliance, regional hosting, backups, and support.
-- [ ] Do not deploy the current SQLite/in-memory implementation with real PHI.
-  - Use a managed production database.
-  - Store secrets in a managed secret store.
-  - Configure persistent Data Protection keys.
-- [ ] Evaluate Vercel only as an intentional architecture choice.
-  - Vercel is better suited to a future Next.js/React frontend.
-  - If using Vercel containers for ASP.NET, validate runtime, persistence,
-    scaling, logging, regional, and compliance requirements first.
-  - A recommended split is Vercel frontend plus separately hosted ASP.NET Core
-    clinical API and managed database.
-- [ ] Add deployment documentation.
-  - Supported .NET SDK/runtime version.
-  - Environment variables and secret configuration.
-  - Domain and HTTPS setup.
-  - Database migrations.
-  - Health checks, monitoring, rollback, and disaster recovery.
+## Assistant: before connecting a model
 
-## Current functional fixes
+- [ ] BAA-covered vendor, zero data retention, server-side calls only.
+- [ ] Output filtering and injection red-team tests.
+- [ ] Optional name detection for redaction (patterns miss names).
 
-- [x] Fix dashboard card and recent-session row navigation.
-  - Support click, Enter, Space, focus, and screen-reader interaction.
-- [x] Add proper not-found handling for invalid patient IDs.
-- [x] Add search, filtering, and pagination to the patient list.
-- [x] Persist accessibility preferences intentionally and implement focus
-  trapping for the accessibility panel.
-- [x] Replace developer-specific absolute paths in [README.md](README.md).
+## Next feature work
 
-## Recommended implementation order
+- [ ] **Follow-up workflow (next substantial feature).** Implement the contract in
+  [NEXT-STEPS.md §2](NEXT-STEPS.md#2-follow-up-workflow--next-substantial-feature):
+  `FollowUpTask` (bounded title/note, due time, status, integer version) plus an
+  append-only `FollowUpEvent`, saved in one transaction; use a dedicated
+  workflow context with an initial EF migration. Add provider-scoped
+  create/complete/dismiss/reopen POST actions with antiforgery, validation,
+  optimistic-concurrency conflicts, a Follow-ups tab and timeline events. Never
+  trust a posted provider ID; missing or inaccessible patients/tasks are 404.
+  Tests: cross-provider denial, deleted patient, stale version, duplicate
+  submit, event rollback, length/date validation and restart persistence. Keep
+  task text out of localStorage and telemetry.
+- [ ] Implement a shared engagement calculation across dashboard, list and detail.
+- [ ] Decide per-session vs shared editable demo state before exposing task editing.
+- [ ] Add useful 404/error views without revealing record existence.
+- [ ] Review mobile menu focus/inert behavior and full caseload responsive layout.
+- [ ] Add rendered pagination fixtures, user/facility timezone settings and boundary tests.
 
-1. Define the identity, tenant, provider-to-patient authorization, and audit
-   model.
-2. Replace in-memory data access with a scoped clinical repository/API.
-3. Implement production authentication and secure deployment configuration.
-4. Add the Needs Attention queue, explainable trends, timeline, and follow-up
-   workflow.
-5. Add automated tests, CI/CD, observability, resilience, and migrations.
-6. Select and validate hosting, then run a security/compliance review before
-   any real patient data is introduced.
+## Before real clinical data
 
-## Competition review pass (2026-10-29)
+- [ ] Tenant/organization model and cross-tenant authorization tests.
+- [ ] Approved facility identity, onboarding, MFA and role mapping.
+- [ ] Persistent database, versioned Identity migrations and backup/restore verification.
+- [ ] Protected shared Data Protection keys and ticket storage before multiple instances.
+- [ ] Protected durable audit sink, retention, incident response and monitoring.
+- [ ] Approved clinical API contract, source metadata, timeouts/retries and stale/outage states.
+- [ ] Confirm vendor/region/agreement requirements with the responsible organization.
 
-- [x] Add an opt-in seeded hosted demo login; keep hosted registration closed.
-- [x] Harden cookies, caching, browser headers, CSRF defaults, and account rate/request-size limits.
-- [x] Add accessible patient tabs, a skip link, and an explainable session-count attention queue.
-- [x] Add Docker build instructions, CI checks, and a comparison of free hosting options.
-- [x] Add liveness and hosted-demo HTTP regression checks.
-- [ ] Validate the Docker image and chosen hosting environment end to end.
-- [ ] Complete browser, mobile, contrast, and screen-reader review.
-
-See [review findings](docs/REVIEW.md) and [competition deployment](docs/COMPETITION-DEPLOYMENT.md).
-The broader production tasks above remain open unless explicitly checked.
-
-## Skill-assisted assessment and UI plan (2026-10-29)
-
-- [x] Install shared Codex/Claude security and UI skills with source/license records.
-- [x] Run local HTTP, Chromium, repository/configuration and static/dependency checks.
-- [x] Reject unsafe hosted allowlists and require an authenticated provider in repositories.
-- [x] Read the supplied Reflect XR visual identity guide and preserve its fonts/colors in the UI plan.
-- [x] Add per-session revocation and a captured-cookie replay regression check.
-- [ ] Partition account rate limits and validate the real HTTPS proxy boundary.
-- [ ] Implement phases 1–3 of [the UI plan](docs/UI-IMPLEMENTATION-PLAN.md).
-- [ ] Complete container, secret-history, automated accessibility and human screen-reader checks.
-
-Assessment evidence and limitations: [security test report](docs/SECURITY-TEST-REPORT.md).
-
-- [x] Start UI foundation: brand typography, contrast fixes and compact mobile account controls.
-
-## Judge-facing UI batch
-
-- [x] Build a public demo introduction and simplify login messaging.
-- [x] Redesign dashboard worklist, platform summary, and recent activity.
-- [x] Add chronological session/reflection timeline and source details.
-- [x] Polish caseload search/filter layout.
-- [x] Update the free Render hosting release plan.
-- [ ] Add timeline filtering and provider follow-up persistence/audit.
-- [ ] Validate Docker and publish the chosen free-host demo.
+Historical assessments remain available in REVIEW.md, SECURITY-REVIEW.md,
+SECURITY-TEST-REPORT.md and COPILOT-REVIEW.md. Their earlier findings and test counts
+are snapshots; use NEXT-STEPS.md and READINESS-REPORT.md for current status.

@@ -24,6 +24,23 @@ Give clinicians longitudinal visibility into client engagement with Reflect XR (
 
 The MVP implements only the dashboard UI and domain shapes; repositories are in-memory. On merge into Reflect XR, interfaces move to `Reflect.Domain` and EF Core backs clinical data.
 
+## Request flow (this prototype)
+
+```mermaid
+flowchart LR
+  B[Browser<br/>Razor views + vanilla JS] -->|HTTPS| E[Host edge<br/>TLS, trusted proxy]
+  E --> M[ASP.NET Core middleware<br/>CSP, rate limits, auth cookie, antiforgery]
+  M --> C[Provider-area controllers<br/>Home, Patients, Chat]
+  C --> V[View models<br/>validation, as-of-now rule, engagement]
+  V --> R[Repositories<br/>provider-scoped]
+  R --> D[(ClinicalDbContext<br/>SQLite default, Postgres option)]
+  M --> I[(SQLite: Identity accounts)]
+  C --> G[ChatGuardrail<br/>redact, block injection]
+  G --> X[IChatResponder<br/>stub now; model later]
+```
+
+Patient and session data now live in a database (`ClinicalDbContext`), seeded with synthetic rows. Target: feed it by file upload (XLS/CSV), then database or API sources, behind the same repository interfaces. The Clinical API / HIPAA boundary in the layering diagram above is where real PHI would enter.
+
 ## Security notes (prototype)
 
 - Development-only account creation and opt-in hosted synthetic demo sign-in use ASP.NET Core Identity with a SQLite store under the app content root's `App_Data/` directory.

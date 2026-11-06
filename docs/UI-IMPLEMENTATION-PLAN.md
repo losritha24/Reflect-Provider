@@ -1,3 +1,8 @@
+> Current status: timeline platform/period filtering and caseload return context
+> were implemented in the readiness pass. Follow-up persistence remains planned.
+> See [NEXT-STEPS.md](NEXT-STEPS.md) and [READINESS-REPORT.md](READINESS-REPORT.md)
+> for current acceptance criteria and test evidence. The research below is retained.
+
 # Reflect provider UI implementation plan
 
 Status: foundations, dashboard composition, session timeline, caseload filter styling, simplified login copy and judge landing page implemented. Task persistence/editing and timeline filters remain planned. October 29, 2026.

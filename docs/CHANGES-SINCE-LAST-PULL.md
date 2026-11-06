@@ -5,8 +5,9 @@ Updated: October 29, 2026.
 **Baseline:** `6cceeae` — `Align provider dashboard with extension spec`.
 The local reflog records the initial clone at this commit and no later pull.
 This summary therefore covers the current working tree against that checkout,
-including new, untracked files. These changes have not been committed or deployed
-by this workflow.
+including new, untracked files. Earlier changes were committed in `8440303` and `fdc4cb9`. The readiness pass
+described below is an uncommitted update on top of `fdc4cb9`; no public deployment
+was created by this workflow.
 
 ## Interface and provider experience
 
@@ -108,3 +109,17 @@ by this workflow.
   depends on a correctly protected hosting boundary.
 - Full accessibility/screen-reader review, container scanning, and secret-history
   scanning are not claimed complete. This prototype is not ready for real patient data.
+
+## Latest readiness pass (on top of fdc4cb9)
+
+Added timeline platform/period filters and preserved caseload context, corrected
+future-session counts, hardened login rate limits without blocking logout, added
+explicit proxy validation, seeded-password mismatch detection and readiness probes,
+and excluded Development settings from publish. Added a Render Blueprint, combined
+verification command, browser/axe checks, expanded CI and Copilot task instructions.
+Copilot contributed the bounded source review and timeline/navigation implementation;
+the integrated changes were reviewed and tested.
+
+For current verification and remaining release gates, read
+[READINESS-REPORT.md](READINESS-REPORT.md) and [NEXT-STEPS.md](NEXT-STEPS.md). The
+earlier Remaining limitations section above records the prior pass's state.

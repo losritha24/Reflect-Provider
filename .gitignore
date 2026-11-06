@@ -40,3 +40,7 @@ appsettings.*.Local.json
 TestResults/
 playwright-report/
 test-results/
+
+node_modules/
+
+.venv/
