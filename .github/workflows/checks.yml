@@ -2,9 +2,13 @@ name: Build and regression checks
 on: [push, pull_request]
 permissions:
   contents: read
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   checks:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
@@ -13,8 +17,34 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: dotnet run --project tests/Reflect.ProviderDashboard.Checks -p:UseSharedCompilation=false
-      - run: node --test tests/layoutController.test.cjs
-      - run: python3 tests/hosted_demo_smoke.py
-      - run: python3 tests/deployment_config_checks.py
-      - run: dotnet publish Reflect.ProviderDashboard.Web -c Release --no-restore -o /tmp/reflect-publish
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restore and require available, clean dependency advisories
+        run: dotnet restore tests/Reflect.ProviderDashboard.Checks -p:NuGetAudit=true -p:NuGetAuditMode=all -warnaserror:NU1900,NU1901,NU1902,NU1903,NU1904,NU1905
+      - run: npm ci --prefix tests --ignore-scripts
+      - run: pip install -r tests/requirements-browser.txt
+      - run: python -m playwright install --with-deps chromium
+      - name: Regression, browser, configuration, readiness and publish checks
+        run: python tests/verify.py --browser
+        env:
+          REFLECT_ARTIFACTS: test-results/screenshots
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-screenshots
+          path: test-results/screenshots
+          if-no-files-found: ignore
+  container:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build native Linux amd64 container
+        run: docker build -t reflect-provider-demo:ci .
+      - name: Require non-root runtime and exclude Development settings
+        run: docker run --rm --entrypoint /bin/sh reflect-provider-demo:ci -c 'test "$(id -u)" != 0 && test ! -f /app/appsettings.Development.json'
+      - name: Exercise production container under 512 MB memory limit
+        run: python3 tests/hosted_demo_smoke.py
+        env:
+          REFLECT_CONTAINER: reflect-provider-demo:ci

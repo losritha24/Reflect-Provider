@@ -8,4 +8,5 @@ public interface ICompanyClock
     DateTimeOffset ToCompany(DateTimeOffset value);
     string FormatDate(DateTimeOffset value);
     string FormatDateTime(DateTimeOffset value);
+    string ZoneAbbreviation(DateTimeOffset value);
 }

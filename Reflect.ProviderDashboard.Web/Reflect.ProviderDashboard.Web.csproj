@@ -6,10 +6,14 @@
     <RootNamespace>Reflect.ProviderDashboard.Web</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Reflect.ProviderDashboard.Domain\Reflect.ProviderDashboard.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.14" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
   </ItemGroup>
 </Project>

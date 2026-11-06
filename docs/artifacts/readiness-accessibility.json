@@ -1,0 +1,74 @@
+[
+  {
+    "page": "caseload-axe",
+    "engine": {
+      "name": "axe-core",
+      "version": "4.14.0"
+    },
+    "violations": [],
+    "manual_review": []
+  },
+  {
+    "page": "dashboard-dark-axe",
+    "engine": {
+      "name": "axe-core",
+      "version": "4.14.0"
+    },
+    "violations": [],
+    "manual_review": [
+      {
+        "id": "aria-prohibited-attr",
+        "impact": "serious"
+      },
+      {
+        "id": "color-contrast",
+        "impact": "serious"
+      }
+    ]
+  },
+  {
+    "page": "dashboard-light-axe",
+    "engine": {
+      "name": "axe-core",
+      "version": "4.14.0"
+    },
+    "violations": [],
+    "manual_review": [
+      {
+        "id": "aria-prohibited-attr",
+        "impact": "serious"
+      },
+      {
+        "id": "color-contrast",
+        "impact": "serious"
+      }
+    ]
+  },
+  {
+    "page": "landing-axe",
+    "engine": {
+      "name": "axe-core",
+      "version": "4.14.0"
+    },
+    "violations": [],
+    "manual_review": []
+  },
+  {
+    "page": "login-axe",
+    "engine": {
+      "name": "axe-core",
+      "version": "4.14.0"
+    },
+    "violations": [],
+    "manual_review": []
+  },
+  {
+    "page": "patient-timeline-axe",
+    "engine": {
+      "name": "axe-core",
+      "version": "4.14.0"
+    },
+    "violations": [],
+    "manual_review": []
+  }
+]

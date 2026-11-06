@@ -33,7 +33,15 @@ public sealed class CompanyClock : ICompanyClock
         ToCompany(value).ToString("M/d/yyyy", CultureInfo.InvariantCulture);
 
     public string FormatDateTime(DateTimeOffset value) =>
-        ToCompany(value).ToString("M/d/yyyy h:mm tt", CultureInfo.InvariantCulture);
+        ToCompany(value).ToString("M/d/yyyy h:mm tt", CultureInfo.InvariantCulture) + " " + ZoneAbbreviation(value);
+
+    public string ZoneAbbreviation(DateTimeOffset value)
+    {
+        if (string.Equals(IanaId, "America/New_York", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(Abbreviation, "ET", StringComparison.OrdinalIgnoreCase))
+            return _zone.IsDaylightSavingTime(ToUtc(value)) ? "EDT" : "EST";
+        return Abbreviation;
+    }
 
     private static TimeZoneInfo Resolve(string ianaId)
     {

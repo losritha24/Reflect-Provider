@@ -26,11 +26,14 @@ public class ProviderDashboardViewModel
 
         AsOfUtc = DateTimeOffset.UtcNow;
         var since = AsOfUtc.AddDays(-7);
-        SessionsLast7Days = await sessions.CountSinceAsync(since, ct);
-        VrSessionsLast7Days = await sessions.CountByPlatformSinceAsync(Domain.Enums.TherapyPlatform.Vr, since, ct);
-        MobileSessionsLast7Days = await sessions.CountByPlatformSinceAsync(Domain.Enums.TherapyPlatform.Mobile, since, ct);
+        var allSessions = (await sessions.GetAllAsync(ct))
+            .Where(s => s.StartedAtUtc <= AsOfUtc && allPatients.Any(p => p.Id == s.PatientId))
+            .OrderByDescending(s => s.StartedAtUtc).ToList();
+        var currentSessions = allSessions.Where(s => s.StartedAtUtc >= since).ToList();
+        SessionsLast7Days = currentSessions.Count;
+        VrSessionsLast7Days = currentSessions.Count(s => s.Platform == Domain.Enums.TherapyPlatform.Vr);
+        MobileSessionsLast7Days = currentSessions.Count(s => s.Platform == Domain.Enums.TherapyPlatform.Mobile);
 
-        var allSessions = await sessions.GetAllAsync(ct);
         var patientLookup = allPatients.ToDictionary(p => p.Id, p => p.DisplayName);
 
         var activityLookup = allSessions.Where(s => s.StartedAtUtc <= AsOfUtc).ToLookup(s => s.PatientId);

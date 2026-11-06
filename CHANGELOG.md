@@ -31,3 +31,12 @@
 - Domain entities `Patient`, `TherapySession` with in-memory synthetic seed data.
 - Stand-in Reflect XR-themed layout, theme toggle, accessibility panel, CSP header.
 - Demo provider authentication (no Entra integration).
+
+## October 29, 2026 — readiness pass
+
+- Add timeline filters and retain caseload navigation context.
+- Correct future-session counts and test Eastern DST display.
+- Keep logout available under login throttling; validate explicit proxy trust.
+- Detect seeded credential mismatch and safely encode SQLite paths.
+- Add database readiness, publish hygiene, browser/axe checks and container CI.
+- Prepare a Free Render Blueprint and detailed next-work/Copilot handoff plan.

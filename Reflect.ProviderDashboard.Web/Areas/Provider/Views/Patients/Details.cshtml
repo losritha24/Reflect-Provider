@@ -7,16 +7,16 @@
     <h1 class="page-title mb-1">@Model.DisplayName</h1>
     <p class="text-muted fs-13 mb-0">@Model.ExternalPatientId · DOB @Model.DateOfBirthDisplay</p>
     <div class="mt-2">
-        <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Patients", new { area = "Provider" })">Back to patients</a>
+        <a class="btn btn-outline-secondary" asp-action="Index" asp-route-search="@Model.Search" asp-route-trend="@Model.Trend" asp-route-page="@Model.Page">Back to patients</a>
     </div>
 </div>
 
 <ul class="nav nav-tabs" id="patientTabs" role="tablist">
-    <li><button type="button" class="nav-link active" data-tab="overview" id="tab-overview" role="tab" aria-selected="true" aria-controls="panel-overview" tabindex="0">Overview</button></li>
-    <li><button type="button" class="nav-link" data-tab="sessions" id="tab-sessions" role="tab" aria-selected="false" aria-controls="panel-sessions" tabindex="-1">Timeline</button></li>
+    <li role="presentation"><button type="button" class="nav-link @(Model.TimelineSelected ? "" : "active")" data-tab="overview" id="tab-overview" role="tab" aria-selected="@((!Model.TimelineSelected).ToString().ToLowerInvariant())" aria-controls="panel-overview" tabindex="@(Model.TimelineSelected ? -1 : 0)">Overview</button></li>
+    <li role="presentation"><button type="button" class="nav-link @(Model.TimelineSelected ? "active" : "")" data-tab="sessions" id="tab-sessions" role="tab" aria-selected="@(Model.TimelineSelected.ToString().ToLowerInvariant())" aria-controls="panel-sessions" tabindex="@(Model.TimelineSelected ? 0 : -1)">Timeline</button></li>
 </ul>
 
-<div id="panel-overview" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
+<div id="panel-overview" role="tabpanel" aria-labelledby="tab-overview" tabindex="0" hidden="@(Model.TimelineSelected ? "hidden" : null)">
     <div class="stat-grid">
         <div class="card custom-card">
             <div class="card-body">
@@ -124,13 +124,38 @@
     </section>
 </div>
 
-<div id="panel-sessions" role="tabpanel" aria-labelledby="tab-sessions" tabindex="0" hidden>
+<div id="panel-sessions" role="tabpanel" aria-labelledby="tab-sessions" tabindex="0" hidden="@(!Model.TimelineSelected ? "hidden" : null)">
+    <form method="get" asp-action="Details" asp-route-id="@Model.PatientId" asp-route-search="@Model.Search" asp-route-trend="@Model.Trend" asp-route-page="@Model.Page" asp-route-tab="timeline" class="filter-toolbar mb-4">
+        <input type="hidden" name="search" value="@Model.Search" />
+        <input type="hidden" name="trend" value="@Model.Trend" />
+        <input type="hidden" name="page" value="@Model.Page" />
+        <input type="hidden" name="tab" value="timeline" />
+        <div class="filter-field">
+            <label for="Platform">Platform</label>
+            <select asp-for="Platform">
+                <option value="">All platforms</option>
+                <option value="Vr">Reflect XR (VR)</option>
+                <option value="Mobile">Reflect Mobile</option>
+            </select>
+        </div>
+        <div class="filter-field">
+            <label for="Days">Time period</label>
+            <select asp-for="Days">
+                <option value="">All time</option>
+                <option value="7">Last 7 days</option>
+                <option value="30">Last 30 days</option>
+                <option value="90">Last 90 days</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary-light">Apply filters</button>
+        <a asp-action="Details" asp-route-id="@Model.PatientId" asp-route-search="@Model.Search" asp-route-trend="@Model.Trend" asp-route-page="@Model.Page" asp-route-tab="timeline">Clear filters</a>
+    </form>
     <section class="work-panel" aria-labelledby="timeline-heading">
-        <div class="section-heading"><div><h2 id="timeline-heading">The story between sessions</h2><p class="text-muted">Newest first · @Clock.Abbreviation (@Clock.IanaId) · stored UTC · Synthetic session records</p></div><span class="badge bg-info-transparent">@Model.TotalSessions sessions</span></div>
+        <div class="section-heading"><div><h2 id="timeline-heading">The story between sessions</h2><p class="text-muted">Newest first · @Clock.IanaId · stored UTC · Synthetic session records</p></div><span class="badge bg-info-transparent">Showing @Model.FilteredSessionCount of @Model.TotalSessions sessions</span></div>
         <ol class="patient-timeline">
         @foreach (var session in Model.Sessions)
         {
-            <li><time datetime="@session.StartedAtUtc.ToUniversalTime().ToString("O")">@session.SessionDateTimeDisplay @Clock.Abbreviation</time><article>
+            <li><time datetime="@session.StartedAtUtc.ToUniversalTime().ToString("O")">@session.SessionDateTimeDisplay</time><article>
                 <span class="badge bg-info-transparent">@session.PlatformLabel · @session.DurationMinutes min</span>
                 @if (session.AffectScore.HasValue)
                 {
@@ -141,20 +166,20 @@
             </article></li>
         }
         </ol>
-        @if (Model.Sessions.Count == 0) { <p class="empty-state">No sessions yet. Activity will appear here when sessions are available.</p> }
+        @if (Model.Sessions.Count == 0) { <p class="empty-state">@(Model.TotalSessions == 0 ? "No sessions yet. Activity will appear here when sessions are available." : "No sessions match these filters. Try a different platform or clear the filters.")</p> }
     </section>
     <details class="work-panel"><summary>View session table</summary>
     <div class="card custom-card">
         <div class="card-header"><div class="card-title">Session history</div></div>
-        <div class="card-body table-responsive">
+        <div class="card-body table-responsive" tabindex="0" role="region" aria-label="Session history table; scroll horizontally for more columns">
             <table class="table dt-client text-nowrap align-middle">
                 <thead>
                 <tr>
-                    <th>Date &amp; time (ET)</th>
-                    <th>Duration</th>
-                    <th>Platform</th>
-                    <th>Module</th>
-                    <th>Reflection summary</th>
+                    <th scope="col">Date &amp; time (Eastern)</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Platform</th>
+                    <th scope="col">Module</th>
+                    <th scope="col">Reflection summary</th>
                 </tr>
                 </thead>
                 <tbody>

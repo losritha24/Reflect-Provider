@@ -13,7 +13,7 @@
     <div><span class="stat-value">@Model.ActivePatientCount</span><span>Assigned patients</span></div>
     <div><span class="stat-value">@Model.SessionsLast7Days</span><span>Sessions · last 7 days</span></div>
     <div><span class="stat-value">@Model.NeedsAttention.Count</span><span>Follow-up signals</span></div>
-    <div class="snapshot-note"><span class="status-dot" aria-hidden="true"></span><span>Synthetic snapshot<br /><small>Generated @Reflect.ProviderDashboard.Web.Infrastructure.InMemoryDataStore.SeededAtUtc.ToUsDateTimeString() @Clock.Abbreviation</small></span></div>
+    <div class="snapshot-note"><span class="status-dot" aria-hidden="true"></span><span>Synthetic snapshot<br /><small>Generated @Reflect.ProviderDashboard.Web.Infrastructure.InMemoryDataStore.SeededAtUtc.ToUsDateTimeString()</small></span></div>
 </div>
 <div class="workspace-grid">
 <section class="work-panel" aria-labelledby="attention-heading">
@@ -28,7 +28,7 @@
         <article class="signal-card">
             <div class="signal-person"><span class="patient-avatar" aria-hidden="true">@signal.PatientName.Substring(0, 1)</span><div>
                 <a class="patient-name" asp-controller="Patients" asp-action="Details" asp-route-id="@signal.PatientId">@signal.PatientName</a>
-                <p class="text-muted">Last activity: @(signal.LastActivity?.ToUsDateTimeString() ?? "None recorded") @Clock.Abbreviation</p>
+                <p class="text-muted">Last activity: @(signal.LastActivity?.ToUsDateTimeString() ?? "None recorded")</p>
             </div></div>
             <div class="signal-comparison"><div><strong>@signal.PreviousSessions</strong><span>Previous 7 days</span></div><span aria-hidden="true">→</span><div><strong>@signal.CurrentSessions</strong><span>Last 7 days</span></div><span class="badge bg-warning-transparent">Fewer sessions</span></div>
             <p>Check in about barriers to participation and review the latest reflection.</p>
@@ -58,7 +58,7 @@
         <article class="signal-card">
             <div class="signal-person"><span class="patient-avatar" aria-hidden="true">@row.PatientName.Substring(0, 1)</span><div>
                 <a class="patient-name" asp-controller="Patients" asp-action="Details" asp-route-id="@row.PatientId">@row.PatientName</a>
-                <p class="text-muted">Latest marker @row.LastActivity.ToUsDateTimeString() @Clock.Abbreviation</p>
+                <p class="text-muted">Latest marker @row.LastActivity.ToUsDateTimeString()</p>
             </div></div>
             <div class="signal-comparison"><div><strong>@row.PersonalBaseline.ToString("0.0")</strong><span>Personal baseline</span></div><span aria-hidden="true">→</span><div><strong>@row.LatestScore</strong><span>Latest affect (1–10)</span></div><span class="badge bg-warning-transparent">Below self</span></div>
             <p>This is a change from their own recent range. It is not a diagnosis and is not compared with other patients.</p>

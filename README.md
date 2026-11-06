@@ -4,7 +4,7 @@ Prototype **mental health provider dashboard** for Persistent Technology’s Imm
 
 ## Prerequisites
 
-- [.NET 10 SDK](https://dotnet.microsoft.com/download) (or retarget projects to `net8.0` if needed)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
 
 ## Run locally
 
@@ -14,7 +14,7 @@ dotnet build
 dotnet run --project Reflect.ProviderDashboard.Web
 ```
 
-Open the URL shown in the console (default `https://localhost:7150`). Root `/` redirects to the provider dashboard.
+Open the URL shown in the console (default `https://localhost:7150`). Root `/` shows the judge introduction; signed-in visitors go to the dashboard.
 
 ### Doctor accounts
 
@@ -104,6 +104,36 @@ In Development, the app seeds `doctor@reflect.demo` with password
 demo credentials are configured only in `appsettings.Development.json`.
 Run `dotnet run --project Reflect.ProviderDashboard.Web` and use the displayed URL.
 New self-registered accounts start with no assigned patients. Existing account
-passwords are not overwritten by startup seeding. Hosted Production deployments
+passwords must match the configured seed password or startup fails. Reset the
+disposable demo account database explicitly to rotate it; never use this reset
+procedure for production records. Hosted Production deployments
 must explicitly supply their own `Demo__Enabled`, `Demo__Email`, and
 `Demo__Password` settings; the Development file is not loaded there.
+
+## Next steps and release verification
+
+Start with [the prioritized implementation plan](docs/NEXT-STEPS.md), the
+[current queue](docs/TODO.md), and [verification evidence](docs/READINESS-REPORT.md).
+
+```bash
+python3 tests/verify.py
+# Optional full browser/accessibility pass:
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r tests/requirements-browser.txt
+npm ci --prefix tests --ignore-scripts
+python -m playwright install chromium
+python tests/verify.py --browser
+# With Docker running:
+docker build -t reflect-provider-demo:local .
+python tests/verify.py --browser --container reflect-provider-demo:local
+```
+
+Checks use temporary accounts/databases and do not change the running local demo.
+Browser checks include axe for the tested light/dark views; they do not replace a
+human screen-reader review. `/health/ready` checks Identity schema availability;
+`/health/live` remains process-only. `render.yaml` prepares one Free Docker service
+with auto-deploy disabled. It has not been deployed by this pass.
+
+Copilot instructions are in `.github/copilot-instructions.md`; bounded task briefs
+and handoff rules are in the implementation plan.

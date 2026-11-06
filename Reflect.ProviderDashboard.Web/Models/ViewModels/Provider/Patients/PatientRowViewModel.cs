@@ -17,6 +17,7 @@ public class PatientRowViewModel
 
     public static PatientRowViewModel FromEntity(Patient patient, IReadOnlyList<TherapySession> sessions)
     {
+        sessions = sessions.Where(s => s.StartedAtUtc <= DateTimeOffset.UtcNow).ToList();
         var last = sessions.OrderByDescending(s => s.StartedAtUtc).FirstOrDefault();
         var vrCount = sessions.Count(s => s.Platform == TherapyPlatform.Vr);
         var mobileCount = sessions.Count(s => s.Platform == TherapyPlatform.Mobile);

@@ -23,9 +23,20 @@ with tempfile.TemporaryDirectory(prefix='reflect-smoke-') as directory:
                AllowedHosts='127.0.0.1', Hosting__HttpsAtEdge='true',
                AccountStore__Path=str(Path(directory) / 'accounts/provider.db'))
     with open(Path(directory) / 'server.log', 'w+') as log:
-        process = subprocess.Popen([dotnet, str(root / 'Reflect.ProviderDashboard.Web/bin/Debug/net10.0/Reflect.ProviderDashboard.Web.dll'),
-                                    '--urls', f'http://127.0.0.1:{port}'],
-                                   cwd=root / 'Reflect.ProviderDashboard.Web', env=env, stdout=log, stderr=log)
+        container_image = os.environ.get('REFLECT_CONTAINER')
+        container_name = 'reflect-smoke-' + secrets.token_hex(6)
+        if container_image:
+            env['AccountStore__Path'] = '/app/App_Data/provider.db'
+            command = ['docker', 'run', '--rm', '--name', container_name,
+                       '--memory=512m', '--cpus=1', '-p', f'127.0.0.1:{port}:8080']
+            for key in ['ASPNETCORE_ENVIRONMENT', 'Demo__Enabled', 'Demo__Email',
+                        'Demo__Password', 'AllowedHosts', 'Hosting__HttpsAtEdge', 'AccountStore__Path']:
+                command += ['-e', key]
+            command += [container_image]
+        else:
+            command = [dotnet, str(root / 'Reflect.ProviderDashboard.Web/bin/Debug/net10.0/Reflect.ProviderDashboard.Web.dll'),
+                       '--urls', f'http://127.0.0.1:{port}']
+        process = subprocess.Popen(command, cwd=root / 'Reflect.ProviderDashboard.Web', env=env, stdout=log, stderr=log)
         def request(path, method='GET', body=None, cookie='', headers=None):
             conn = http.client.HTTPConnection('127.0.0.1', port, timeout=10)
             conn.request(method, path, body, {'Cookie': cookie, 'Content-Type': 'application/x-www-form-urlencoded', **(headers or {})})
@@ -35,7 +46,7 @@ with tempfile.TemporaryDirectory(prefix='reflect-smoke-') as directory:
             conn.close()
             return result
         try:
-            for _ in range(100):
+            for _ in range(600):
                 if process.poll() is not None:
                     log.seek(0)
                     raise RuntimeError(log.read())
@@ -47,6 +58,7 @@ with tempfile.TemporaryDirectory(prefix='reflect-smoke-') as directory:
                 time.sleep(.1)
             else:
                 raise RuntimeError('Server did not start')
+            assert request('/health/ready')[0] == 200
             assert request('/Provider/Home/Dashboard')[0] == 302
             assert request('/Account/Register')[0] == 404
             assert request('/Provider/Patients/Index', headers={'X-Forwarded-User': 'admin'})[0] == 302
@@ -86,15 +98,30 @@ with tempfile.TemporaryDirectory(prefix='reflect-smoke-') as directory:
             if os.environ.get('REFLECT_BROWSER') == '1':
                 from browser_checks import run_browser
                 run_browser(f'http://127.0.0.1:{port}', 'reviewer@example.invalid', password)
+            # Exhaust credential attempts, including forged forwarding headers. Logout and
+            # GET pages must remain available so an attacker cannot prevent revocation.
+            rejected = None
+            for i in range(35):
+                attempt = request('/Account/Login', 'POST', '', headers={'X-Forwarded-For': f'198.51.100.{i + 1}'})
+                if attempt[0] == 429:
+                    rejected = attempt
+                    break
+            assert rejected is not None, 'Credential rate limiter did not reject excess requests'
+            assert int(rejected[1].getheader('Retry-After')) > 0
+            assert request('/Account/Login')[0] == 200
+            assert request('/health/ready')[0] == 200
             # Logout clears this browser's cookie, but capture whether a stolen copy remains valid.
             csrf = html.unescape(re.search(r'name="__RequestVerificationToken"[^>]*value="([^\"]+)"', dashboard)[1])
             assert request('/Account/Logout', 'POST', urlencode({'__RequestVerificationToken': csrf}), cookie)[0] == 302
             replay = request('/Provider/Home/Dashboard', cookie=cookie)[0]
             assert replay == 302, 'Captured cookie still works after logout'
             print('PASS: captured authentication cookie is rejected after logout')
-            assert any(request('/Account/Login')[0] == 429 for _ in range(31))
+            assert request('/Account/Login', 'POST', '')[0] == 429
+            print('PASS: logout still revokes sessions while credential rate limit is exhausted')
             print('PASS: hosted demo login, registration closure, CSRF, safe redirects, secure cookies, security headers, protected routes, queue rendering, filtering, 404, rate limiting')
         finally:
+            if container_image:
+                subprocess.run(['docker', 'rm', '-f', container_name], capture_output=True, timeout=30)
             process.terminate()
             try:
                 process.wait(timeout=10)

@@ -1,0 +1,92 @@
+RUN: dotnet run --project tests/Reflect.ProviderDashboard.Checks -p:UseSharedCompilation=false
+<review-copy>/tests/Reflect.ProviderDashboard.Checks/Reflect.ProviderDashboard.Checks.csproj : warning NU1900: Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json.
+<review-copy>/Reflect.ProviderDashboard.Web/Reflect.ProviderDashboard.Web.csproj : warning NU1900: Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json. [<review-copy>/tests/Reflect.ProviderDashboard.Checks/Reflect.ProviderDashboard.Checks.csproj]
+<review-copy>/tests/Reflect.ProviderDashboard.Checks/Reflect.ProviderDashboard.Checks.csproj : warning NU1900: Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json.
+<review-copy>/Reflect.ProviderDashboard.Web/Reflect.ProviderDashboard.Web.csproj : warning NU1900: Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json.
+PASS: Pages do not overlap
+PASS: Out-of-range pages clamp to last page
+PASS: Search trims and ignores case while combining filters
+PASS: External patient IDs are searchable
+PASS: Empty results have a valid page
+PASS: Search honors cancellation
+PASS: Unknown patient returns 404
+PASS: Missing patient ID returns 404
+PASS: Malformed patient ID returns 404
+PASS: Deleted patient returns 404
+PASS: Deleted patients are excluded from search
+PASS: Existing patient still renders
+PASS: Undefined trend is rejected
+PASS: Filtered rows retain session totals
+PASS: Providers cannot list another provider's patients
+PASS: Unassigned patient access is denied
+PASS: Attention queue reflects a real decrease in the seeded session windows
+PASS: Unassigned providers cannot read sessions or aggregate counts
+PASS: Unassigned patient session access is denied
+PASS: An unauthenticated identity cannot use an assigned provider ID claim
+PASS: A missing provider ID fails closed
+PASS: An authenticated identity without the provider role fails closed
+PASS: Independent logins have independent session keys
+PASS: Logout revokes only the selected session
+PASS: A late renewal cannot resurrect a revoked session
+PASS: Ticket renewal preserves the original absolute expiry
+PASS: Expired tickets cannot authenticate
+PASS: Raw forwarding headers cannot select a rate-limit bucket
+PASS: Mapped IPv4 addresses share the same rate-limit bucket
+PASS: Unmarked POST actions such as logout bypass credential limits
+PASS: Credential endpoint metadata selects request limits
+PASS: Sign-in pages do not consume credential budgets
+PASS: Future sessions do not change caseload totals or last activity
+PASS: Eastern display skips the spring DST gap correctly
+PASS: Eastern fall DST overlap is displayed with UTC source timestamps available
+PASS: Empty filters show all past sessions
+PASS: Platform and days filters intersect
+PASS: Invalid platform is rejected
+PASS: Invalid days are rejected
+PASS: Malformed filter binding is rejected
+PASS: Future sessions are excluded from totals and timeline
+PASS: Missing patient ID remains 404
+PASS: Unauthorized patient remains 404
+RUN: node --test tests/layoutController.test.cjs
+✔ modal traps focus, closes on Escape, and restores its trigger (2.227125ms)
+✔ preferences restore and persist only display settings (1.5895ms)
+✔ corrupt or unavailable storage does not break controls (1.240042ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 119.272709
+RUN: python tests/hosted_demo_smoke.py
+PASS: Chromium login, font loading, modal focus trap, keyboard tabs, reflected-XSS/HTML-helper probes, browser storage, mobile overflow, and JS errors
+PASS: captured authentication cookie is rejected after logout
+PASS: logout still revokes sessions while credential rate limit is exhausted
+PASS: hosted demo login, registration closure, CSRF, safe redirects, secure cookies, security headers, protected routes, queue rendering, filtering, 404, rate limiting
+RUN: python tests/deployment_config_checks.py
+PASS: rejected {'AllowedHosts': '*'}
+PASS: rejected {'AllowedHosts': '127.0.0.1;*'}
+PASS: rejected {'AllowedHosts': ' '}
+PASS: rejected {'AllowedHosts': 'https://demo.example'}
+PASS: rejected {'AllowedHosts': 'demo.example:8080'}
+PASS: rejected {'AllowedHosts': 'demo.example;'}
+PASS: rejected {'ASPNETCORE_FORWARDEDHEADERS_ENABLED': 'true'}
+PASS: rejected {'DOTNET_FORWARDEDHEADERS_ENABLED': 'true'}
+PASS: rejected {'Hosting__KnownProxies__0': '*'}
+PASS: rejected {'Hosting__KnownProxies__0': '0.0.0.0'}
+PASS: rejected {'Hosting__KnownProxies__0': '127.0.0.1', 'Hosting__HttpsAtEdge': 'true'}
+PASS: rejected {'Demo__Enabled': 'true', 'Demo__Email': ' ', 'Demo__Password': ' '}
+RUN: python tests/startup_state_checks.py
+PASS: SQLite path containing semicolons is treated as a literal path
+PASS: stale persisted demo password fails startup instead of silently remaining active
+PASS: readiness detects missing identity schema without exposing details; liveness remains independent
+RUN: dotnet publish Reflect.ProviderDashboard.Web -c Release --no-restore -o test-results/publish
+<review-copy>/Reflect.ProviderDashboard.Web/Reflect.ProviderDashboard.Web.csproj : warning NU1900: Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json.
+  Reflect.ProviderDashboard.Domain -> <review-copy>/Reflect.ProviderDashboard.Domain/bin/Release/net10.0/Reflect.ProviderDashboard.Domain.dll
+  Reflect.ProviderDashboard.Web -> <review-copy>/Reflect.ProviderDashboard.Web/bin/Release/net10.0/Reflect.ProviderDashboard.Web.dll
+  Reflect.ProviderDashboard.Web -> <review-copy>/test-results/publish/
+PASS: Chromium login, font loading, modal focus trap, keyboard tabs, reflected-XSS/HTML-helper probes, browser storage, mobile overflow, and JS errors
+PASS: captured authentication cookie is rejected after logout
+PASS: logout still revokes sessions while credential rate limit is exhausted
+PASS: hosted demo login, registration closure, CSRF, safe redirects, secure cookies, security headers, protected routes, queue rendering, filtering, 404, rate limiting
+PASS: all selected checks completed

@@ -78,6 +78,23 @@ Workforce training, facility policies, and the organizational risk analysis rema
 - **Hosted demo:** platform managed cert (Render / Azure) with `Hosting:HttpsAtEdge`.
 - **Production:** AWS Certificate Manager on the load balancer, or Azure App Service managed TLS 1.2+, HTTP redirected to HTTPS, HSTS ≥ 1 year.
 
+## Request flow (this prototype)
+
+```mermaid
+flowchart LR
+  B[Browser<br/>Razor views + vanilla JS] -->|HTTPS| E[Host edge<br/>TLS, trusted proxy]
+  E --> M[ASP.NET Core middleware<br/>CSP, rate limits, auth cookie, antiforgery]
+  M --> C[Provider-area controllers<br/>Home, Patients, Chat]
+  C --> V[View models<br/>validation, as-of-now rule, engagement]
+  V --> R[Repositories<br/>provider-scoped]
+  R --> D[(ClinicalDbContext<br/>SQLite default, Postgres option)]
+  M --> I[(SQLite: Identity accounts)]
+  C --> G[ChatGuardrail<br/>redact, block injection]
+  G --> X[IChatResponder<br/>stub now; model later]
+```
+
+Patient and session data now live in a database (`ClinicalDbContext`), seeded with synthetic rows. Target: feed it by file upload (XLS/CSV), then database or API sources, behind the same repository interfaces. The Clinical API / HIPAA boundary in the layering diagram above is where real PHI would enter.
+
 ## Security notes (prototype)
 
 - Development-only account creation and opt-in hosted synthetic demo sign-in use ASP.NET Core Identity with SQLite under `App_Data/`.
