@@ -29,7 +29,7 @@ jobs:
         run: python tests/verify.py --browser
         env:
           REFLECT_ARTIFACTS: test-results/screenshots
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: browser-screenshots
