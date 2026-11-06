@@ -225,6 +225,17 @@ h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-li
   text-transform: uppercase;
   color: rgba(250, 250, 251, 0.75);
 }
+.sidebar #tourOpen {
+  border-color: rgba(250, 250, 251, 0.45);
+  color: var(--off-white);
+  background: transparent;
+}
+.sidebar #tourOpen:hover,
+.sidebar #tourOpen:focus {
+  border-color: var(--soft-coral);
+  color: #fff;
+  background: rgba(255, 130, 130, 0.16);
+}
 
 .main-column { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .app-header {
@@ -542,7 +553,8 @@ table.table tbody tr:last-child td { border-bottom: none; }
 .app-shell.sidebar-collapsed .sidebar-brand-copy,
 .app-shell.sidebar-collapsed .sidebar .category,
 .app-shell.sidebar-collapsed .sidebar-footer,
-.app-shell.sidebar-collapsed .nav-link-label { display: none; }
+.app-shell.sidebar-collapsed .nav-link-label,
+.app-shell.sidebar-collapsed #tourOpen { display: none; }
 .app-shell.sidebar-collapsed .sidebar .nav-link {
   justify-content: center;
   padding-inline: 0;
@@ -580,7 +592,8 @@ table.table tbody tr:last-child td { border-bottom: none; }
   .app-shell.sidebar-collapsed .sidebar-brand-copy,
   .app-shell.sidebar-collapsed .sidebar .category,
   .app-shell.sidebar-collapsed .sidebar-footer,
-  .app-shell.sidebar-collapsed .nav-link-label { display: revert; }
+  .app-shell.sidebar-collapsed .nav-link-label,
+  .app-shell.sidebar-collapsed #tourOpen { display: revert; }
   .app-shell.sidebar-collapsed .sidebar .nav-link { justify-content: flex-start; padding-inline: 0.75rem; font-size: 0.8125rem; }
   .app-shell.sidebar-collapsed .sidebar .nav-link::before { content: none; }
   .sidebar-backdrop.open { display: block; position: fixed; inset: 0; z-index: 1200; background: rgba(31, 48, 94, 0.45); }

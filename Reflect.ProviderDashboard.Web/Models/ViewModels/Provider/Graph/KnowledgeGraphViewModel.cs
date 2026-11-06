@@ -27,18 +27,18 @@ public sealed class KnowledgeGraphViewModel
         SessionCount = allSessions.Count;
         DeviceCount = allDevices.Count(device => device.CurrentPatientId is not null);
 
-        const double width = 960;
-        const double height = 720;
-        const double cx = 480;
-        const double cy = 330;
-        const double patientRadius = 168;
-        const double deviceRadius = 268;
+        const double width = 1180;
+        const double height = 940;
+        const double cx = 590;
+        const double cy = 430;
+        const double patientRadius = 230;
+        const double deviceRadius = 355;
 
-        Nodes.Add(new GraphNode("hub", "hub", "Caseload", $"{PatientCount} people · {SessionCount} sessions", "", cx, cy, false));
-        Nodes.Add(new GraphNode("xr", "platform", "Reflect XR", "Immersive", "", 170, 88, false));
-        Nodes.Add(new GraphNode("mobile", "platform", "Reflect Mobile", "Phone / tablet", "", 790, 88, false));
-        Nodes.Add(new GraphNode("attention", "signal", "Needs attention", "Fewer sessions", "/Provider/Home/Dashboard", 170, 548, false));
-        Nodes.Add(new GraphNode("affect", "signal", "Below self", "Affect vs baseline", "/Provider/Home/Dashboard", 790, 548, false));
+        Nodes.Add(new GraphNode("hub", "hub", "Caseload", $"{PatientCount} people", "", cx, cy, false));
+        Nodes.Add(new GraphNode("xr", "platform", "Reflect XR", "Immersive", "", 150, 70, false));
+        Nodes.Add(new GraphNode("mobile", "platform", "Reflect Mobile", "Phone / tablet", "", 1030, 70, false));
+        Nodes.Add(new GraphNode("attention", "signal", "Needs attention", "Fewer sessions", "/Provider/Home/Dashboard", 150, 800, false));
+        Nodes.Add(new GraphNode("affect", "signal", "Below self", "Affect vs baseline", "/Provider/Home/Dashboard", 1030, 800, false));
 
         var since = DateTimeOffset.UtcNow.AddDays(-7);
         for (var i = 0; i < allPatients.Count; i++)
@@ -72,9 +72,9 @@ public sealed class KnowledgeGraphViewModel
             if (mobileCount > 0)
                 Edges.Add(new GraphEdge(id, "mobile", $"{mobileCount} mobile", false));
             if (quieter)
-                Edges.Add(new GraphEdge(id, "attention", "quieter this week", true));
+                Edges.Add(new GraphEdge(id, "attention", "quieter", true));
             if (belowSelf)
-                Edges.Add(new GraphEdge(id, "affect", "below personal baseline", true));
+                Edges.Add(new GraphEdge(id, "affect", "below self", true));
 
             var assigned = allDevices.Where(device => device.CurrentPatientId == patient.Id).ToList();
             for (var d = 0; d < assigned.Count; d++)
