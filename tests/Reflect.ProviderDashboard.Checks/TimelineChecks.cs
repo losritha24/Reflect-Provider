@@ -20,7 +20,8 @@ public static class TimelineChecks
         var patients = new InMemoryPatientRepository(user);
         var patient = (await patients.GetAllAsync(CancellationToken.None)).First();
         var sessions = new InMemoryTherapySessionRepository(patients);
-        var controller = new PatientsController(patients, sessions);
+        var devices = new InMemoryCareDeviceRepository(patients);
+        var controller = new PatientsController(patients, sessions, devices);
 
         var all = await controller.Details(patient.Id, CancellationToken.None, tab: "timeline");
         var allModel = ((ViewResult)all).Model as PatientDetailsViewModel
@@ -39,22 +40,21 @@ public static class TimelineChecks
             "Invalid platform is rejected");
         Check(await controller.Details(patient.Id, CancellationToken.None, days: 14, tab: "timeline") is BadRequestResult,
             "Invalid days are rejected");
-        var malformed = new PatientsController(patients, sessions);
+        var malformed = new PatientsController(patients, sessions, devices);
         malformed.ModelState.AddModelError("platform", "Invalid platform.");
         Check(await malformed.Details(patient.Id, CancellationToken.None, tab: "timeline") is BadRequestResult,
             "Malformed filter binding is rejected");
 
         var futureRepository = new FutureSessionRepository(sessions, patient.Id);
-        var futureController = new PatientsController(patients, futureRepository);
+        var futureController = new PatientsController(patients, futureRepository, devices);
         var future = (PatientDetailsViewModel)((ViewResult)await futureController.Details(patient.Id, CancellationToken.None, tab: "timeline")).Model!;
         Check(future.Sessions.All(s => s.StartedAtUtc <= future.AsOfUtc) && future.TotalSessions == allModel.TotalSessions,
             "Future sessions are excluded from totals and timeline");
 
         Check(await controller.Details(Guid.Empty, CancellationToken.None) is NotFoundResult,
             "Missing patient ID remains 404");
-        Check(await new PatientsController(
-                new InMemoryPatientRepository(new FakeCurrentUser(Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc"))),
-                sessions).Details(patient.Id, CancellationToken.None) is NotFoundResult,
+        var strangerPatients = new InMemoryPatientRepository(new FakeCurrentUser(Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc")));
+        Check(await new PatientsController(strangerPatients, sessions, new InMemoryCareDeviceRepository(strangerPatients)).Details(patient.Id, CancellationToken.None) is NotFoundResult,
             "Unauthorized patient remains 404");
     }
 

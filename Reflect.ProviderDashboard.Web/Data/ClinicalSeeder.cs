@@ -11,6 +11,10 @@ public static class ClinicalSeeder
     /// </summary>
     public static async Task EnsureAsync(ClinicalDbContext db, string providerId, bool reseed, CancellationToken ct = default)
     {
+        // Disposable local SQLite file: rebuild it so schema changes can never leave a stale file behind.
+        // Never drop a shared server database (Postgres); there only the rows are replaced.
+        if (reseed && db.Database.IsSqlite())
+            await db.Database.EnsureDeletedAsync(ct);
         await db.Database.EnsureCreatedAsync(ct);
         if (reseed)
         {
