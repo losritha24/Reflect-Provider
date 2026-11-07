@@ -7,6 +7,7 @@
     <h1 class="page-title mb-1">@Model.DisplayName</h1>
     <p class="text-muted fs-13 mb-0">@Model.ExternalPatientId · DOB @Model.DateOfBirthDisplay</p>
     <div class="mt-2">
+        <a class="btn btn-outline-secondary" asp-controller="Messages" asp-action="Index" asp-route-patientId="@Model.PatientId">Message this patient</a>
         <a class="btn btn-outline-secondary" asp-action="Index" asp-route-search="@Model.Search" asp-route-trend="@Model.Trend" asp-route-page="@Model.Page">Back to patients</a>
         <a class="btn btn-primary-light" asp-controller="Reports" asp-action="Index" asp-route-patientId="@Model.PatientId">Open report</a>
         <a class="btn btn-outline-secondary" asp-action="Remove" asp-route-patientId="@Model.PatientId">Remove patient</a>

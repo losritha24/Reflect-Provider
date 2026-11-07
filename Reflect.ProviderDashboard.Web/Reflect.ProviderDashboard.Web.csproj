@@ -4,6 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <RootNamespace>Reflect.ProviderDashboard.Web</RootNamespace>
+    <UserSecretsId>reflect-provider-dashboard-dev</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />

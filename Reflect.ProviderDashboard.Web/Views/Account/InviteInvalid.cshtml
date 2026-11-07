@@ -1,0 +1,15 @@
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Invitation unavailable";
+}
+
+<main class="login-page">
+    <section class="login-panel" aria-labelledby="invalid-heading">
+        <div class="login-form-wrap">
+            <p class="eyebrow">Invitation</p>
+            <h1 id="invalid-heading" class="page-title">This invitation can’t be used</h1>
+            <p class="text-muted login-intro">It may have expired, been revoked, or already been used. Ask your administrator to send a new one.</p>
+            <p class="login-account-link"><a asp-controller="Account" asp-action="Login">Go to sign in</a></p>
+        </div>
+    </section>
+</main>

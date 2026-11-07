@@ -1,0 +1,72 @@
+@model Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Messages.MessagesViewModel
+@using Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Messages
+@{
+    ViewData["Title"] = "Messages";
+}
+<div class="mb-4">
+    <p class="eyebrow">Care team</p>
+    <h1 class="page-title mb-1">Messages</h1>
+    <p class="text-muted fs-13 mb-0">Send a short nudge to someone on your caseload. <strong>Prototype:</strong> messages are queued here only. Nothing is delivered to Reflect Mobile or XR, and no push notification is sent.</p>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Notice))
+{
+    <div class="callout" role="status">@Model.Notice</div>
+}
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="callout" role="alert">@Model.Error</div>
+}
+
+<section class="work-panel" aria-labelledby="compose-heading">
+    <div class="section-heading"><div><h2 id="compose-heading">New message</h2><p class="text-muted">Keep it general. Don’t include diagnoses, scores or contact details; identifiers are removed automatically.</p></div></div>
+    @if (Model.Patients.Count == 0)
+    {
+        <p class="empty-state">You have no assigned patients to message yet.</p>
+    }
+    else
+    {
+        <form asp-action="Send" method="post" class="settings-form">
+            <div class="filter-field"><label for="patientId">To</label>
+                <select id="patientId" name="patientId" required>
+                    @foreach (var patient in Model.Patients)
+                    {
+                        <option value="@patient.Id" selected="@(Model.PatientId == patient.Id)">@patient.DisplayName (@patient.ExternalPatientId)</option>
+                    }
+                </select></div>
+            <div class="filter-field"><label for="template">Start from a template</label>
+                <select id="template" name="template">
+                    <option value="">Write my own</option>
+                    @foreach (var template in MessageTemplates.Labels)
+                    {
+                        <option value="@template.Key">@template.Value</option>
+                    }
+                </select>
+                <span class="text-muted fs-13">If you leave the text empty, the template wording is used.</span></div>
+            <div class="filter-field"><label for="body">Message (up to @Reflect.ProviderDashboard.Web.Services.Chat.ChatGuardrail.MaxLength characters)</label>
+                <textarea id="body" name="body" rows="4" maxlength="@Reflect.ProviderDashboard.Web.Services.Chat.ChatGuardrail.MaxLength"></textarea></div>
+            <div><button type="submit" class="btn btn-primary">Queue message</button></div>
+        </form>
+    }
+</section>
+
+<section class="work-panel" aria-labelledby="outbox-heading">
+    <div class="section-heading"><div><h2 id="outbox-heading">Outbox</h2><p class="text-muted">Newest first. Cleared when the app restarts.</p></div></div>
+    @if (Model.Outbox.Count == 0)
+    {
+        <p class="empty-state">No messages yet.</p>
+    }
+    else
+    {
+        <table class="table">
+            <caption class="visually-hidden">Queued messages</caption>
+            <thead><tr><th scope="col">Queued (UTC)</th><th scope="col">To</th><th scope="col">Message</th><th scope="col">Status</th></tr></thead>
+            <tbody>
+            @foreach (var message in Model.Outbox)
+            {
+                <tr><td>@message.CreatedUtc.ToString("yyyy-MM-dd HH:mm")</td><td>@message.PatientLabel</td><td>@message.Body</td><td>@message.Status</td></tr>
+            }
+            </tbody>
+        </table>
+    }
+</section>

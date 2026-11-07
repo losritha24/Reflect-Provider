@@ -360,6 +360,8 @@ await SecurityChecks.RunAsync();
 await Reflect.ProviderDashboard.Checks.TimelineChecks.RunAsync();
 await Reflect.ProviderDashboard.Checks.ChatAndTimeChecks.RunAsync();
 await Reflect.ProviderDashboard.Checks.ClinicalStoreChecks.RunAsync();
+await Reflect.ProviderDashboard.Checks.TeamChecks.RunAsync();
+await Reflect.ProviderDashboard.Checks.OpenRouterChecks.RunAsync();
 
 sealed class TestCurrentUserService(Guid? userId, bool authenticated = true, bool provider = true) : ICurrentUserService
 {

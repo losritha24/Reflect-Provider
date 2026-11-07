@@ -3,6 +3,10 @@
     var area = ViewContext.RouteData.Values["area"]?.ToString() ?? "Provider";
     var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Home";
     var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "Dashboard";
+    var prefTheme = User.FindFirst("pref.theme")?.Value ?? "";
+    var prefText = User.FindFirst("pref.textsize")?.Value ?? "";
+    var prefTour = User.FindFirst("pref.showtour")?.Value == "1";
+    var isAdmin = User.IsInRole(ProviderAuthorization.AdminRole);
 }
 <!DOCTYPE html>
 <html lang="en" data-theme-mode="light">
@@ -19,6 +23,28 @@
             }
         } catch { }
     </script>
+    @if (prefTheme.Length > 0 || prefText.Length > 0 || prefTour)
+    {
+        <script nonce="@Context.GetCspNonce()">
+            // Account preferences are applied once per change, so a later local toggle still sticks.
+            try {
+                var version = '@prefTheme|@prefText|@(prefTour ? "t" : "")';
+                if (localStorage.getItem('reflect-provider-pref-version') !== version) {
+                    localStorage.setItem('reflect-provider-pref-version', version);
+                    if ('@prefTheme' === 'light' || '@prefTheme' === 'dark') {
+                        localStorage.setItem('reflect-provider-theme', '@prefTheme');
+                        document.documentElement.setAttribute('data-theme-mode', '@prefTheme');
+                    }
+                    if (['100%', '112.5%', '125%'].indexOf('@prefText') >= 0) {
+                        var stored = JSON.parse(localStorage.getItem('reflect-provider-accessibility') || '{}');
+                        stored.textSize = '@prefText';
+                        localStorage.setItem('reflect-provider-accessibility', JSON.stringify(stored));
+                    }
+                    if (@(prefTour ? "true" : "false")) localStorage.removeItem('reflect-provider-tour-seen');
+                }
+            } catch { }
+        </script>
+    }
     <link rel="stylesheet" href="~/standins/css/reflect-theme.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
     <link rel="stylesheet" href="~/standins/css/provider-workspace.css" asp-append-version="true" />
@@ -73,6 +99,9 @@
         <a class="nav-link @(controller == "Reports" ? "active" : "")" data-short="R" aria-label="Reports" href="@Url.Action("Index", "Reports", new { area = "Provider" })">
             <span class="nav-link-label">Reports</span>
         </a>
+        <a class="nav-link @(controller == "Messages" ? "active" : "")" data-short="M" aria-label="Messages" href="@Url.Action("Index", "Messages", new { area = "Provider" })">
+            <span class="nav-link-label">Messages</span>
+        </a>
         <a class="nav-link @(controller == "Devices" ? "active" : "")" data-short="V" aria-label="Devices" href="@Url.Action("Index", "Devices", new { area = "Provider" })">
             <span class="nav-link-label">Devices</span>
         </a>
@@ -82,6 +111,13 @@
         <a class="nav-link @(controller == "Modules" ? "active" : "")" data-short="R" aria-label="Module reference" href="@Url.Action("Index", "Modules", new { area = "Provider" })">
             <span class="nav-link-label">Module reference</span>
         </a>
+        @if (isAdmin)
+        {
+            <div class="category">Admin</div>
+            <a class="nav-link @(controller == "Team" ? "active" : "")" data-short="A" aria-label="Team" href="@Url.Action("Index", "Team", new { area = "Provider" })">
+                <span class="nav-link-label">Team</span>
+            </a>
+        }
         <button type="button" class="btn btn-outline-secondary tour-open" id="tourOpen">Take the tour</button>
         <div class="sidebar-footer">Persistent Technology · 2026</div>
     </nav>
@@ -98,6 +134,7 @@
                 <div class="header-actions">
                 <button type="button" class="btn btn-outline-secondary" id="a11yPanelToggle" aria-controls="a11yPanel" aria-expanded="false">Accessibility</button>
                 <button type="button" class="btn btn-primary-light" id="themeToggle">Toggle theme</button>
+                <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Settings", new { area = "Provider" })">Settings</a>
                 <span class="provider-chip">@(User.FindFirst("display_name")?.Value ?? User.Identity?.Name)</span>
                 <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
                     <button type="submit" class="btn btn-outline-secondary">Sign out</button>

@@ -97,6 +97,86 @@ with tempfile.TemporaryDirectory(prefix='reflect-smoke-') as directory:
             _, _, encoded = request('/Provider/Patients/Index?' + urlencode({'search': payload}), cookie=cookie)
             assert '<script>window.__xss=1</script>' not in encoded
             assert request('/Account/Login', 'POST', urlencode({'__RequestVerificationToken': token, 'x': 'a' * 20000}), cookie.split('; ReflectProvider.Auth=')[0])[0] in (400, 413)
+            # Team, settings and messages: invite -> accept -> assign -> isolation, end to end.
+            from urllib.parse import urlencode as enc
+            def jar_request(jar, path, method='GET', fields=None):
+                header = '; '.join(f'{k}={v}' for k, v in jar.items())
+                status, resp, data = request(path, method, enc(fields) if fields else None, header)
+                for key, value in resp.getheaders():
+                    if key.lower() == 'set-cookie':
+                        name, _, rest = value.partition('=')
+                        jar[name] = rest.split(';')[0]
+                return status, resp, data
+            def csrf_of(page):
+                return html.unescape(re.search(r'name="__RequestVerificationToken"[^>]*value="([^"]+)"', page)[1])
+            admin = {}
+            for part in cookie.split('; '):
+                k, _, v = part.partition('=')
+                admin[k] = v
+            for anonymous_path in ['/Provider/Team/Index', '/Provider/Settings/Index', '/Provider/Messages/Index']:
+                assert request(anonymous_path)[0] == 302, anonymous_path
+            for page in ['/Provider/Team/Index', '/Provider/Settings/Index', '/Provider/Messages/Index', '/Provider/Modules/Index']:
+                assert jar_request(admin, page)[0] == 200, page
+            _, _, team_page = jar_request(admin, '/Provider/Team/Index')
+            invite_fields = dict(displayName='Pat Provider', email='pat.provider@example.invalid', __RequestVerificationToken=csrf_of(team_page))
+            status, _, invited = jar_request(admin, '/Provider/Team/Invite', 'POST', invite_fields)
+            link = re.search(r'value="(http[^"]*AcceptInvite[^"]*)"', invited)
+            assert status == 200 and link, 'Invite link was not shown'
+            invite_path = html.unescape(link[1]).split('127.0.0.1:%d' % port)[-1]
+            token = invite_path.split('token=')[1]
+            assert token not in request('/Provider/Team/Index', cookie='; '.join(f'{k}={v}' for k, v in admin.items()))[2], 'Raw invite token must be shown only once'
+            assert 'pat.provider@example.invalid' in jar_request(admin, '/Provider/Team/Index')[2]
+            print('PASS: admin can create a one-time invite; the raw token is not shown again')
+            invitee = {}
+            status, _, accept_page = jar_request(invitee, invite_path)
+            assert status == 200 and 'pat.provider@example.invalid' in accept_page
+            assert jar_request(invitee, '/Account/AcceptInvite', 'POST', dict(Token=token, DisplayName='Pat Provider', Password='short', ConfirmPassword='short', __RequestVerificationToken=csrf_of(accept_page)))[0] == 200
+            new_password = secrets.token_urlsafe(24) + 'aA1!'
+            status, response, _ = jar_request(invitee, '/Account/AcceptInvite', 'POST', dict(
+                Token=token, DisplayName='Pat Provider', Password=new_password, ConfirmPassword=new_password,
+                __RequestVerificationToken=csrf_of(accept_page)))
+            assert status == 302 and 'ReflectProvider.Auth' in invitee, (status, response.getheader('Location'))
+            print('PASS: an invitee can set a password and sign in; weak passwords are refused')
+            assert jar_request({}, invite_path)[0] == 410, 'Used invite must be gone'
+            assert jar_request(invitee, '/Provider/Team/Index')[0] == 302, 'Invited provider must not reach admin pages'
+            _, _, empty = jar_request(invitee, '/Provider/Patients/Index')
+            assert 'Sam Patel' not in empty, 'New provider must start with an empty caseload'
+            print('PASS: used invites are rejected, invitees cannot reach admin pages and start with no patients')
+            _, _, team_page = jar_request(admin, '/Provider/Team/Index')
+            assert 'Sam Patel' not in team_page, 'Admin assignment list must not expose patient names'
+            patient_id = re.search(r'name="patientId" value="([0-9a-f-]{36})"', team_page)[1]
+            provider_id = re.search(r'<option value="([^"]+)"[^>]*>Pat Provider</option>', team_page)[1]
+            assert jar_request(admin, '/Provider/Team/Assign', 'POST', dict(patientId=patient_id, providerId=provider_id, __RequestVerificationToken=csrf_of(team_page)))[0] == 302
+            status, _, assigned = jar_request(invitee, f'/Provider/Patients/Details/{patient_id}')
+            assert status == 200, 'Assigned provider must open the patient'
+            assert jar_request(admin, f'/Provider/Patients/Details/{patient_id}')[0] == 404, 'Previous provider loses access'
+            print('PASS: admin assignment moves a patient between providers; the previous provider loses access')
+            _, _, compose = jar_request(invitee, '/Provider/Messages/Index?patientId=' + patient_id)
+            send = dict(patientId=patient_id, template='', body='Please call me at 555-123-4567 about the plan.', __RequestVerificationToken=csrf_of(compose))
+            assert jar_request(invitee, '/Provider/Messages/Send', 'POST', send)[0] == 302
+            _, _, outbox = jar_request(invitee, '/Provider/Messages/Index')
+            assert 'not delivered' in outbox and '555-123-4567' not in outbox, 'Identifiers must be removed and status shown'
+            assert 'not delivered' not in jar_request(admin, '/Provider/Messages/Index')[2], 'Outbox is per provider'
+            print('PASS: messages are queued per provider with identifiers removed and no delivery claim')
+            _, _, settings = jar_request(invitee, '/Provider/Settings/Index')
+            status, _, _ = jar_request(invitee, '/Provider/Settings/Display', 'POST', dict(theme='dark', textSize='125%', landingPage='Patients', timeZone='America/Chicago', clock='24h', __RequestVerificationToken=csrf_of(settings)))
+            assert status == 302
+            _, _, settings = jar_request(invitee, '/Provider/Settings/Index')
+            assert 'value="America/Chicago"' in settings, 'Time zone was not saved'
+            landing = jar_request(invitee, '/Provider/Patients/Index')[2]
+            assert "var version = 'dark|125%|'" in landing, 'Theme preference was not applied'
+            bad = jar_request(invitee, '/Provider/Settings/Display', 'POST', dict(theme='dark', textSize='', landingPage='Dashboard', timeZone='Not/AZone', clock='12h', __RequestVerificationToken=csrf_of(settings)))
+            assert bad[0] == 400
+            print('PASS: settings save to the account, apply theme, and reject unknown time zones')
+            # Deactivation blocks sign-in.
+            _, _, team_page = jar_request(admin, '/Provider/Team/Index')
+            assert jar_request(admin, '/Provider/Team/SetActive', 'POST', dict(id=provider_id, active='false', __RequestVerificationToken=csrf_of(team_page)))[0] == 302
+            _, login_resp, login_page = jar_request({}, '/Account/Login')
+            fresh = {}
+            _, _, login_page = jar_request(fresh, '/Account/Login')
+            status, _, _ = jar_request(fresh, '/Account/Login', 'POST', dict(Email='pat.provider@example.invalid', Password=new_password, ReturnUrl='', __RequestVerificationToken=csrf_of(login_page)))
+            assert status == 200 and 'ReflectProvider.Auth' not in fresh, 'Deactivated account must not sign in'
+            print('PASS: a deactivated provider cannot sign in')
             if os.environ.get('REFLECT_BROWSER') == '1':
                 from browser_checks import run_browser
                 run_browser(f'http://127.0.0.1:{port}', 'reviewer@example.invalid', password)

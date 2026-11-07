@@ -326,3 +326,20 @@ summary { cursor:pointer; }
 .chat-head, .chat-privacy, .chat-chips, .chat-form { flex-shrink:0; }
 .chat-log { min-height:5rem; }
 @media (max-width:600px) { .chat-panel { height:min(34rem, calc(100vh - 6.5rem)); } }
+
+/* ---- Settings, Team and Messages forms ---- */
+.settings-form { display:grid; gap:1rem; max-width:34rem; }
+.settings-form .filter-field input:not([type="checkbox"]), .settings-form .filter-field select, .settings-form .filter-field textarea { width:100%; }
+.settings-form .filter-field textarea { font:inherit; padding:.6rem .75rem; border:1px solid var(--default-border); border-radius:var(--radius-control); background:var(--off-white); color:inherit; }
+.settings-fieldset { border:0; margin:0; padding:0; display:grid; gap:.5rem; }
+.settings-fieldset legend { font-size:.85rem; color:var(--text-muted); margin-bottom:.35rem; padding:0; }
+.settings-facts { display:grid; gap:.75rem; margin:0; }
+.settings-facts div { display:flex; flex-wrap:wrap; gap:.25rem 1rem; }
+.settings-facts dt { min-width:7rem; color:var(--text-muted); font-weight:400; }
+.settings-facts dd { margin:0; }
+.invite-link { width:100%; font:inherit; padding:.5rem .65rem; border:1px solid var(--default-border); border-radius:var(--radius-control); background:var(--off-white); color:inherit; }
+[data-theme-mode="dark"] .settings-form .filter-field textarea, [data-theme-mode="dark"] .invite-link { background:var(--custom-white); }
+.settings-fieldset label { display:flex; align-items:center; gap:.5rem; }
+.settings-fieldset input[type="checkbox"] { width:1.1rem; height:1.1rem; flex:none; margin:0; }
+.assign-form { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; }
+.assign-form select { width:auto; min-width:14rem; max-width:100%; }

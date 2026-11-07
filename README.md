@@ -144,3 +144,13 @@ with auto-deploy disabled. It has not been deployed by this pass.
 
 Copilot instructions are in `.github/copilot-instructions.md`; bounded task briefs
 and handoff rules are in the implementation plan.
+
+## Assistant model (optional)
+
+The assistant answers from prepared responses by default (dashboard help, the module catalog, a crisis-line redirect). To use an OpenRouter model, set `Chat:OpenRouter:UseModel` to `true` and supply the key as a secret, never in a file in the repo:
+
+- Local: `cd Reflect.ProviderDashboard.Web && dotnet user-secrets set "Chat:OpenRouter:ApiKey" "sk-or-..."` (and optionally `"Chat:OpenRouter:Model" "vendor/model-id"`).
+- Hosted: set the environment variable `Chat__OpenRouter__ApiKey` (and `Chat__OpenRouter__Model`) in the host's secret settings.
+
+With `UseModel` false (the default) or no key, the prepared responses are used and no outside call is made. Questions are sanitized first and no patient data is sent; failures, timeouts and the daily
+limit (`Chat:OpenRouter:DailyRequestLimit`, default 500) fall back to the stub. OpenRouter forwards to vendors without a BAA: synthetic data only.

@@ -167,12 +167,26 @@ builder.Services.AddScoped<IPatientRepository>(sp => sp.GetRequiredService<EfPat
 builder.Services.AddScoped<ITherapySessionRepository, EfTherapySessionRepository>();
 builder.Services.AddScoped<ICareDeviceRepository, InMemoryCareDeviceRepository>();
 builder.Services.AddScoped<SessionIngestService>();
-builder.Services.AddScoped<Reflect.ProviderDashboard.Web.Services.Chat.IChatResponder, Reflect.ProviderDashboard.Web.Services.Chat.StubChatResponder>();
+builder.Services.AddScoped<PatientAssignmentService>();
+builder.Services.AddSingleton<TeamStore>();
+builder.Services.Configure<Reflect.ProviderDashboard.Web.Services.Chat.OpenRouterOptions>(
+    builder.Configuration.GetSection(Reflect.ProviderDashboard.Web.Services.Chat.OpenRouterOptions.SectionName));
+builder.Services.AddSingleton<Reflect.ProviderDashboard.Web.Services.Chat.StubChatResponder>();
+builder.Services.AddSingleton<Reflect.ProviderDashboard.Web.Services.Chat.ChatBudget>();
+// The model-backed responder needs Chat:OpenRouter:UseModel=true AND a key supplied through secrets.
+if (builder.Configuration.GetValue<bool>("Chat:OpenRouter:UseModel")
+    && !string.IsNullOrWhiteSpace(builder.Configuration["Chat:OpenRouter:ApiKey"]))
+    builder.Services.AddHttpClient<Reflect.ProviderDashboard.Web.Services.Chat.IChatResponder, Reflect.ProviderDashboard.Web.Services.Chat.OpenRouterChatResponder>();
+else
+    builder.Services.AddSingleton<Reflect.ProviderDashboard.Web.Services.Chat.IChatResponder>(
+        sp => sp.GetRequiredService<Reflect.ProviderDashboard.Web.Services.Chat.StubChatResponder>());
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy(ProviderAuthorization.PolicyName, policy =>
         policy.RequireRole(ProviderAuthorization.ProviderRole));
+    options.AddPolicy(ProviderAuthorization.AdminPolicyName, policy =>
+        policy.RequireRole(ProviderAuthorization.AdminRole));
 });
 
 builder.Services.AddAntiforgery(options =>
@@ -194,13 +208,14 @@ await using (var scope = app.Services.CreateAsyncScope())
     }
 
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    if (!await roleManager.RoleExistsAsync(ProviderAuthorization.ProviderRole))
+    foreach (var roleName in new[] { ProviderAuthorization.ProviderRole, ProviderAuthorization.AdminRole })
     {
-        var roleResult = await roleManager.CreateAsync(new IdentityRole(ProviderAuthorization.ProviderRole));
+        if (await roleManager.RoleExistsAsync(roleName)) continue;
+        var roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
         if (!roleResult.Succeeded)
         {
             throw new InvalidOperationException(
-                $"Could not initialize the provider role: {string.Join(", ", roleResult.Errors.Select(error => error.Description))}");
+                $"Could not initialize the {roleName} role: {string.Join(", ", roleResult.Errors.Select(error => error.Description))}");
         }
     }
     if (demoEnabled)
@@ -221,6 +236,12 @@ await using (var scope = app.Services.CreateAsyncScope())
         {
             var assigned = await users.AddToRoleAsync(user, ProviderAuthorization.ProviderRole);
             if (!assigned.Succeeded) throw new InvalidOperationException("Demo role assignment failed.");
+        }
+        // The shared demo login is also the facility admin so reviewers can see the Team pages.
+        if (!await users.IsInRoleAsync(user, ProviderAuthorization.AdminRole))
+        {
+            var admin = await users.AddToRoleAsync(user, ProviderAuthorization.AdminRole);
+            if (!admin.Succeeded) throw new InvalidOperationException("Demo admin role assignment failed.");
         }
         InMemoryDataStore.AssignPatientsToProvider(user.Id);
         // Disposable synthetic demo: reload the dataset each start so relative dates stay current.

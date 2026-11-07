@@ -20,6 +20,11 @@ fonts. Preserve the Reflect coral/indigo brand and existing area routing.
   Never hard-code module names or accept free text; resolve via `Find(platform, name)`.
   The catalog is the consumer list. Do not show consumer prices in this clinical
   dashboard; clinical editions are priced separately.
+- Accounts are invite-only. Team pages need `Facility_Admin` (`FacilityAdminOnly` policy) and show
+  patient IDs only, never names or sessions. Invites, audit entries and the message outbox live in
+  `TeamStore` (in memory, resets on restart); never store raw invite tokens, patient names or
+  message text in the audit trail. Account preferences are `pref.*` Identity claims
+  (`ProviderPreferences`). Do not claim messages are delivered or alerts are sent: both are prototypes.
 - Keep filter state through navigation. Use typed local routes; encode user text.
   Test keyboard behavior, empty results, future dates and authorization failures.
 - No secrets in source, logs, browser storage, Docker build args or screenshots.

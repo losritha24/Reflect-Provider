@@ -1,3 +1,4 @@
+@inject Microsoft.Extensions.Options.IOptions<Reflect.ProviderDashboard.Web.Services.Chat.OpenRouterOptions> ChatModel
 <div class="chat-widget" id="chatWidget">
     <section class="chat-panel" id="chatPanel" role="dialog" aria-modal="false" aria-labelledby="chatTitle" hidden>
         <header class="chat-head">
@@ -8,13 +9,13 @@
             </div>
             <button type="button" class="chat-close" id="chatClose" aria-label="Close assistant">&times;</button>
         </header>
-        <p class="chat-privacy">Please don’t type names or identifiers. Common identifiers (email, phone, SSN, dates, record numbers) are removed before processing; names are not reliably detected. Messages are not saved.</p>
+        <p class="chat-privacy">Please don’t type names or identifiers. Common identifiers (email, phone, SSN, dates, record numbers) are removed before processing; names are not reliably detected. Messages are not saved.@(ChatModel.Value.Enabled ? " Your question is sent to an AI service to write the answer, so keep it about using the dashboard." : "")</p>
         @Html.AntiForgeryToken()
         <div id="chatLog" class="chat-log" role="log" aria-live="polite" aria-label="Conversation" tabindex="0"></div>
         <div class="chat-chips" id="chatChips">
             <button type="button" class="chat-chip">How do I filter patients?</button>
-            <button type="button" class="chat-chip">What does engagement mean?</button>
-            <button type="button" class="chat-chip">Which time zone am I seeing?</button>
+            <button type="button" class="chat-chip">What does Hope Tree do?</button>
+            <button type="button" class="chat-chip">How do I send a message?</button>
         </div>
         <form id="chatForm" class="chat-form" autocomplete="off">
             <label for="chatInput" class="visually-hidden">Your question</label>

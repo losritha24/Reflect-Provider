@@ -4,6 +4,7 @@
   { "label": "Privacy & trust", "url": "/Provider/Home/Trust", "icon": "ri-shield-check-line" },
   { "isCategory": true, "label": "Caseload" },
   { "label": "Patients", "url": "/Provider/Patients/Index", "icon": "ri-team-line" },
+  { "label": "Messages", "url": "/Provider/Messages/Index", "icon": "ri-message-3-line" },
   { "label": "Reports", "url": "/Provider/Reports/Index", "icon": "ri-file-text-line" },
   { "label": "Devices", "url": "/Provider/Devices/Index", "icon": "ri-tablet-line" },
   { "label": "Caseload map", "url": "/Provider/Home/Graph", "icon": "ri-share-line" },

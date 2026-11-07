@@ -1,0 +1,119 @@
+@model Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Settings.SettingsViewModel
+@using Reflect.ProviderDashboard.Web.Services
+@{
+    ViewData["Title"] = "Settings";
+    var p = Model.Prefs;
+}
+<div class="mb-4">
+    <p class="eyebrow">Your account</p>
+    <h1 class="page-title mb-1">Settings</h1>
+    <p class="text-muted fs-13 mb-0">@Model.Email · @Model.FacilityName@(Model.IsAdmin ? " · Facility admin" : "")</p>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="callout" role="status">@Model.Message</div>
+}
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="callout settings-error" role="alert">@Model.Error</div>
+}
+
+<section class="work-panel" aria-labelledby="profile-heading">
+    <div class="section-heading"><div><h2 id="profile-heading">Profile</h2><p class="text-muted">Your name appears in the header and in the care team list.</p></div></div>
+    <form asp-action="Profile" method="post" class="settings-form">
+        <div class="filter-field"><label for="displayName">Full name</label><input id="displayName" name="displayName" value="@Model.DisplayName" maxlength="100" required autocomplete="name" /></div>
+        <div class="filter-field"><label for="title">Title or credentials</label><input id="title" name="title" value="@p.Title" maxlength="80" autocomplete="organization-title" /></div>
+        <div class="filter-field"><label for="phone">Work phone</label><input id="phone" name="phone" value="@p.Phone" maxlength="32" autocomplete="tel" inputmode="tel" /></div>
+        <div class="filter-field"><label for="emailReadOnly">Work email</label><input id="emailReadOnly" value="@Model.Email" readonly aria-describedby="emailHelp" /><span id="emailHelp" class="text-muted fs-13">Changing your email needs re-verification, which is not built yet.</span></div>
+        <div><button type="submit" class="btn btn-primary">Save profile</button></div>
+    </form>
+</section>
+
+<section class="work-panel" aria-labelledby="display-heading">
+    <div class="section-heading"><div><h2 id="display-heading">Display and behavior</h2><p class="text-muted">Saved to your account, so they follow you to another browser.</p></div></div>
+    <form asp-action="Display" method="post" class="settings-form">
+        <div class="filter-field"><label for="theme">Theme</label>
+            <select id="theme" name="theme">
+                <option value="" selected="@(p.Theme == "")">Use this browser’s setting</option>
+                <option value="light" selected="@(p.Theme == "light")">Light</option>
+                <option value="dark" selected="@(p.Theme == "dark")">Dark</option>
+            </select></div>
+        <div class="filter-field"><label for="textSize">Text size</label>
+            <select id="textSize" name="textSize">
+                <option value="" selected="@(p.TextSize == "")">Use this browser’s setting</option>
+                <option value="100%" selected="@(p.TextSize == "100%")">Default</option>
+                <option value="112.5%" selected="@(p.TextSize == "112.5%")">Large</option>
+                <option value="125%" selected="@(p.TextSize == "125%")">Extra large</option>
+            </select></div>
+        <div class="filter-field"><label for="landingPage">Open after sign-in</label>
+            <select id="landingPage" name="landingPage">
+                @foreach (var target in ProviderPreferences.LandingPages)
+                {
+                    <option value="@target" selected="@(p.LandingPage == target)">@(target == "Graph" ? "Caseload map" : target)</option>
+                }
+            </select></div>
+        <div class="filter-field"><label for="timeZone">Time zone</label>
+            <input id="timeZone" name="timeZone" value="@p.TimeZone" maxlength="64" placeholder="@Model.FacilityTimeZone" aria-describedby="tzHelp" />
+            <span id="tzHelp" class="text-muted fs-13">IANA name, for example America/Chicago. Saved now; pages still show times in the facility zone (@Model.FacilityTimeZone) until per-account zones ship.</span></div>
+        <div class="filter-field"><label for="clock">Clock</label>
+            <select id="clock" name="clock">
+                <option value="12h" selected="@(p.Clock == "12h")">12-hour</option>
+                <option value="24h" selected="@(p.Clock == "24h")">24-hour</option>
+            </select>
+            <span class="text-muted fs-13">Saved; not applied to pages yet.</span></div>
+        <fieldset class="settings-fieldset"><legend>Welcome tour</legend><label><input type="checkbox" name="showTour" value="true" checked="@p.ShowTour" /> Show the tour again on my next page load</label></fieldset>
+        <div><button type="submit" class="btn btn-primary">Save display settings</button></div>
+    </form>
+</section>
+
+<section class="work-panel" aria-labelledby="notify-heading">
+    <div class="section-heading"><div><h2 id="notify-heading">Notifications</h2><p class="text-muted">Choose what you want to hear about. These are saved, but alerts are not sent yet in this prototype.</p></div></div>
+    <form asp-action="Notifications" method="post" class="settings-form">
+        <fieldset class="settings-fieldset"><legend>Tell me when</legend>
+            <label><input type="checkbox" name="notifyQuieter" value="true" checked="@p.NotifyQuieter" /> A patient is quieter than usual</label>
+            <label><input type="checkbox" name="notifyBaseline" value="true" checked="@p.NotifyBaseline" /> A patient’s affect drops below their own baseline</label>
+            <label><input type="checkbox" name="notifyMessages" value="true" checked="@p.NotifyMessages" /> A patient replies to a message</label>
+        </fieldset>
+        <div class="filter-field"><label for="channel">Send to</label>
+            <select id="channel" name="channel">
+                <option value="in-app" selected="@(p.Channel == "in-app")">This dashboard</option>
+                <option value="email" selected="@(p.Channel == "email")">Email (no patient details)</option>
+                <option value="push" selected="@(p.Channel == "push")">My phone (generic push, no patient details)</option>
+            </select></div>
+        <div class="filter-field"><label for="quietFrom">Quiet hours start</label><input id="quietFrom" name="quietFrom" type="time" value="@p.QuietFrom" /></div>
+        <div class="filter-field"><label for="quietTo">Quiet hours end</label><input id="quietTo" name="quietTo" type="time" value="@p.QuietTo" /></div>
+        <div><button type="submit" class="btn btn-primary">Save notification settings</button></div>
+    </form>
+</section>
+
+<section class="work-panel" aria-labelledby="plan-heading">
+    <div class="section-heading"><div><h2 id="plan-heading">Plan and billing</h2><p class="text-muted">Managed by your facility administrator.</p></div></div>
+    <dl class="settings-facts">
+        <div><dt>Facility</dt><dd>@Model.FacilityName</dd></div>
+        <div><dt>Edition</dt><dd>Clinical (prototype)</dd></div>
+        <div><dt>Pricing</dt><dd>Clinical editions are priced separately. Contact Persistent Technology.</dd></div>
+    </dl>
+</section>
+
+<section class="work-panel" aria-labelledby="privacy-heading">
+    <div class="section-heading"><div><h2 id="privacy-heading">Your recent activity</h2><p class="text-muted">Actions on your account since the app last started. Patient names and message text are never recorded here.</p></div></div>
+    @if (Model.Activity.Count == 0)
+    {
+        <p class="empty-state">No activity recorded yet.</p>
+    }
+    else
+    {
+        <table class="table">
+            <caption class="visually-hidden">Recent activity on your account</caption>
+            <thead><tr><th scope="col">When (UTC)</th><th scope="col">Action</th><th scope="col">Detail</th></tr></thead>
+            <tbody>
+            @foreach (var entry in Model.Activity)
+            {
+                <tr><td>@entry.AtUtc.ToString("yyyy-MM-dd HH:mm")</td><td>@entry.Action</td><td>@entry.Detail</td></tr>
+            }
+            </tbody>
+        </table>
+    }
+    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post"><button type="submit" class="btn btn-outline-secondary">Sign out</button></form>
+</section>

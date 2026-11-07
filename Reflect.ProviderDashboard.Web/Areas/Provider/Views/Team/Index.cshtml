@@ -1,0 +1,139 @@
+@model Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Team.TeamViewModel
+@using Reflect.ProviderDashboard.Web.Infrastructure
+@{
+    ViewData["Title"] = "Team";
+}
+<div class="mb-4">
+    <p class="eyebrow">Facility admin</p>
+    <h1 class="page-title mb-1">Team</h1>
+    <p class="text-muted fs-13 mb-0">Invite providers and assign patients. Administrators see patient IDs only, not names or sessions. Invites and the audit trail reset when the app restarts in this prototype.</p>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="callout" role="alert">@Model.Error</div>
+}
+@if (!string.IsNullOrEmpty(Model.NewInviteLink))
+{
+    <div class="callout" role="status">
+        <p><strong>Invite created for @Model.NewInviteEmail.</strong> Email delivery is not connected yet, so copy this link and send it yourself. It is shown once and works one time for 72 hours.</p>
+        <p><input class="invite-link" readonly value="@Model.NewInviteLink" aria-label="Invitation link" /></p>
+    </div>
+}
+
+<section class="work-panel" aria-labelledby="providers-heading">
+    <div class="section-heading"><div><h2 id="providers-heading">Providers</h2><p class="text-muted">@Model.Providers.Count people with access to the provider workspace.</p></div></div>
+    <div class="table-responsive" tabindex="0" role="region" aria-label="Providers; scroll horizontally for more columns">
+    <table class="table align-middle">
+        <thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Role</th><th scope="col">Patients</th><th scope="col">Status</th><th scope="col">Action</th></tr></thead>
+        <tbody>
+        @foreach (var member in Model.Providers)
+        {
+            <tr>
+                <td>@member.DisplayName@(member.IsSelf ? " (you)" : "")</td>
+                <td>@member.Email</td>
+                <td>@member.Role</td>
+                <td>@member.PatientCount</td>
+                <td><span class="badge @(member.Active ? "bg-info-transparent" : "bg-warning-transparent")">@(member.Active ? "Active" : "Deactivated")</span></td>
+                <td>
+                    @if (!member.IsSelf)
+                    {
+                        <form asp-action="SetActive" method="post">
+                            <input type="hidden" name="id" value="@member.Id" />
+                            <input type="hidden" name="active" value="@(member.Active ? "false" : "true")" />
+                            <button type="submit" class="btn btn-outline-secondary">@(member.Active ? "Deactivate" : "Reactivate")</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+</section>
+
+<section class="work-panel" aria-labelledby="invite-heading">
+    <div class="section-heading"><div><h2 id="invite-heading">Invite a provider</h2><p class="text-muted">They set their own password. Accounts start with an empty caseload until you assign patients.</p></div></div>
+    <form asp-action="Invite" method="post" class="settings-form">
+        <div class="filter-field"><label for="inviteName">Full name</label><input id="inviteName" name="displayName" required maxlength="100" autocomplete="off" /></div>
+        <div class="filter-field"><label for="inviteEmail">Work email</label><input id="inviteEmail" name="email" type="email" required maxlength="254" autocomplete="off" /></div>
+        <div><button type="submit" class="btn btn-primary">Create invite</button></div>
+    </form>
+    @if (Model.Invites.Count > 0)
+    {
+        <table class="table">
+            <caption class="visually-hidden">Invitations</caption>
+            <thead><tr><th scope="col">Email</th><th scope="col">Status</th><th scope="col">Expires (UTC)</th><th scope="col">Action</th></tr></thead>
+            <tbody>
+            @foreach (var invite in Model.Invites)
+            {
+                var expired = invite.Status == InviteStatus.Pending && invite.ExpiresUtc <= Model.Now;
+                <tr>
+                    <td>@invite.Email</td>
+                    <td>@(expired ? "Expired" : invite.Status.ToString())</td>
+                    <td>@invite.ExpiresUtc.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        @if (invite.Status == InviteStatus.Pending && !expired)
+                        {
+                            <form asp-action="Revoke" method="post"><input type="hidden" name="id" value="@invite.Id" /><button type="submit" class="btn btn-outline-secondary">Revoke</button></form>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</section>
+
+<section class="work-panel" aria-labelledby="assign-heading">
+    <div class="section-heading"><div><h2 id="assign-heading">Assign patients</h2><p class="text-muted">Moving a patient keeps their past sessions. Only the assigned provider can open the record.</p></div></div>
+    <div class="table-responsive" tabindex="0" role="region" aria-label="Patient assignments; scroll horizontally for more columns">
+    <table class="table align-middle">
+        <thead><tr><th scope="col">Patient ID</th><th scope="col">Assigned to</th><th scope="col">Change</th></tr></thead>
+        <tbody>
+        @foreach (var patient in Model.Patients)
+        {
+            <tr>
+                <td>@patient.ExternalPatientId</td>
+                <td>@Model.ProviderLabel(patient.AssignedProviderId)</td>
+                <td>
+                    <form asp-action="Assign" method="post" class="assign-form">
+                        <input type="hidden" name="patientId" value="@patient.Id" />
+                        <label class="visually-hidden" for="assign-@patient.Id">Assign @patient.ExternalPatientId to</label>
+                        <select id="assign-@patient.Id" name="providerId">
+                            <option value="" selected="@(string.IsNullOrEmpty(patient.AssignedProviderId))">Unassigned</option>
+                            @foreach (var member in Model.Providers.Where(m => m.Active))
+                            {
+                                <option value="@member.Id" selected="@(member.Id == patient.AssignedProviderId)">@member.DisplayName</option>
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-outline-secondary">Save</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+</section>
+
+<section class="work-panel" aria-labelledby="audit-heading">
+    <div class="section-heading"><div><h2 id="audit-heading">Audit trail</h2><p class="text-muted">Latest 30 events. Records who did what, never patient names or message text.</p></div></div>
+    @if (Model.Audit.Count == 0)
+    {
+        <p class="empty-state">Nothing recorded yet.</p>
+    }
+    else
+    {
+        <table class="table">
+            <caption class="visually-hidden">Audit trail</caption>
+            <thead><tr><th scope="col">When (UTC)</th><th scope="col">Who</th><th scope="col">Action</th><th scope="col">Detail</th></tr></thead>
+            <tbody>
+            @foreach (var entry in Model.Audit)
+            {
+                <tr><td>@entry.AtUtc.ToString("yyyy-MM-dd HH:mm")</td><td>@entry.Actor</td><td>@entry.Action</td><td>@entry.Detail</td></tr>
+            }
+            </tbody>
+        </table>
+    }
+</section>

@@ -94,9 +94,61 @@ Deployment instructions are in [COMPETITION-DEPLOYMENT.md](COMPETITION-DEPLOYMEN
 - [ ] Catalog is a consumer list; confirm with Persistent Technology whether clinical editions add or rename modules before real data.
 - [ ] Catalog changes need a code change; decide whether it should move to a table once migrations exist.
 
+## Accounts, administration and provider settings
+
+Built as a prototype slice (Nov 6): invite-only onboarding (`/Account/AcceptInvite`), a Team page
+(invite, revoke, deactivate, assign patients, audit trail), Settings (profile, display, notifications,
+plan placeholder, recent activity) and a Messages outbox. The demo login is also `Facility_Admin`.
+Limits: invites, the audit trail and the message outbox are in memory (`TeamStore`) and reset on restart;
+invite links are copied by the admin (no email); notification preferences are saved but nothing is sent;
+per-account time zone and clock are saved but not applied; patient assignment is one provider per patient.
+Order matters: A before B and C; D is independent of A-C until it needs recipients.
+
+### A. Admin and onboarding (needed before any real provider uses it)
+- [ ] **Facility and role model.** Add a `Facility` and a `providers` table (see Data platform item on providers). Roles: `Provider`, `FacilityAdmin`. Admin role gets no clinical-record access by default (minimum necessary); it manages people, not charts.
+- [x] (prototype: in-memory, link copied by admin, no email) **Invite-only onboarding.** Admin enters an email and role; app creates a single-use invite token (hashed at rest, 72-hour expiry, revocable). The invitee sets a password and a display name on first visit. Registration stays closed in every non-Development environment. Tests: expired, reused and revoked tokens; token never logged.
+- [x] (prototype) **Admin user list.** Deactivation locks the account and rotates its security stamp; open sessions end within the one-hour cookie lifetime. No "last sign-in" column yet.
+- [x] (prototype: one provider per patient, no effective dates or sharing) **Assign patients to providers.** Admin UI to assign, reassign and share a patient between providers, with effective dates. Replace the seed-time `AssignPatientsToProvider` with this. Reassignment must keep past sessions and notes attributed to the original provider. Tests: another provider's patient stays invisible (existing fail-closed checks must still pass).
+- [ ] **Add patients.** Admin or provider can create a patient (synthetic-ID rules for the demo, real MRN mapping later), link them to Reflect Mobile and XR installs, and archive (soft-delete) them. Overlaps the XLS/CSV import slice in COPILOT-HANDOFF.md; import must use the same service.
+- [~] (prototype: in memory, covers sign-in, invites, assignments, settings and queued messages; not durable, does not record patient views or exports) **Audit log.** Append-only record of sign-ins, invites, role and assignment changes, patient views and exports (who, what, when, from where). Admin-readable, tamper-evident, no PHI in the log body. Needed for the HIPAA story on the Trust page.
+
+### B. Account security
+- [ ] Password reset by emailed one-time link (rate limited, same response whether or not the email exists).
+- [ ] Multi-factor authentication (TOTP first; recovery codes). Required for admins.
+- [ ] Account lockout after repeated failures and a visible "recent sign-in activity" list for the user.
+- [ ] Session management: see and revoke other active sessions; idle timeout setting per facility.
+- [ ] Password policy and breach-list check; forced change after an admin reset.
+
+### C. Provider settings (new Settings page, replaces the bare "Account & display" menu)
+- [x] **Profile.** (Email change needs re-verification, not built.)
+- [~] (stored as Identity user claims; theme, text size, landing page and tour toggle take effect; time zone and clock saved only) **Preferences, stored per account (not just localStorage).** Theme, text size, reduced motion and the other accessibility options now kept in the browser; plus default landing page, default patient sort and trend filter, rows per page, and whether to show the first-visit tour again.
+- [ ] **Time zone and formats.** Per-account time zone (today `Company:TimeZone`, see Configurable time zone in COPILOT-HANDOFF.md), 12/24-hour clock, date format.
+- [~] (saved only, nothing is sent) **Notification preferences.** Which alerts a provider receives (patient quieter this week, below personal baseline, new message from a patient) and the channel for each (in-app, email, push to the provider's own device), with quiet hours.
+- [~] (placeholder card only) **Plan and billing page.** Read-only for providers, editable by admin. Blocked on real clinical pricing from Persistent Technology; the consumer price list is in the Product Catalog PDF and is not for this tool. Until then show the plan name, seat and device counts, and a contact link.
+- [ ] **Data and privacy.** Download my account data, a list of my own recent record access (from the audit log), and a sign-out-everywhere button.
+
+### D. Communication with patients (needs a product decision first)
+The app is read-only today: it shows patient activity and has an assistant stub, but no way to reach a patient.
+Decide scope before building. Recommended order:
+- [ ] **D0. Decide the model.** One-way "nudges" (provider to patient, e.g. "please try Breathing Mandala this week") vs two-way secure messaging. Recommend one-way nudges and care-team announcements first; two-way messaging carries clinical-response expectations and liability (who reads it, how fast, after hours).
+- [~] (prototype: queued per provider, identifiers removed by the chat guardrail, status "not delivered"; no groups or templates beyond four presets) **D1. Message outbox in the dashboard.** Provider composes a nudge to one patient or a filtered group; recipients are limited to the provider's assigned patients; send history and delivery status per patient. Templates for common nudges. No PHI in free text warnings, reuse `ChatGuardrail` redaction.
+- [ ] **D2. Delivery into Reflect Mobile and XR.** Patient apps poll or receive messages through a signed API; shown in an in-app inbox. Needs the patient-app team and a patient-facing auth model. Define the API contract in docs first.
+- [ ] **D3. Push notifications.** APNs (iOS), FCM (Android) and Meta Quest notifications as a separate pass. Rules: the push payload must be generic ("You have a new message from your care team") with no names, module names, scores or clinical content; details only after the patient opens the app and signs in. Per-device tokens stored per patient install and revoked on sign-out or device reassignment. Patient opt-in and quiet hours; opt-out honoured immediately. Confirm that every provider in the chain (push services, email) is covered by a BAA before any real data.
+- [ ] **D4. Consent and preferences on the patient side.** Patient chooses what the care team may send and by which channel; consent recorded with timestamp; revoking consent stops sends.
+- [ ] **D5. Two-way messaging (later, only if D0 says yes).** Needs a response-time policy, after-hours auto-reply, escalation for crisis language (route to a crisis resource, never to the assistant), retention policy and records access rules.
+- [ ] Rate limits and abuse controls on all send paths; every send written to the audit log.
+
+### E. Demo-safe slice (if time is short before the competition)
+- [x] Add a read-only **Settings** page with Profile, Preferences (theme, text size, time zone, tour toggle) saved on the account, and a plan placeholder.
+- [x] Add an admin-only **Team** page with an invite form that creates a pending invite for synthetic emails (no email sent) and a patient-assignment screen over the seeded patients.
+- [x] Add a **Message a patient** mock under the patient record that writes to the outbox and shows "delivered" with no real push; label it clearly as a prototype.
+- [x] Add a line to the Trust page: accounts are invite-only, patients are assigned by an administrator, pushes carry no patient information. Only claim what exists.
+
 ## Assistant: before connecting a model
 
-- [ ] BAA-covered vendor, zero data retention, server-side calls only.
+- [x] OpenRouter responder (`OpenRouterChatResponder`), switched off by default (`Chat:OpenRouter:UseModel=false`); needs `UseModel=true` plus a key in user secrets or `Chat__OpenRouter__ApiKey`. Free models were rate limited on the shared pool (429) when tried; use a paid model; sanitized text only, no patient data, 15 s timeout, 500 calls/day cap, falls back to the stub on any failure. Prototype/synthetic data only.
+- [ ] BAA-covered vendor, zero data retention, server-side calls only. OpenRouter routes to third-party vendors without a BAA; pick a covered provider before real data.
+- [ ] Per-user daily cap and cost alerting (today the cap is global and in memory).
 - [ ] Output filtering and injection red-team tests.
 - [ ] Optional name detection for redaction (patterns miss names).
 
