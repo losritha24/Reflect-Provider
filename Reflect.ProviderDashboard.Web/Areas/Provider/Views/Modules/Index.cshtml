@@ -1,0 +1,56 @@
+@using Reflect.ProviderDashboard.Domain.Catalog
+@using Reflect.ProviderDashboard.Domain.Enums
+@model IReadOnlyList<ReflectModule>
+@{
+    ViewData["Title"] = "Module reference";
+}
+<div class="mb-4">
+    <p class="eyebrow">Reference</p>
+    <h1 class="page-title mb-1">Module reference</h1>
+    <p class="text-muted fs-13 mb-0">Every module a patient can use on Reflect XR and Reflect Mobile. Session records are matched to this list.</p>
+</div>
+
+@foreach (var platform in new[] { TherapyPlatform.Vr, TherapyPlatform.Mobile })
+{
+    var modules = Model.Where(m => m.Platform == platform).ToList();
+    var label = platform == TherapyPlatform.Vr ? "Reflect XR (VR)" : "Reflect Mobile";
+    <section class="work-panel" aria-labelledby="platform-@platform">
+        <div class="section-heading">
+            <div>
+                <h2 id="platform-@platform">@label</h2>
+                <p class="text-muted">@modules.Count modules@(platform == TherapyPlatform.Vr ? " · Meta Quest" : " · iOS and Android")</p>
+            </div>
+        </div>
+        <div class="table-responsive" tabindex="0" role="region" aria-label="@label modules; scroll horizontally for more columns">
+            <table class="table align-middle">
+                <caption class="visually-hidden">@label modules</caption>
+                <thead>
+                <tr>
+                    <th scope="col">Program</th>
+                    <th scope="col">Module</th>
+                    @if (platform == TherapyPlatform.Mobile)
+                    {
+                        <th scope="col">Uses AI images</th>
+                        <th scope="col">Included from</th>
+                    }
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var module in modules)
+                {
+                    <tr>
+                        <td>@module.Group</td>
+                        <td>@module.Name</td>
+                        @if (platform == TherapyPlatform.Mobile)
+                        {
+                            <td>@(module.UsesAi ? "Yes" : "No")</td>
+                            <td>@module.MinimumPlan</td>
+                        }
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </section>
+}
+<p class="text-muted fs-13">Consumer plans shown for context only. Clinical editions are priced separately.</p>

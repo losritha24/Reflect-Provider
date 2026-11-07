@@ -19,7 +19,8 @@ with tempfile.TemporaryDirectory(prefix='reflect-state-') as temporary:
     password = secrets.token_urlsafe(24) + 'aA1!'
     env = dict(os.environ, ASPNETCORE_ENVIRONMENT='Production', Demo__Enabled='true',
                Demo__Email='state@example.invalid', Demo__Password=password,
-               AllowedHosts='127.0.0.1', Hosting__HttpsAtEdge='true', AccountStore__Path=str(database))
+               AllowedHosts='127.0.0.1', Hosting__HttpsAtEdge='true', AccountStore__Path=str(database),
+               Clinical__Path=str(directory / 'clinical.db'))
     with socket.socket() as sock:
         sock.bind(('127.0.0.1', 0))
         port = sock.getsockname()[1]

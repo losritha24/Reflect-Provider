@@ -263,7 +263,7 @@ app.MapControllers();
 
 app.MapControllerRoute(
     name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Graph}/{id?}");
+    pattern: "{area:exists}/{controller=Home}/{action=Dashboard}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

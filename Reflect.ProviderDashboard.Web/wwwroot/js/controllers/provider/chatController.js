@@ -1,9 +1,15 @@
 (function () {
     const form = document.getElementById('chatForm');
     if (!form) return;
+    const panel = document.getElementById('chatPanel');
+    const launcher = document.getElementById('chatLauncher');
     const input = document.getElementById('chatInput');
     const log = document.getElementById('chatLog');
-    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+    const chips = document.getElementById('chatChips');
+    const tokenInput = document.querySelector('#chatWidget input[name="__RequestVerificationToken"]');
+    if (!tokenInput) return;
+    const token = tokenInput.value;
+    let greeted = false;
 
     // textContent only: replies are never interpreted as HTML.
     function add(role, text) {
@@ -14,12 +20,21 @@
         log.scrollTop = log.scrollHeight;
     }
 
-    form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const message = input.value.trim();
-        if (!message) return;
+    function setOpen(open) {
+        panel.hidden = !open;
+        launcher.setAttribute('aria-expanded', String(open));
+        launcher.setAttribute('aria-label', open ? 'Close assistant' : 'Open assistant');
+        if (open) {
+            if (!greeted) { add('bot', 'Hi, I can help you find your way around the dashboard.'); greeted = true; }
+            input.focus();
+        } else {
+            launcher.focus();
+        }
+    }
+
+    async function send(message) {
         add('user', message);
-        input.value = '';
+        chips.hidden = true;
         try {
             const res = await fetch('/Provider/Chat/Send', {
                 method: 'POST',
@@ -34,6 +49,20 @@
         } catch {
             add('note', 'The assistant is unavailable. Please try again.');
         }
-        input.focus();
+    }
+
+    launcher.addEventListener('click', () => setOpen(panel.hidden));
+    document.getElementById('chatClose').addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) setOpen(false); });
+    chips.addEventListener('click', e => {
+        const chip = e.target.closest('.chat-chip');
+        if (chip) send(chip.textContent);
+    });
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        const message = input.value.trim();
+        if (!message) return;
+        input.value = '';
+        send(message).then(() => input.focus());
     });
 })();

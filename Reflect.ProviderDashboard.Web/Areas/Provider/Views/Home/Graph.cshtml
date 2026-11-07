@@ -1,11 +1,11 @@
 @model Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Graph.KnowledgeGraphViewModel
 @{
-    ViewData["Title"] = "Activity graph";
+    ViewData["Title"] = "Caseload map";
 }
 <div class="mb-4">
-    <p class="eyebrow">Reporting home</p>
+    <p class="eyebrow">Caseload map</p>
     <h1 class="page-title mb-1">Caseload activity</h1>
-    <p class="text-muted fs-13 mb-0">A knowledge graph of everyone in your caseload, their XR and mobile sessions, assigned devices, and follow-up signals. Click a person to open their record, or use the sidebar to go anywhere else.</p>
+    <p class="text-muted fs-13 mb-0">A knowledge graph of everyone in your caseload, their XR and mobile sessions, assigned devices, and follow-up signals. Select a person’s name in the table below to open their record.</p>
 </div>
 
 <div class="summary-strip" aria-label="Graph summary">
@@ -28,6 +28,7 @@
         <li><span class="kg-swatch kg-swatch-platform"></span> Experience</li>
         <li><span class="kg-swatch kg-swatch-device"></span> Device</li>
         <li><span class="kg-swatch kg-swatch-alert"></span> Follow-up signal</li>
+        <li>Thicker line = more sessions</li>
     </ul>
 </section>
 

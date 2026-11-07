@@ -2,7 +2,7 @@
     var title = ViewData["Title"] as string ?? "Provider Dashboard";
     var area = ViewContext.RouteData.Values["area"]?.ToString() ?? "Provider";
     var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Home";
-    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "Graph";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "Dashboard";
 }
 <!DOCTYPE html>
 <html lang="en" data-theme-mode="light">
@@ -52,7 +52,7 @@
 
 <div class="app-shell" id="appShell">
     <nav class="sidebar" id="providerSidebar" aria-label="Provider navigation">
-        <a class="sidebar-brand" href="@Url.Action("Graph", "Home", new { area = "Provider" })">
+        <a class="sidebar-brand" href="@Url.Action("Dashboard", "Home", new { area = "Provider" })">
             <img src="~/brand/logos/logo-mark-soft-coral.svg" alt="Reflect XR" />
             <span class="sidebar-brand-copy">
                 <span class="sidebar-brand-name">Reflect XR</span>
@@ -60,14 +60,11 @@
             </span>
         </a>
         <div class="category">Overview</div>
-        <a class="nav-link @(controller == "Home" && action == "Graph" ? "active" : "")" data-short="G" aria-label="Activity graph" href="@Url.Action("Graph", "Home", new { area = "Provider" })">
-            <span class="nav-link-label">Graph</span>
-        </a>
         <a class="nav-link @(controller == "Home" && action == "Dashboard" ? "active" : "")" data-short="D" aria-label="Dashboard" href="@Url.Action("Dashboard", "Home", new { area = "Provider" })">
             <span class="nav-link-label">Dashboard</span>
         </a>
-        <a class="nav-link @(controller == "Home" && action == "Trust" ? "active" : "")" data-short="T" aria-label="Trust and connectivity" href="@Url.Action("Trust", "Home", new { area = "Provider" })">
-            <span class="nav-link-label">Trust</span>
+        <a class="nav-link @(controller == "Home" && action == "Trust" ? "active" : "")" data-short="T" aria-label="Privacy &amp; trust" href="@Url.Action("Trust", "Home", new { area = "Provider" })">
+            <span class="nav-link-label">Privacy &amp; trust</span>
         </a>
         <div class="category">Caseload</div>
         <a class="nav-link @(controller == "Patients" ? "active" : "")" data-short="P" aria-label="Patients" href="@Url.Action("Index", "Patients", new { area = "Provider" })">
@@ -79,11 +76,13 @@
         <a class="nav-link @(controller == "Devices" ? "active" : "")" data-short="V" aria-label="Devices" href="@Url.Action("Index", "Devices", new { area = "Provider" })">
             <span class="nav-link-label">Devices</span>
         </a>
-        <div class="category">Help</div>
-        <a class="nav-link @(controller == "Chat" ? "active" : "")" data-short="A" aria-label="Assistant" href="@Url.Action("Index", "Chat", new { area = "Provider" })">
-            <span class="nav-link-label">Assistant</span>
+        <a class="nav-link @(controller == "Home" && action == "Graph" ? "active" : "")" data-short="M" aria-label="Caseload map" href="@Url.Action("Graph", "Home", new { area = "Provider" })">
+            <span class="nav-link-label">Caseload map</span>
         </a>
-        <button type="button" class="btn btn-outline-secondary w-100 mt-3" id="tourOpen">Take the tour</button>
+        <a class="nav-link @(controller == "Modules" ? "active" : "")" data-short="R" aria-label="Module reference" href="@Url.Action("Index", "Modules", new { area = "Provider" })">
+            <span class="nav-link-label">Module reference</span>
+        </a>
+        <button type="button" class="btn btn-outline-secondary tour-open" id="tourOpen">Take the tour</button>
         <div class="sidebar-footer">Persistent Technology · 2026</div>
     </nav>
     <div class="main-column">
@@ -117,6 +116,7 @@
     </div>
 </div>
 
+<partial name="_ChatWidget" />
 <dialog id="tourDialog" class="tour-dialog" aria-labelledby="tourTitle">
     <h2 id="tourTitle" class="h4"></h2>
     <p id="tourBody"></p>
@@ -129,6 +129,7 @@
 </dialog>
 <script src="~/standins/js/messageService.js"></script>
 <script src="~/standins/js/layoutController.js" asp-append-version="true"></script>
+<script src="~/js/controllers/provider/chatController.js" asp-append-version="true"></script>
 <script src="~/js/controllers/provider/tourController.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>

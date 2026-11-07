@@ -99,7 +99,7 @@ was created by this workflow.
 
 - No public deployment has been created; Docker execution on the chosen host is
   still unverified. The local app has been tested directly with .NET.
-- Patients/sessions remain synthetic and in memory; Identity accounts use SQLite.
+- Patients/sessions are synthetic and stored in the clinical SQLite/Postgres store; Identity accounts use SQLite.
   Authentication tickets are per-process, so restarts sign users out and multiple
   instances require a shared ticket store.
 - Tenant-aware authorization, facility identity/MFA, immutable auditing, production

@@ -1,0 +1,28 @@
+<div class="chat-widget" id="chatWidget">
+    <section class="chat-panel" id="chatPanel" role="dialog" aria-modal="false" aria-labelledby="chatTitle" hidden>
+        <header class="chat-head">
+            <img src="~/brand/logos/logo-mark-white.svg" alt="" class="chat-head-logo" />
+            <div class="chat-head-copy">
+                <strong id="chatTitle">Assistant</strong>
+                <span>Prototype · not connected to a model</span>
+            </div>
+            <button type="button" class="chat-close" id="chatClose" aria-label="Close assistant">&times;</button>
+        </header>
+        <p class="chat-privacy">Please don’t type names or identifiers. Common identifiers (email, phone, SSN, dates, record numbers) are removed before processing; names are not reliably detected. Messages are not saved.</p>
+        @Html.AntiForgeryToken()
+        <div id="chatLog" class="chat-log" role="log" aria-live="polite" aria-label="Conversation" tabindex="0"></div>
+        <div class="chat-chips" id="chatChips">
+            <button type="button" class="chat-chip">How do I filter patients?</button>
+            <button type="button" class="chat-chip">What does engagement mean?</button>
+            <button type="button" class="chat-chip">Which time zone am I seeing?</button>
+        </div>
+        <form id="chatForm" class="chat-form" autocomplete="off">
+            <label for="chatInput" class="visually-hidden">Your question</label>
+            <input id="chatInput" class="form-control" type="text" maxlength="500" placeholder="Ask about the dashboard" required />
+            <button type="submit" class="btn btn-primary-light">Send</button>
+        </form>
+    </section>
+    <button type="button" class="chat-launcher" id="chatLauncher" aria-controls="chatPanel" aria-expanded="false" aria-label="Open assistant">
+        <img src="~/brand/logos/logo-mark-white.svg" alt="" />
+    </button>
+</div>

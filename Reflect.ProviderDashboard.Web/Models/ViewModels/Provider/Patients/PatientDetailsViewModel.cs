@@ -1,3 +1,4 @@
+using Reflect.ProviderDashboard.Domain.Catalog;
 using Reflect.ProviderDashboard.Domain.Entities;
 using Reflect.ProviderDashboard.Domain.Interfaces;
 using Reflect.ProviderDashboard.Domain.Enums;
@@ -32,6 +33,9 @@ public class PatientDetailsViewModel
     public EmotionalTrajectory Trajectory { get; set; } = new(Array.Empty<AffectPoint>(), false, null, null);
     public string TrajectoryChartSvg { get; set; } = string.Empty;
     public List<CareDevice> Devices { get; set; } = new();
+    public List<ProgramUsageRow> ProgramUsage { get; set; } = new();
+
+    public sealed record ProgramUsageRow(string Group, int Sessions, IReadOnlyList<string> Modules);
 
     public async Task PrepareData(
         Guid patientId,
@@ -75,6 +79,11 @@ public class PatientDetailsViewModel
         VrSessionCount = patientSessions.Count(s => s.Platform == TherapyPlatform.Vr);
         MobileSessionCount = patientSessions.Count(s => s.Platform == TherapyPlatform.Mobile);
         TotalMinutes = patientSessions.Sum(s => s.DurationMinutes);
+        ProgramUsage = patientSessions
+            .GroupBy(s => ReflectModuleCatalog.Find(s.Platform, s.ModuleName)?.Group ?? "Other")
+            .OrderByDescending(g => g.Count()).ThenBy(g => g.Key)
+            .Select(g => new ProgramUsageRow(g.Key, g.Count(), g.Select(s => s.ModuleName).Distinct().OrderBy(n => n).ToList()))
+            .ToList();
 
         var timeline = patientSessions.AsEnumerable();
         if (Platform.HasValue) timeline = timeline.Where(s => s.Platform == Platform.Value);

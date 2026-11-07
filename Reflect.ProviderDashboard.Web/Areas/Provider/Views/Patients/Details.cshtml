@@ -102,6 +102,34 @@
             </details>
         }
     </section>
+    <section class="work-panel" aria-labelledby="programs-heading">
+        <div class="section-heading">
+            <div>
+                <h2 id="programs-heading">Programs used</h2>
+                <p class="text-muted">Sessions by Reflect program. Programs not listed have no sessions yet.</p>
+            </div>
+            <a class="btn btn-outline-secondary" asp-controller="Modules" asp-action="Index">Module reference</a>
+        </div>
+        @if (Model.ProgramUsage.Count == 0)
+        {
+            <p class="empty-state">No sessions yet.</p>
+        }
+        else
+        {
+            <div class="table-responsive" tabindex="0" role="region" aria-label="Programs used table; scroll horizontally for more columns">
+                <table class="table">
+                    <caption class="visually-hidden">Sessions by program for @Model.DisplayName</caption>
+                <thead><tr><th scope="col">Program</th><th scope="col">Sessions</th><th scope="col">Modules tried</th></tr></thead>
+                <tbody>
+                @foreach (var program in Model.ProgramUsage)
+                {
+                    <tr><td>@program.Group</td><td>@program.Sessions</td><td>@string.Join(", ", program.Modules)</td></tr>
+                }
+                </tbody>
+                </table>
+            </div>
+        }
+    </section>
     <section class="work-panel" aria-labelledby="devices-heading">
         <div class="section-heading">
             <div>
@@ -163,7 +191,7 @@
                 {
                     <span class="badge bg-primary-transparent">Affect @session.AffectScore / 10</span>
                 }
-                <h3>@session.ModuleName</h3><p>@session.ReflectionSummary</p>
+                <h3>@session.ModuleName</h3>@if (!string.IsNullOrEmpty(session.ModuleGroup)) { <p class="text-muted fs-13 mb-1">@session.ModuleGroup</p> }<p>@session.ReflectionSummary</p>
                 <details><summary>Source details</summary><p class="text-muted">Synthetic demo seed · @session.StartedAtUtc.ToString("yyyy-MM-dd HH:mm 'UTC'") · No live synchronization</p></details>
             </article></li>
         }
@@ -177,9 +205,10 @@
             <table class="table dt-client text-nowrap align-middle">
                 <thead>
                 <tr>
-                    <th scope="col">Date &amp; time (Eastern)</th>
+                    <th scope="col">Date &amp; time (@Clock.Abbreviation)</th>
                     <th scope="col">Duration</th>
                     <th scope="col">Platform</th>
+                    <th scope="col">Program</th>
                     <th scope="col">Module</th>
                     <th scope="col">Reflection summary</th>
                 </tr>
@@ -191,6 +220,7 @@
                         <td>@session.SessionDateTimeDisplay</td>
                         <td>@session.DurationMinutes min</td>
                         <td>@session.PlatformLabel</td>
+                        <td>@session.ModuleGroup</td>
                         <td>@session.ModuleName</td>
                         <td>@session.ReflectionSummary</td>
                     </tr>

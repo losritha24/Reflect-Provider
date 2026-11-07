@@ -7,7 +7,7 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         return User.Identity?.IsAuthenticated == true
-            ? RedirectToAction("Graph", "Home", new { area = "Provider" })
+            ? RedirectToAction("Dashboard", "Home", new { area = "Provider" })
             : View();
     }
 

@@ -18,18 +18,19 @@ public static class KnowledgeGraphSvg
         var xml = new StringBuilder();
         xml.Append("<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 ")
             .Append(Inv(width)).Append(' ').Append(Inv(height))
-            .Append("\" role=\"img\" aria-labelledby=\"kg-title kg-desc\">")
+            .Append("\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">")
             .Append("<title id=\"kg-title\">Caseload activity knowledge graph</title>")
-            .Append("<desc id=\"kg-desc\">Patients connect to Reflect XR, Reflect Mobile, assigned devices, and follow-up signals. Coral edges mark a change worth reviewing.</desc>");
+            .Append("<desc id=\"kg-desc\">Patients connect to Reflect XR, Reflect Mobile, assigned devices, and follow-up signals. Thicker lines mean more sessions. Coral edges mark a change worth reviewing.</desc>");
 
         foreach (var edge in edges)
         {
             if (!lookup.TryGetValue(edge.From, out var from) || !lookup.TryGetValue(edge.To, out var to))
                 continue;
-            xml.Append("<g class=\"kg-edge").Append(edge.Alert ? " is-alert" : "").Append("\">")
-                .Append("<line x1=\"").Append(Inv(from.X)).Append("\" y1=\"").Append(Inv(from.Y))
-                .Append("\" x2=\"").Append(Inv(to.X)).Append("\" y2=\"").Append(Inv(to.Y)).Append("\" />")
-                .Append("</g>");
+            var strokeWidth = edge.Structural ? 1 : Math.Min(1.5 + edge.Weight * 0.6, 5);
+            xml.Append("<g class=\"kg-edge").Append(edge.Alert ? " is-alert" : "").Append(edge.Structural ? " is-structural" : "").Append("\">")
+                .Append("<title>").Append(Encode($"{from.Label} → {to.Label}: {edge.Label}")).Append("</title>")
+                .Append("<line stroke-width=\"").Append(Inv(strokeWidth)).Append("\" x1=\"").Append(Inv(from.X)).Append("\" y1=\"").Append(Inv(from.Y))
+                .Append("\" x2=\"").Append(Inv(to.X)).Append("\" y2=\"").Append(Inv(to.Y)).Append("\" /></g>");
         }
 
         foreach (var node in nodes)

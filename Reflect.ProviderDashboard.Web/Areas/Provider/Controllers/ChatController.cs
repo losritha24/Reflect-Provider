@@ -14,12 +14,11 @@ public class ChatController : Controller
 
     public ChatController(IChatResponder responder) => _responder = responder;
 
-    public IActionResult Index() => View();
-
     // Antiforgery is enforced globally (AutoValidateAntiforgeryToken); the page JS sends the header.
     // Message text is deliberately never logged or stored.
     [HttpPost]
     [EnableRateLimiting("chat")]
+    [RequestSizeLimit(4_096)]
     public async Task<IActionResult> Send([FromBody] ChatRequest request, CancellationToken ct)
     {
         var check = ChatGuardrail.Inspect(request?.Message);
