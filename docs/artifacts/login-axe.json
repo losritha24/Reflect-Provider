@@ -13,8 +13,8 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-11-07T03:33:36.621Z",
-  "url": "http://127.0.0.1:49345/Account/Login",
+  "timestamp": "2026-11-07T04:43:03.748Z",
+  "url": "http://127.0.0.1:53083/Account/Login",
   "toolOptions": {
     "runOnly": {
       "type": "tag",

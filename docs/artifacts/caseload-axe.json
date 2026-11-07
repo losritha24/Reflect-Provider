@@ -13,8 +13,8 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-11-07T03:33:44.618Z",
-  "url": "http://127.0.0.1:49345/Provider/Patients/Index?search=Sam&trend=Declining&page=1",
+  "timestamp": "2026-11-07T04:43:11.756Z",
+  "url": "http://127.0.0.1:53083/Provider/Patients/Index?search=Sam&trend=Declining&page=1",
   "toolOptions": {
     "runOnly": {
       "type": "tag",
@@ -952,6 +952,86 @@
             }
           ],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-allowed-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attributes are used correctly for the defined role"
+            },
+            {
+              "id": "aria-allowed-attr-elm",
+              "data": null,
+              "relatedNodes": [],
+              "message": "ARIA attributes are allowed for this element",
+              "impact": "critical"
+            },
+            {
+              "id": "aria-no-deprecated-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "No deprecated ARIA attributes are used"
+            }
+          ],
+          "none": [
+            {
+              "id": "aria-unsupported-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute is supported"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-allowed-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attributes are used correctly for the defined role"
+            },
+            {
+              "id": "aria-allowed-attr-elm",
+              "data": null,
+              "relatedNodes": [],
+              "message": "ARIA attributes are allowed for this element",
+              "impact": "critical"
+            },
+            {
+              "id": "aria-no-deprecated-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "No deprecated ARIA attributes are used"
+            }
+          ],
+          "none": [
+            {
+              "id": "aria-unsupported-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute is supported"
+            }
+          ],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -994,7 +1074,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -1035,6 +1115,46 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-allowed-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attributes are used correctly for the defined role"
+            },
+            {
+              "id": "aria-allowed-attr-elm",
+              "data": null,
+              "relatedNodes": [],
+              "message": "ARIA attributes are allowed for this element",
+              "impact": "critical"
+            },
+            {
+              "id": "aria-no-deprecated-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "No deprecated ARIA attributes are used"
+            }
+          ],
+          "none": [
+            {
+              "id": "aria-unsupported-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute is supported"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -1358,6 +1478,42 @@
           ],
           "none": [],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-conditional-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-conditional-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "none": [],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -1378,7 +1534,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -1397,6 +1553,24 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-conditional-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -1754,6 +1928,42 @@
             }
           ],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [],
+          "none": [
+            {
+              "id": "aria-prohibited-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [],
+          "none": [
+            {
+              "id": "aria-prohibited-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -1774,7 +1984,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -1793,6 +2003,24 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [],
+          "none": [
+            {
+              "id": "aria-prohibited-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -2226,6 +2454,70 @@
           ],
           "none": [],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-valid-attr-value",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute values are valid"
+            },
+            {
+              "id": "aria-errormessage",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+            },
+            {
+              "id": "aria-level",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-level values are valid"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-valid-attr-value",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute values are valid"
+            },
+            {
+              "id": "aria-errormessage",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+            },
+            {
+              "id": "aria-level",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-level values are valid"
+            }
+          ],
+          "none": [],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -2260,7 +2552,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -2293,6 +2585,38 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-valid-attr-value",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute values are valid"
+            },
+            {
+              "id": "aria-errormessage",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+            },
+            {
+              "id": "aria-level",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-level values are valid"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -2576,6 +2900,42 @@
           "all": [],
           "none": [],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "aria-valid-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute name is valid"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "aria-valid-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute name is valid"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -2596,7 +2956,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -2615,6 +2975,24 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "aria-valid-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute name is valid"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -2781,7 +3159,7 @@
           "impact": null,
           "html": "<button type=\"submit\" class=\"btn btn-primary-light\">Apply filters</button>",
           "target": [
-            ".filter-toolbar > .btn-primary-light.btn[type=\"submit\"]"
+            ".filter-toolbar > .btn-primary-light[type=\"submit\"]"
           ]
         },
         {
@@ -3138,6 +3516,62 @@
           "all": [],
           "none": [],
           "impact": null,
+          "html": "<span class=\"nav-link-label\">Weekly digest</span>",
+          "target": [
+            "a[data-short=\"W\"] > .nav-link-label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#d3d6df",
+                "bgColor": "#1f305e",
+                "contrastRatio": 8.79,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 8.79"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"nav-link-label\">Messages</span>",
+          "target": [
+            "a[aria-label=\"Messages\"] > .nav-link-label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#d3d6df",
+                "bgColor": "#1f305e",
+                "contrastRatio": 8.79,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 8.79"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
           "html": "<span class=\"nav-link-label\">Devices</span>",
           "target": [
             "a[data-short=\"V\"] > .nav-link-label"
@@ -3168,7 +3602,7 @@
           "impact": null,
           "html": "<span class=\"nav-link-label\">Caseload map</span>",
           "target": [
-            "a[data-short=\"M\"] > .nav-link-label"
+            "a[aria-label=\"Caseload map\"] > .nav-link-label"
           ]
         },
         {
@@ -3197,6 +3631,62 @@
           "html": "<span class=\"nav-link-label\">Module reference</span>",
           "target": [
             "a[aria-label=\"Module reference\"] > .nav-link-label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#c3c8d4",
+                "bgColor": "#1f305e",
+                "contrastRatio": 7.62,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.62"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<div class=\"category\">Admin</div>",
+          "target": [
+            ".category:nth-child(13)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#d3d6df",
+                "bgColor": "#1f305e",
+                "contrastRatio": 8.79,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 8.79"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"nav-link-label\">Team</span>",
+          "target": [
+            "a[data-short=\"A\"] > .nav-link-label"
           ]
         },
         {
@@ -3513,6 +4003,62 @@
               "id": "color-contrast",
               "data": {
                 "fgColor": "#1f305e",
+                "bgColor": "#ff8282",
+                "contrastRatio": 5.33,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "bold",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 5.33"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"btn btn-primary-light\" href=\"/Provider/Patients/Create\">Add patient</a>",
+          "target": [
+            "a[href$=\"Create\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#e6e8eb",
+                "contrastRatio": 10.41,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 10.41"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"btn btn-outline-secondary\" href=\"/Provider/Patients/Remove\">Remove patient</a>",
+          "target": [
+            "a[href$=\"Remove\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
                 "bgColor": "#fafafb",
                 "contrastRatio": 12.25,
                 "fontSize": "10.2pt (13.6px)",
@@ -3644,7 +4190,7 @@
           "impact": null,
           "html": "<button type=\"submit\" class=\"btn btn-primary-light\">Apply filters</button>",
           "target": [
-            ".filter-toolbar > .btn-primary-light.btn[type=\"submit\"]"
+            ".filter-toolbar > .btn-primary-light[type=\"submit\"]"
           ]
         },
         {
@@ -4006,7 +4552,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>10/25/2026</td>",
+          "html": "<td>10/26/2026</td>",
           "target": [
             "td:nth-child(4)"
           ]
@@ -4716,6 +5262,42 @@
           "all": [],
           "none": [],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "label-content-name-mismatch",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element contains visible text as part of its accessible name"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "label-content-name-mismatch",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element contains visible text as part of its accessible name"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -4736,7 +5318,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -4755,6 +5337,24 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "label-content-name-mismatch",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element contains visible text as part of its accessible name"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         }
       ]
@@ -5052,6 +5652,72 @@
             }
           ],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            },
+            {
+              "id": "aria-label",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "aria-label attribute exists and is not empty"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            },
+            {
+              "id": "aria-label",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "aria-label attribute exists and is not empty"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -5087,7 +5753,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -5121,6 +5787,91 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            },
+            {
+              "id": "aria-label",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "aria-label attribute exists and is not empty"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"btn btn-primary-light\" href=\"/Provider/Patients/Create\">Add patient</a>",
+          "target": [
+            "a[href$=\"Create\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"btn btn-outline-secondary\" href=\"/Provider/Patients/Remove\">Remove patient</a>",
+          "target": [
+            "a[href$=\"Remove\"]"
           ]
         },
         {
@@ -5391,7 +6142,7 @@
           "impact": null,
           "html": "<button type=\"submit\" class=\"btn btn-primary-light\">Apply filters</button>",
           "target": [
-            ".filter-toolbar > .btn-primary-light.btn[type=\"submit\"]"
+            ".filter-toolbar > .btn-primary-light[type=\"submit\"]"
           ]
         },
         {

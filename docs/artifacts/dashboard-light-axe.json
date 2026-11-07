@@ -13,8 +13,8 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-11-07T03:33:38.126Z",
-  "url": "http://127.0.0.1:49345/Provider",
+  "timestamp": "2026-11-07T04:43:05.236Z",
+  "url": "http://127.0.0.1:53083/Provider",
   "toolOptions": {
     "runOnly": {
       "type": "tag",
@@ -1108,6 +1108,86 @@
             }
           ],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-allowed-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attributes are used correctly for the defined role"
+            },
+            {
+              "id": "aria-allowed-attr-elm",
+              "data": null,
+              "relatedNodes": [],
+              "message": "ARIA attributes are allowed for this element",
+              "impact": "critical"
+            },
+            {
+              "id": "aria-no-deprecated-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "No deprecated ARIA attributes are used"
+            }
+          ],
+          "none": [
+            {
+              "id": "aria-unsupported-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute is supported"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-allowed-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attributes are used correctly for the defined role"
+            },
+            {
+              "id": "aria-allowed-attr-elm",
+              "data": null,
+              "relatedNodes": [],
+              "message": "ARIA attributes are allowed for this element",
+              "impact": "critical"
+            },
+            {
+              "id": "aria-no-deprecated-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "No deprecated ARIA attributes are used"
+            }
+          ],
+          "none": [
+            {
+              "id": "aria-unsupported-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute is supported"
+            }
+          ],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -1150,7 +1230,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -1191,6 +1271,46 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-allowed-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attributes are used correctly for the defined role"
+            },
+            {
+              "id": "aria-allowed-attr-elm",
+              "data": null,
+              "relatedNodes": [],
+              "message": "ARIA attributes are allowed for this element",
+              "impact": "critical"
+            },
+            {
+              "id": "aria-no-deprecated-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "No deprecated ARIA attributes are used"
+            }
+          ],
+          "none": [
+            {
+              "id": "aria-unsupported-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute is supported"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -1634,6 +1754,42 @@
           ],
           "none": [],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-conditional-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-conditional-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "none": [],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -1654,7 +1810,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -1673,6 +1829,24 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-conditional-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -2510,6 +2684,42 @@
             }
           ],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [],
+          "none": [
+            {
+              "id": "aria-prohibited-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [],
+          "none": [
+            {
+              "id": "aria-prohibited-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -2530,7 +2740,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -2549,6 +2759,24 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [],
+          "none": [
+            {
+              "id": "aria-prohibited-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -2882,6 +3110,70 @@
           ],
           "none": [],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-valid-attr-value",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute values are valid"
+            },
+            {
+              "id": "aria-errormessage",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+            },
+            {
+              "id": "aria-level",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-level values are valid"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-valid-attr-value",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute values are valid"
+            },
+            {
+              "id": "aria-errormessage",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+            },
+            {
+              "id": "aria-level",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-level values are valid"
+            }
+          ],
+          "none": [],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -2916,7 +3208,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -2949,6 +3241,38 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-valid-attr-value",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute values are valid"
+            },
+            {
+              "id": "aria-errormessage",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+            },
+            {
+              "id": "aria-level",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-level values are valid"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -3328,6 +3652,42 @@
           "all": [],
           "none": [],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "aria-valid-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute name is valid"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "aria-valid-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute name is valid"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -3348,7 +3708,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -3367,6 +3727,24 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "aria-valid-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute name is valid"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -3956,6 +4334,62 @@
           "all": [],
           "none": [],
           "impact": null,
+          "html": "<span class=\"nav-link-label\">Weekly digest</span>",
+          "target": [
+            "a[data-short=\"W\"] > .nav-link-label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#d3d6df",
+                "bgColor": "#1f305e",
+                "contrastRatio": 8.79,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 8.79"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"nav-link-label\">Messages</span>",
+          "target": [
+            "a[aria-label=\"Messages\"] > .nav-link-label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#d3d6df",
+                "bgColor": "#1f305e",
+                "contrastRatio": 8.79,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 8.79"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
           "html": "<span class=\"nav-link-label\">Devices</span>",
           "target": [
             "a[data-short=\"V\"] > .nav-link-label"
@@ -3986,7 +4420,7 @@
           "impact": null,
           "html": "<span class=\"nav-link-label\">Caseload map</span>",
           "target": [
-            "a[data-short=\"M\"] > .nav-link-label"
+            "a[aria-label=\"Caseload map\"] > .nav-link-label"
           ]
         },
         {
@@ -4015,6 +4449,62 @@
           "html": "<span class=\"nav-link-label\">Module reference</span>",
           "target": [
             "a[aria-label=\"Module reference\"] > .nav-link-label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#c3c8d4",
+                "bgColor": "#1f305e",
+                "contrastRatio": 7.62,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.62"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<div class=\"category\">Admin</div>",
+          "target": [
+            ".category:nth-child(13)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#d3d6df",
+                "bgColor": "#1f305e",
+                "contrastRatio": 8.79,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 8.79"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"nav-link-label\">Team</span>",
+          "target": [
+            "a[data-short=\"A\"] > .nav-link-label"
           ]
         },
         {
@@ -4350,7 +4840,7 @@
           "impact": null,
           "html": "<a class=\"btn btn-outline-secondary\" href=\"/Provider/Patients/Index\">View caseload</a>",
           "target": [
-            ".btn-outline-secondary.btn[href$=\"Index\"]"
+            ".workspace-heading > .btn-outline-secondary.btn[href$=\"Index\"]"
           ]
         },
         {
@@ -4376,7 +4866,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span class=\"stat-value\">5</span>",
+          "html": "<span class=\"stat-value\">10</span>",
           "target": [
             "div:nth-child(1) > .stat-value"
           ]
@@ -4432,7 +4922,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span class=\"stat-value\">9</span>",
+          "html": "<span class=\"stat-value\">19</span>",
           "target": [
             "div:nth-child(2) > .stat-value"
           ]
@@ -4544,7 +5034,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span>Synthetic snapshot<br><small>Generated 11/6/2026 10:33 PM EST</small></span>",
+          "html": "<span>Synthetic snapshot<br><small>Generated 11/6/2026 11:43 PM EST</small></span>",
           "target": [
             ".snapshot-note > span:nth-child(2)"
           ]
@@ -4572,7 +5062,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<small>Generated 11/6/2026 10:33 PM EST</small>",
+          "html": "<small>Generated 11/6/2026 11:43 PM EST</small>",
           "target": [
             "small"
           ]
@@ -4740,7 +5230,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<p class=\"text-muted\">Last activity: 10/25/2026 11:33 PM EDT</p>",
+          "html": "<p class=\"text-muted\">Last activity: 10/26/2026 12:43 AM EDT</p>",
           "target": [
             "section[aria-labelledby=\"attention-heading\"] > .signal-card > .signal-person > div > .text-muted"
           ]
@@ -5076,7 +5566,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<label for=\"xr-meter\">Reflect XR <strong>5</strong></label>",
+          "html": "<label for=\"xr-meter\">Reflect XR <strong>9</strong></label>",
           "target": [
             "label[for=\"xr-meter\"]"
           ]
@@ -5104,7 +5594,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<strong>5</strong>",
+          "html": "<strong>9</strong>",
           "target": [
             "label[for=\"xr-meter\"] > strong"
           ]
@@ -5132,7 +5622,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<label for=\"mobile-meter\">Reflect Mobile <strong>4</strong></label>",
+          "html": "<label for=\"mobile-meter\">Reflect Mobile <strong>10</strong></label>",
           "target": [
             "label[for=\"mobile-meter\"]"
           ]
@@ -5160,7 +5650,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<strong>4</strong>",
+          "html": "<strong>10</strong>",
           "target": [
             "label[for=\"mobile-meter\"] > strong"
           ]
@@ -5496,7 +5986,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<p class=\"text-muted\">Latest marker 11/4/2026 9:33 PM EST</p>",
+          "html": "<p class=\"text-muted\">Latest marker 11/4/2026 10:43 PM EST</p>",
           "target": [
             ".affect-panel > .signal-card:nth-child(3) > .signal-person > div > .text-muted"
           ]
@@ -5776,7 +6266,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<p class=\"text-muted\">Latest marker 10/25/2026 11:33 PM EDT</p>",
+          "html": "<p class=\"text-muted\">Latest marker 10/26/2026 12:43 AM EDT</p>",
           "target": [
             ".signal-card:nth-child(4) > .signal-person > div > .text-muted"
           ]
@@ -6112,7 +6602,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1\">Alex Rivera</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa9\">Devon Okonkwo</a>",
           "target": [
             ".activity-item:nth-child(1) > div:nth-child(2) > .patient-name"
           ]
@@ -6140,7 +6630,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<p>Creative Calm \u00b7 Color Psychology</p>",
+          "html": "<p>Creative Calm \u00b7 Pour Paint</p>",
           "target": [
             ".activity-item:nth-child(1) > div:nth-child(2) > p"
           ]
@@ -6150,9 +6640,9 @@
             {
               "id": "color-contrast",
               "data": {
-                "fgColor": "#1f305e",
-                "bgColor": "#fbe7e8",
-                "contrastRatio": 10.77,
+                "fgColor": "#4b6079",
+                "bgColor": "#e7e9ed",
+                "contrastRatio": 5.31,
                 "fontSize": "9.0pt (12px)",
                 "fontWeight": "normal",
                 "messageKey": null,
@@ -6162,15 +6652,15 @@
               },
               "relatedNodes": [],
               "impact": "serious",
-              "message": "Element has sufficient color contrast of 10.77"
+              "message": "Element has sufficient color contrast of 5.31"
             }
           ],
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span class=\"badge bg-primary-transparent\">Reflect XR (VR)</span>",
+          "html": "<span class=\"badge bg-info-transparent\">Reflect Mobile</span>",
           "target": [
-            ".activity-item:nth-child(1) > .bg-primary-transparent.badge"
+            ".activity-item:nth-child(1) > .bg-info-transparent.badge"
           ]
         },
         {
@@ -6196,7 +6686,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div class=\"activity-time\">11/5/2026 8:33 PM EST<span>28 minutes</span></div>",
+          "html": "<div class=\"activity-time\">11/5/2026 11:43 PM EST<span>19 minutes</span></div>",
           "target": [
             ".activity-item:nth-child(1) > .activity-time"
           ]
@@ -6224,7 +6714,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span>28 minutes</span>",
+          "html": "<span>19 minutes</span>",
           "target": [
             ".activity-item:nth-child(1) > .activity-time > span"
           ]
@@ -6252,7 +6742,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4\">Taylor Brooks</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa8\">Elena Rossi</a>",
           "target": [
             ".activity-item:nth-child(2) > div:nth-child(2) > .patient-name"
           ]
@@ -6280,7 +6770,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<p>Creative Calm \u00b7 Flow</p>",
+          "html": "<p>Explore Emotions \u00b7 Self Compassion</p>",
           "target": [
             ".activity-item:nth-child(2) > div:nth-child(2) > p"
           ]
@@ -6336,7 +6826,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div class=\"activity-time\">11/5/2026 5:33 PM EST<span>40 minutes</span></div>",
+          "html": "<div class=\"activity-time\">11/5/2026 11:43 PM EST<span>25 minutes</span></div>",
           "target": [
             ".activity-item:nth-child(2) > .activity-time"
           ]
@@ -6364,7 +6854,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span>40 minutes</span>",
+          "html": "<span>25 minutes</span>",
           "target": [
             ".activity-item:nth-child(2) > .activity-time > span"
           ]
@@ -6392,7 +6882,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2\">Jordan Kim</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7\">Marcus Webb</a>",
           "target": [
             ".activity-item:nth-child(3) > div:nth-child(2) > .patient-name"
           ]
@@ -6420,7 +6910,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<p>Reflect \u00b7 Reflection Journals</p>",
+          "html": "<p>Creative Calm \u00b7 Photo Coloring</p>",
           "target": [
             ".activity-item:nth-child(3) > div:nth-child(2) > p"
           ]
@@ -6476,7 +6966,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div class=\"activity-time\">11/4/2026 10:33 PM EST<span>18 minutes</span></div>",
+          "html": "<div class=\"activity-time\">11/5/2026 11:43 PM EST<span>17 minutes</span></div>",
           "target": [
             ".activity-item:nth-child(3) > .activity-time"
           ]
@@ -6504,7 +6994,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span>18 minutes</span>",
+          "html": "<span>17 minutes</span>",
           "target": [
             ".activity-item:nth-child(3) > .activity-time > span"
           ]
@@ -6532,7 +7022,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5\">Casey Nguyen</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa10\">Harper Lin</a>",
           "target": [
             ".activity-item:nth-child(4) > div:nth-child(2) > .patient-name"
           ]
@@ -6560,7 +7050,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<p>Learn \u00b7 Journey</p>",
+          "html": "<p>Learn \u00b7 Self</p>",
           "target": [
             ".activity-item:nth-child(4) > div:nth-child(2) > p"
           ]
@@ -6616,7 +7106,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div class=\"activity-time\">11/4/2026 9:33 PM EST<span>24 minutes</span></div>",
+          "html": "<div class=\"activity-time\">11/5/2026 11:43 PM EST<span>14 minutes</span></div>",
           "target": [
             ".activity-item:nth-child(4) > .activity-time"
           ]
@@ -6644,7 +7134,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span>24 minutes</span>",
+          "html": "<span>14 minutes</span>",
           "target": [
             ".activity-item:nth-child(4) > .activity-time > span"
           ]
@@ -6672,7 +7162,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4\">Taylor Brooks</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1\">Alex Rivera</a>",
           "target": [
             ".activity-item:nth-child(5) > div:nth-child(2) > .patient-name"
           ]
@@ -6700,7 +7190,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<p>Explore Self \u00b7 Personal Strengths</p>",
+          "html": "<p>Creative Calm \u00b7 Color Psychology</p>",
           "target": [
             ".activity-item:nth-child(5) > div:nth-child(2) > p"
           ]
@@ -6756,7 +7246,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div class=\"activity-time\">11/3/2026 10:33 PM EST<span>30 minutes</span></div>",
+          "html": "<div class=\"activity-time\">11/5/2026 9:43 PM EST<span>28 minutes</span></div>",
           "target": [
             ".activity-item:nth-child(5) > .activity-time"
           ]
@@ -6784,7 +7274,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span>30 minutes</span>",
+          "html": "<span>28 minutes</span>",
           "target": [
             ".activity-item:nth-child(5) > .activity-time > span"
           ]
@@ -6812,7 +7302,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1\">Alex Rivera</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4\">Taylor Brooks</a>",
           "target": [
             ".activity-item:nth-child(6) > div:nth-child(2) > .patient-name"
           ]
@@ -6840,7 +7330,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<p>Reflect \u00b7 Reflection Journals</p>",
+          "html": "<p>Creative Calm \u00b7 Flow</p>",
           "target": [
             ".activity-item:nth-child(6) > div:nth-child(2) > p"
           ]
@@ -6850,9 +7340,9 @@
             {
               "id": "color-contrast",
               "data": {
-                "fgColor": "#4b6079",
-                "bgColor": "#e7e9ed",
-                "contrastRatio": 5.31,
+                "fgColor": "#1f305e",
+                "bgColor": "#fbe7e8",
+                "contrastRatio": 10.77,
                 "fontSize": "9.0pt (12px)",
                 "fontWeight": "normal",
                 "messageKey": null,
@@ -6862,15 +7352,15 @@
               },
               "relatedNodes": [],
               "impact": "serious",
-              "message": "Element has sufficient color contrast of 5.31"
+              "message": "Element has sufficient color contrast of 10.77"
             }
           ],
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span class=\"badge bg-info-transparent\">Reflect Mobile</span>",
+          "html": "<span class=\"badge bg-primary-transparent\">Reflect XR (VR)</span>",
           "target": [
-            ".activity-item:nth-child(6) > .bg-info-transparent.badge"
+            ".activity-item:nth-child(6) > .bg-primary-transparent.badge"
           ]
         },
         {
@@ -6896,7 +7386,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div class=\"activity-time\">11/2/2026 10:33 PM EST<span>22 minutes</span></div>",
+          "html": "<div class=\"activity-time\">11/5/2026 6:43 PM EST<span>40 minutes</span></div>",
           "target": [
             ".activity-item:nth-child(6) > .activity-time"
           ]
@@ -6924,7 +7414,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span>22 minutes</span>",
+          "html": "<span>40 minutes</span>",
           "target": [
             ".activity-item:nth-child(6) > .activity-time > span"
           ]
@@ -6952,7 +7442,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5\">Casey Nguyen</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa6\">Priya Shah</a>",
           "target": [
             ".activity-item:nth-child(7) > div:nth-child(2) > .patient-name"
           ]
@@ -6980,7 +7470,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<p>Explore Emotions \u00b7 Catharsis</p>",
+          "html": "<p>Explore Journey \u00b7 Appreciation of Life</p>",
           "target": [
             ".activity-item:nth-child(7) > div:nth-child(2) > p"
           ]
@@ -7036,7 +7526,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div class=\"activity-time\">11/1/2026 10:33 PM EST<span>32 minutes</span></div>",
+          "html": "<div class=\"activity-time\">11/4/2026 11:43 PM EST<span>32 minutes</span></div>",
           "target": [
             ".activity-item:nth-child(7) > .activity-time"
           ]
@@ -7092,7 +7582,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4\">Taylor Brooks</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2\">Jordan Kim</a>",
           "target": [
             ".activity-item:nth-child(8) > div:nth-child(2) > .patient-name"
           ]
@@ -7120,7 +7610,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<p>Creative Calm \u00b7 Flow</p>",
+          "html": "<p>Reflect \u00b7 Reflection Journals</p>",
           "target": [
             ".activity-item:nth-child(8) > div:nth-child(2) > p"
           ]
@@ -7130,9 +7620,9 @@
             {
               "id": "color-contrast",
               "data": {
-                "fgColor": "#1f305e",
-                "bgColor": "#fbe7e8",
-                "contrastRatio": 10.77,
+                "fgColor": "#4b6079",
+                "bgColor": "#e7e9ed",
+                "contrastRatio": 5.31,
                 "fontSize": "9.0pt (12px)",
                 "fontWeight": "normal",
                 "messageKey": null,
@@ -7142,15 +7632,15 @@
               },
               "relatedNodes": [],
               "impact": "serious",
-              "message": "Element has sufficient color contrast of 10.77"
+              "message": "Element has sufficient color contrast of 5.31"
             }
           ],
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span class=\"badge bg-primary-transparent\">Reflect XR (VR)</span>",
+          "html": "<span class=\"badge bg-info-transparent\">Reflect Mobile</span>",
           "target": [
-            ".activity-item:nth-child(8) > .bg-primary-transparent.badge"
+            ".activity-item:nth-child(8) > .bg-info-transparent.badge"
           ]
         },
         {
@@ -7176,7 +7666,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<div class=\"activity-time\">10/31/2026 11:33 PM EDT<span>32 minutes</span></div>",
+          "html": "<div class=\"activity-time\">11/4/2026 11:43 PM EST<span>18 minutes</span></div>",
           "target": [
             ".activity-item:nth-child(8) > .activity-time"
           ]
@@ -7204,7 +7694,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span>32 minutes</span>",
+          "html": "<span>18 minutes</span>",
           "target": [
             ".activity-item:nth-child(8) > .activity-time > span"
           ]
@@ -7435,7 +7925,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<progress id=\"xr-meter\" value=\"5\" max=\"9\">5</progress>",
+          "html": "<progress id=\"xr-meter\" value=\"9\" max=\"19\">9</progress>",
           "target": [
             "#xr-meter"
           ]
@@ -7453,7 +7943,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<progress id=\"mobile-meter\" value=\"4\" max=\"9\">4</progress>",
+          "html": "<progress id=\"mobile-meter\" value=\"10\" max=\"19\">10</progress>",
           "target": [
             "#mobile-meter"
           ]
@@ -7850,6 +8340,42 @@
           "all": [],
           "none": [],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "label-content-name-mismatch",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element contains visible text as part of its accessible name"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "label-content-name-mismatch",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element contains visible text as part of its accessible name"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -7870,7 +8396,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -7889,6 +8415,24 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "label-content-name-mismatch",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element contains visible text as part of its accessible name"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         }
       ]
@@ -8128,6 +8672,72 @@
             }
           ],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            },
+            {
+              "id": "aria-label",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "aria-label attribute exists and is not empty"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            },
+            {
+              "id": "aria-label",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "aria-label attribute exists and is not empty"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -8163,7 +8773,7 @@
           "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Caseload map\" href=\"/Provider/Home/Graph\">\n            <span class=\"nav-link-label\">Caseload map</span>\n        </a>",
           "target": [
-            "a[data-short=\"M\"]"
+            "a[aria-label=\"Caseload map\"]"
           ]
         },
         {
@@ -8207,6 +8817,39 @@
               "relatedNodes": [],
               "impact": "serious",
               "message": "Element has text that is visible to screen readers"
+            },
+            {
+              "id": "aria-label",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "aria-label attribute exists and is not empty"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
             }
           ],
           "all": [],
@@ -8222,7 +8865,7 @@
           "impact": null,
           "html": "<a class=\"btn btn-outline-secondary\" href=\"/Provider/Patients/Index\">View caseload</a>",
           "target": [
-            ".btn-outline-secondary.btn[href$=\"Index\"]"
+            ".workspace-heading > .btn-outline-secondary.btn[href$=\"Index\"]"
           ]
         },
         {
@@ -8454,7 +9097,7 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1\">Alex Rivera</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa9\">Devon Okonkwo</a>",
           "target": [
             ".activity-item:nth-child(1) > div:nth-child(2) > .patient-name"
           ]
@@ -8480,7 +9123,7 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4\">Taylor Brooks</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa8\">Elena Rossi</a>",
           "target": [
             ".activity-item:nth-child(2) > div:nth-child(2) > .patient-name"
           ]
@@ -8506,7 +9149,7 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2\">Jordan Kim</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7\">Marcus Webb</a>",
           "target": [
             ".activity-item:nth-child(3) > div:nth-child(2) > .patient-name"
           ]
@@ -8532,7 +9175,7 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5\">Casey Nguyen</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa10\">Harper Lin</a>",
           "target": [
             ".activity-item:nth-child(4) > div:nth-child(2) > .patient-name"
           ]
@@ -8558,7 +9201,7 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4\">Taylor Brooks</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1\">Alex Rivera</a>",
           "target": [
             ".activity-item:nth-child(5) > div:nth-child(2) > .patient-name"
           ]
@@ -8584,7 +9227,7 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1\">Alex Rivera</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4\">Taylor Brooks</a>",
           "target": [
             ".activity-item:nth-child(6) > div:nth-child(2) > .patient-name"
           ]
@@ -8610,7 +9253,7 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5\">Casey Nguyen</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa6\">Priya Shah</a>",
           "target": [
             ".activity-item:nth-child(7) > div:nth-child(2) > .patient-name"
           ]
@@ -8636,7 +9279,7 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4\">Taylor Brooks</a>",
+          "html": "<a class=\"patient-name\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2\">Jordan Kim</a>",
           "target": [
             ".activity-item:nth-child(8) > div:nth-child(2) > .patient-name"
           ]
@@ -8801,7 +9444,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<progress id=\"xr-meter\" value=\"5\" max=\"9\">5</progress>",
+          "html": "<progress id=\"xr-meter\" value=\"9\" max=\"19\">9</progress>",
           "target": [
             "#xr-meter"
           ]
@@ -8819,7 +9462,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<progress id=\"mobile-meter\" value=\"4\" max=\"9\">4</progress>",
+          "html": "<progress id=\"mobile-meter\" value=\"10\" max=\"19\">10</progress>",
           "target": [
             "#mobile-meter"
           ]

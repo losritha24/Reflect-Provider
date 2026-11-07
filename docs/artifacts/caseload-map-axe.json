@@ -13,8 +13,8 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-11-07T03:33:40.706Z",
-  "url": "http://127.0.0.1:49345/Provider/Home/Graph",
+  "timestamp": "2026-11-07T04:43:07.836Z",
+  "url": "http://127.0.0.1:53083/Provider/Home/Graph",
   "toolOptions": {
     "runOnly": {
       "type": "tag",
@@ -981,6 +981,86 @@
             }
           ],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-allowed-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attributes are used correctly for the defined role"
+            },
+            {
+              "id": "aria-allowed-attr-elm",
+              "data": null,
+              "relatedNodes": [],
+              "message": "ARIA attributes are allowed for this element",
+              "impact": "critical"
+            },
+            {
+              "id": "aria-no-deprecated-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "No deprecated ARIA attributes are used"
+            }
+          ],
+          "none": [
+            {
+              "id": "aria-unsupported-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute is supported"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-allowed-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attributes are used correctly for the defined role"
+            },
+            {
+              "id": "aria-allowed-attr-elm",
+              "data": null,
+              "relatedNodes": [],
+              "message": "ARIA attributes are allowed for this element",
+              "impact": "critical"
+            },
+            {
+              "id": "aria-no-deprecated-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "No deprecated ARIA attributes are used"
+            }
+          ],
+          "none": [
+            {
+              "id": "aria-unsupported-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute is supported"
+            }
+          ],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -1064,6 +1144,46 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-allowed-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attributes are used correctly for the defined role"
+            },
+            {
+              "id": "aria-allowed-attr-elm",
+              "data": null,
+              "relatedNodes": [],
+              "message": "ARIA attributes are allowed for this element",
+              "impact": "critical"
+            },
+            {
+              "id": "aria-no-deprecated-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "No deprecated ARIA attributes are used"
+            }
+          ],
+          "none": [
+            {
+              "id": "aria-unsupported-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute is supported"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -1427,6 +1547,42 @@
           ],
           "none": [],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-conditional-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-conditional-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "none": [],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -1466,6 +1622,24 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-conditional-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -1855,6 +2029,42 @@
             }
           ],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [],
+          "none": [
+            {
+              "id": "aria-prohibited-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [],
+          "none": [
+            {
+              "id": "aria-prohibited-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -1894,6 +2104,24 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [],
+          "none": [
+            {
+              "id": "aria-prohibited-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "ARIA attribute is allowed"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -2277,6 +2505,70 @@
           ],
           "none": [],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-valid-attr-value",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute values are valid"
+            },
+            {
+              "id": "aria-errormessage",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+            },
+            {
+              "id": "aria-level",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-level values are valid"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-valid-attr-value",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute values are valid"
+            },
+            {
+              "id": "aria-errormessage",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+            },
+            {
+              "id": "aria-level",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-level values are valid"
+            }
+          ],
+          "none": [],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -2344,6 +2636,38 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "aria-valid-attr-value",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute values are valid"
+            },
+            {
+              "id": "aria-errormessage",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+            },
+            {
+              "id": "aria-level",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "aria-level values are valid"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -2659,6 +2983,42 @@
           "all": [],
           "none": [],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "aria-valid-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute name is valid"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "aria-valid-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute name is valid"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -2698,6 +3058,24 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "aria-valid-attr",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "critical",
+              "message": "ARIA attribute name is valid"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         },
         {
@@ -3233,6 +3611,62 @@
           "all": [],
           "none": [],
           "impact": null,
+          "html": "<span class=\"nav-link-label\">Weekly digest</span>",
+          "target": [
+            "a[data-short=\"W\"] > .nav-link-label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#d3d6df",
+                "bgColor": "#1f305e",
+                "contrastRatio": 8.79,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 8.79"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"nav-link-label\">Messages</span>",
+          "target": [
+            "a[aria-label=\"Messages\"] > .nav-link-label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#d3d6df",
+                "bgColor": "#1f305e",
+                "contrastRatio": 8.79,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 8.79"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
           "html": "<span class=\"nav-link-label\">Devices</span>",
           "target": [
             "a[data-short=\"V\"] > .nav-link-label"
@@ -3292,6 +3726,62 @@
           "html": "<span class=\"nav-link-label\">Module reference</span>",
           "target": [
             "a[aria-label=\"Module reference\"] > .nav-link-label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#c3c8d4",
+                "bgColor": "#1f305e",
+                "contrastRatio": 7.62,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.62"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<div class=\"category\">Admin</div>",
+          "target": [
+            ".category:nth-child(13)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#d3d6df",
+                "bgColor": "#1f305e",
+                "contrastRatio": 8.79,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 8.79"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"nav-link-label\">Team</span>",
+          "target": [
+            "a[data-short=\"A\"] > .nav-link-label"
           ]
         },
         {
@@ -3625,7 +4115,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span class=\"stat-value\">5</span>",
+          "html": "<span class=\"stat-value\">10</span>",
           "target": [
             "div:nth-child(1) > .stat-value"
           ]
@@ -3681,7 +4171,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span class=\"stat-value\">25</span>",
+          "html": "<span class=\"stat-value\">44</span>",
           "target": [
             "div:nth-child(2) > .stat-value"
           ]
@@ -3737,7 +4227,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span class=\"stat-value\">5</span>",
+          "html": "<span class=\"stat-value\">10</span>",
           "target": [
             "div:nth-child(3) > .stat-value"
           ]
@@ -3879,7 +4369,7 @@
           "impact": null,
           "html": "<a class=\"btn btn-outline-secondary\" href=\"/Provider\">Open dashboard</a>",
           "target": [
-            ".section-heading > a[href$=\"Provider\"]"
+            ".btn-outline-secondary[href$=\"Provider\"]"
           ]
         },
         {
@@ -5025,7 +5515,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Jordan Kim</td>",
+          "html": "<td>Devon Okonkwo</td>",
           "target": [
             "tr:nth-child(10) > td:nth-child(3)"
           ]
@@ -5053,7 +5543,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Jordan Kim</td>",
+          "html": "<td>Devon Okonkwo</td>",
           "target": [
             "tr:nth-child(11) > td:nth-child(1)"
           ]
@@ -5081,7 +5571,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>4 mobile</td>",
+          "html": "<td>1 XR</td>",
           "target": [
             "tr:nth-child(11) > td:nth-child(2)"
           ]
@@ -5109,7 +5599,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Reflect Mobile</td>",
+          "html": "<td>Reflect XR</td>",
           "target": [
             "tr:nth-child(11) > td:nth-child(3)"
           ]
@@ -5137,7 +5627,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Jordan Kim</td>",
+          "html": "<td>Devon Okonkwo</td>",
           "target": [
             "tr:nth-child(12) > td:nth-child(1)"
           ]
@@ -5165,7 +5655,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>using</td>",
+          "html": "<td>3 mobile</td>",
           "target": [
             "tr:nth-child(12) > td:nth-child(2)"
           ]
@@ -5193,7 +5683,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>MOB-5521</td>",
+          "html": "<td>Reflect Mobile</td>",
           "target": [
             "tr:nth-child(12) > td:nth-child(3)"
           ]
@@ -5221,7 +5711,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Caseload</td>",
+          "html": "<td>Devon Okonkwo</td>",
           "target": [
             "tr:nth-child(13) > td:nth-child(1)"
           ]
@@ -5249,7 +5739,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>assigned \u00b7 review</td>",
+          "html": "<td>using</td>",
           "target": [
             "tr:nth-child(13) > td:nth-child(2)"
           ]
@@ -5277,7 +5767,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Sam Patel</td>",
+          "html": "<td>MOB-6620</td>",
           "target": [
             "tr:nth-child(13) > td:nth-child(3)"
           ]
@@ -5305,7 +5795,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Sam Patel</td>",
+          "html": "<td>Caseload</td>",
           "target": [
             "tr:nth-child(14) > td:nth-child(1)"
           ]
@@ -5333,7 +5823,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>3 XR</td>",
+          "html": "<td>assigned</td>",
           "target": [
             "tr:nth-child(14) > td:nth-child(2)"
           ]
@@ -5361,7 +5851,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Reflect XR</td>",
+          "html": "<td>Elena Rossi</td>",
           "target": [
             "tr:nth-child(14) > td:nth-child(3)"
           ]
@@ -5389,7 +5879,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Sam Patel</td>",
+          "html": "<td>Elena Rossi</td>",
           "target": [
             "tr:nth-child(15) > td:nth-child(1)"
           ]
@@ -5417,7 +5907,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>3 mobile</td>",
+          "html": "<td>4 XR</td>",
           "target": [
             "tr:nth-child(15) > td:nth-child(2)"
           ]
@@ -5445,7 +5935,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Reflect Mobile</td>",
+          "html": "<td>Reflect XR</td>",
           "target": [
             "tr:nth-child(15) > td:nth-child(3)"
           ]
@@ -5473,7 +5963,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Sam Patel</td>",
+          "html": "<td>Elena Rossi</td>",
           "target": [
             "tr:nth-child(16) > td:nth-child(1)"
           ]
@@ -5501,7 +5991,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>quieter \u00b7 review</td>",
+          "html": "<td>using</td>",
           "target": [
             "tr:nth-child(16) > td:nth-child(2)"
           ]
@@ -5529,7 +6019,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Needs attention</td>",
+          "html": "<td>XR-307</td>",
           "target": [
             "tr:nth-child(16) > td:nth-child(3)"
           ]
@@ -5557,7 +6047,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Sam Patel</td>",
+          "html": "<td>Caseload</td>",
           "target": [
             "tr:nth-child(17) > td:nth-child(1)"
           ]
@@ -5585,7 +6075,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>below self \u00b7 review</td>",
+          "html": "<td>assigned</td>",
           "target": [
             "tr:nth-child(17) > td:nth-child(2)"
           ]
@@ -5613,7 +6103,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Below self</td>",
+          "html": "<td>Harper Lin</td>",
           "target": [
             "tr:nth-child(17) > td:nth-child(3)"
           ]
@@ -5641,7 +6131,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Sam Patel</td>",
+          "html": "<td>Harper Lin</td>",
           "target": [
             "tr:nth-child(18) > td:nth-child(1)"
           ]
@@ -5669,7 +6159,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>using</td>",
+          "html": "<td>4 mobile</td>",
           "target": [
             "tr:nth-child(18) > td:nth-child(2)"
           ]
@@ -5697,7 +6187,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>XR-118</td>",
+          "html": "<td>Reflect Mobile</td>",
           "target": [
             "tr:nth-child(18) > td:nth-child(3)"
           ]
@@ -5725,7 +6215,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Caseload</td>",
+          "html": "<td>Harper Lin</td>",
           "target": [
             "tr:nth-child(19) > td:nth-child(1)"
           ]
@@ -5753,7 +6243,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>assigned</td>",
+          "html": "<td>using</td>",
           "target": [
             "tr:nth-child(19) > td:nth-child(2)"
           ]
@@ -5781,7 +6271,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Taylor Brooks</td>",
+          "html": "<td>MOB-8814</td>",
           "target": [
             "tr:nth-child(19) > td:nth-child(3)"
           ]
@@ -5809,7 +6299,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Taylor Brooks</td>",
+          "html": "<td>Caseload</td>",
           "target": [
             "tr:nth-child(20) > td:nth-child(1)"
           ]
@@ -5837,7 +6327,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>4 XR</td>",
+          "html": "<td>assigned</td>",
           "target": [
             "tr:nth-child(20) > td:nth-child(2)"
           ]
@@ -5865,7 +6355,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Reflect XR</td>",
+          "html": "<td>Jordan Kim</td>",
           "target": [
             "tr:nth-child(20) > td:nth-child(3)"
           ]
@@ -5893,7 +6383,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>Taylor Brooks</td>",
+          "html": "<td>Jordan Kim</td>",
           "target": [
             "tr:nth-child(21) > td:nth-child(1)"
           ]
@@ -5921,7 +6411,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>using</td>",
+          "html": "<td>4 mobile</td>",
           "target": [
             "tr:nth-child(21) > td:nth-child(2)"
           ]
@@ -5949,9 +6439,1353 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<td>XR-204</td>",
+          "html": "<td>Reflect Mobile</td>",
           "target": [
             "tr:nth-child(21) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Jordan Kim</td>",
+          "target": [
+            "tr:nth-child(22) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>using</td>",
+          "target": [
+            "tr:nth-child(22) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>MOB-5521</td>",
+          "target": [
+            "tr:nth-child(22) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Caseload</td>",
+          "target": [
+            "tr:nth-child(23) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>assigned</td>",
+          "target": [
+            "tr:nth-child(23) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Marcus Webb</td>",
+          "target": [
+            "tr:nth-child(23) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Marcus Webb</td>",
+          "target": [
+            "tr:nth-child(24) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>4 mobile</td>",
+          "target": [
+            "tr:nth-child(24) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Reflect Mobile</td>",
+          "target": [
+            "tr:nth-child(24) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Marcus Webb</td>",
+          "target": [
+            "tr:nth-child(25) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>using</td>",
+          "target": [
+            "tr:nth-child(25) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>MOB-4401</td>",
+          "target": [
+            "tr:nth-child(25) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Caseload</td>",
+          "target": [
+            "tr:nth-child(26) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>assigned</td>",
+          "target": [
+            "tr:nth-child(26) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Priya Shah</td>",
+          "target": [
+            "tr:nth-child(26) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Priya Shah</td>",
+          "target": [
+            "tr:nth-child(27) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>3 XR</td>",
+          "target": [
+            "tr:nth-child(27) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Reflect XR</td>",
+          "target": [
+            "tr:nth-child(27) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Priya Shah</td>",
+          "target": [
+            "tr:nth-child(28) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>using</td>",
+          "target": [
+            "tr:nth-child(28) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>XR-221</td>",
+          "target": [
+            "tr:nth-child(28) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Caseload</td>",
+          "target": [
+            "tr:nth-child(29) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>assigned \u00b7 review</td>",
+          "target": [
+            "tr:nth-child(29) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Sam Patel</td>",
+          "target": [
+            "tr:nth-child(29) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Sam Patel</td>",
+          "target": [
+            "tr:nth-child(30) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>3 XR</td>",
+          "target": [
+            "tr:nth-child(30) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Reflect XR</td>",
+          "target": [
+            "tr:nth-child(30) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Sam Patel</td>",
+          "target": [
+            "tr:nth-child(31) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>3 mobile</td>",
+          "target": [
+            "tr:nth-child(31) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Reflect Mobile</td>",
+          "target": [
+            "tr:nth-child(31) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Sam Patel</td>",
+          "target": [
+            "tr:nth-child(32) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>quieter \u00b7 review</td>",
+          "target": [
+            "tr:nth-child(32) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Needs attention</td>",
+          "target": [
+            "tr:nth-child(32) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Sam Patel</td>",
+          "target": [
+            "tr:nth-child(33) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>below self \u00b7 review</td>",
+          "target": [
+            "tr:nth-child(33) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Below self</td>",
+          "target": [
+            "tr:nth-child(33) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Sam Patel</td>",
+          "target": [
+            "tr:nth-child(34) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>using</td>",
+          "target": [
+            "tr:nth-child(34) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>XR-118</td>",
+          "target": [
+            "tr:nth-child(34) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Caseload</td>",
+          "target": [
+            "tr:nth-child(35) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>assigned</td>",
+          "target": [
+            "tr:nth-child(35) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Taylor Brooks</td>",
+          "target": [
+            "tr:nth-child(35) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Taylor Brooks</td>",
+          "target": [
+            "tr:nth-child(36) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>4 XR</td>",
+          "target": [
+            "tr:nth-child(36) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Reflect XR</td>",
+          "target": [
+            "tr:nth-child(36) > td:nth-child(3)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>Taylor Brooks</td>",
+          "target": [
+            "tr:nth-child(37) > td:nth-child(1)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>using</td>",
+          "target": [
+            "tr:nth-child(37) > td:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#1f305e",
+                "bgColor": "#fafafb",
+                "contrastRatio": 12.25,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": null,
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 12.25"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<td>XR-204</td>",
+          "target": [
+            "tr:nth-child(37) > td:nth-child(3)"
           ]
         },
         {
@@ -6541,6 +8375,42 @@
           "all": [],
           "none": [],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "label-content-name-mismatch",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element contains visible text as part of its accessible name"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "label-content-name-mismatch",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element contains visible text as part of its accessible name"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -6580,6 +8450,24 @@
           "html": "<a class=\"nav-link \" data-short=\"R\" aria-label=\"Module reference\" href=\"/Provider/Modules/Index\">\n            <span class=\"nav-link-label\">Module reference</span>\n        </a>",
           "target": [
             "a[aria-label=\"Module reference\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "label-content-name-mismatch",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element contains visible text as part of its accessible name"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
           ]
         }
       ]
@@ -6819,6 +8707,72 @@
             }
           ],
           "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"W\" aria-label=\"Weekly digest\" href=\"/Provider/Digest/Index\">\n            <span class=\"nav-link-label\">Weekly digest</span>\n        </a>",
+          "target": [
+            "a[data-short=\"W\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            },
+            {
+              "id": "aria-label",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "aria-label attribute exists and is not empty"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"M\" aria-label=\"Messages\" href=\"/Provider/Messages/Index\">\n            <span class=\"nav-link-label\">Messages</span>\n        </a>",
+          "target": [
+            "a[aria-label=\"Messages\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            },
+            {
+              "id": "aria-label",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "aria-label attribute exists and is not empty"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
           "html": "<a class=\"nav-link \" data-short=\"V\" aria-label=\"Devices\" href=\"/Provider/Devices/Index\">\n            <span class=\"nav-link-label\">Devices</span>\n        </a>",
           "target": [
             "a[data-short=\"V\"]"
@@ -6898,6 +8852,39 @@
               "relatedNodes": [],
               "impact": "serious",
               "message": "Element has text that is visible to screen readers"
+            },
+            {
+              "id": "aria-label",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "aria-label attribute exists and is not empty"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"nav-link \" data-short=\"A\" aria-label=\"Team\" href=\"/Provider/Team/Index\">\n                <span class=\"nav-link-label\">Team</span>\n            </a>",
+          "target": [
+            "a[data-short=\"A\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
             }
           ],
           "all": [],
@@ -6913,7 +8900,7 @@
           "impact": null,
           "html": "<a class=\"btn btn-outline-secondary\" href=\"/Provider\">Open dashboard</a>",
           "target": [
-            ".section-heading > a[href$=\"Provider\"]"
+            ".btn-outline-secondary[href$=\"Provider\"]"
           ]
         },
         {
@@ -6939,7 +8926,7 @@
           "impact": null,
           "html": "<a class=\"kg-node kg-signal\" href=\"/Provider/Home/Dashboard\"><circle cx=\"150\" cy=\"800\" r=\"28\"></circle><text class=\"kg-label\" text-anchor=\"start\" x=\"188\" y=\"848\">Needs attention</text><text class=\"kg-sub\" text-anchor=\"start\" x=\"188\" y=\"863\">Fewer sessions</text></a>",
           "target": [
-            ".kg-signal[href$=\"Dashboard\"]:nth-child(27)"
+            ".kg-signal[href$=\"Dashboard\"]:nth-child(43)"
           ]
         },
         {
@@ -6965,7 +8952,7 @@
           "impact": null,
           "html": "<a class=\"kg-node kg-signal\" href=\"/Provider/Home/Dashboard\"><circle cx=\"1030\" cy=\"800\" r=\"28\"></circle><text class=\"kg-label\" text-anchor=\"end\" x=\"992\" y=\"848\">Below self</text><text class=\"kg-sub\" text-anchor=\"end\" x=\"992\" y=\"863\">Affect vs baseline</text></a>",
           "target": [
-            ".kg-signal[href$=\"Dashboard\"]:nth-child(28)"
+            ".kg-signal[href$=\"Dashboard\"]:nth-child(44)"
           ]
         },
         {
@@ -6991,7 +8978,7 @@
           "impact": null,
           "html": "<a class=\"kg-node kg-patient\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1\"><circle cx=\"590\" cy=\"200\" r=\"34\"></circle><text class=\"kg-label\" text-anchor=\"middle\" x=\"590\" y=\"260\">Alex Rivera</text><text class=\"kg-sub\" text-anchor=\"middle\" x=\"590\" y=\"276\">5 sessions</text></a>",
           "target": [
-            ".kg-patient:nth-child(29)"
+            ".kg-patient:nth-child(45)"
           ]
         },
         {
@@ -7017,7 +9004,7 @@
           "impact": null,
           "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"590\" cy=\"75\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"middle\" x=\"590\" y=\"41\">MOB-3318</text></a>",
           "target": [
-            ".kg-device[href$=\"Index\"]:nth-child(30)"
+            ".kg-device[href$=\"Index\"]:nth-child(46)"
           ]
         },
         {
@@ -7043,7 +9030,7 @@
           "impact": null,
           "html": "<a class=\"kg-node kg-patient is-alert\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5\">",
           "target": [
-            ".kg-patient.is-alert:nth-child(31)"
+            ".is-alert.kg-patient:nth-child(47)"
           ]
         },
         {
@@ -7067,9 +9054,9 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"927.63\" cy=\"320.3\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"start\" x=\"958.06\" y=\"324.3\">MOB-7740</text></a>",
+          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"798.66\" cy=\"142.8\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"middle\" x=\"798.66\" y=\"115.29\">MOB-7740</text></a>",
           "target": [
-            ".kg-device[href$=\"Index\"]:nth-child(32)"
+            ".kg-device[href$=\"Index\"]:nth-child(48)"
           ]
         },
         {
@@ -7093,9 +9080,9 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"kg-node kg-patient\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2\">",
+          "html": "<a class=\"kg-node kg-patient\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa9\">",
           "target": [
-            ".kg-patient:nth-child(33)"
+            ".kg-patient:nth-child(49)"
           ]
         },
         {
@@ -7119,9 +9106,269 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"798.66\" cy=\"717.2\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"middle\" x=\"798.66\" y=\"744.71\">MOB-5521</text></a>",
+          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"927.63\" cy=\"320.3\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"start\" x=\"958.06\" y=\"324.3\">MOB-6620</text></a>",
           "target": [
-            ".kg-device[href$=\"Index\"]:nth-child(34)"
+            ".kg-device[href$=\"Index\"]:nth-child(50)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"kg-node kg-patient\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa8\">",
+          "target": [
+            ".kg-patient:nth-child(51)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"927.63\" cy=\"539.7\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"start\" x=\"958.06\" y=\"543.7\">XR-307</text></a>",
+          "target": [
+            ".kg-device[href$=\"Index\"]:nth-child(52)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"kg-node kg-patient\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa10\">",
+          "target": [
+            ".kg-patient:nth-child(53)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"798.66\" cy=\"717.2\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"middle\" x=\"798.66\" y=\"744.71\">MOB-8814</text></a>",
+          "target": [
+            ".kg-device[href$=\"Index\"]:nth-child(54)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"kg-node kg-patient\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2\"><circle cx=\"590\" cy=\"660\" r=\"34\"></circle><text class=\"kg-label\" text-anchor=\"middle\" x=\"590\" y=\"600\">Jordan Kim</text><text class=\"kg-sub\" text-anchor=\"middle\" x=\"590\" y=\"616\">4 sessions</text></a>",
+          "target": [
+            ".kg-patient:nth-child(55)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"590\" cy=\"785\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"middle\" x=\"590\" y=\"819\">MOB-5521</text></a>",
+          "target": [
+            ".kg-device[href$=\"Index\"]:nth-child(56)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"kg-node kg-patient\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7\">",
+          "target": [
+            ".kg-patient:nth-child(57)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"381.34\" cy=\"717.2\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"middle\" x=\"381.34\" y=\"744.71\">MOB-4401</text></a>",
+          "target": [
+            ".kg-device[href$=\"Index\"]:nth-child(58)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"kg-node kg-patient\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa6\">",
+          "target": [
+            ".kg-patient:nth-child(59)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "has-visible-text",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has text that is visible to screen readers"
+            }
+          ],
+          "all": [],
+          "none": [
+            {
+              "id": "focusable-no-name",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is not in tab order or has accessible text"
+            }
+          ],
+          "impact": null,
+          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"252.37\" cy=\"539.7\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"end\" x=\"221.94\" y=\"543.7\">XR-221</text></a>",
+          "target": [
+            ".kg-device[href$=\"Index\"]:nth-child(60)"
           ]
         },
         {
@@ -7147,7 +9394,7 @@
           "impact": null,
           "html": "<a class=\"kg-node kg-patient is-alert\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3\">",
           "target": [
-            ".kg-patient.is-alert:nth-child(35)"
+            ".is-alert.kg-patient:nth-child(61)"
           ]
         },
         {
@@ -7171,9 +9418,9 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"381.34\" cy=\"717.2\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"middle\" x=\"381.34\" y=\"744.71\">XR-118</text></a>",
+          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"252.37\" cy=\"320.3\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"end\" x=\"221.94\" y=\"324.3\">XR-118</text></a>",
           "target": [
-            ".kg-device[href$=\"Index\"]:nth-child(36)"
+            ".kg-device[href$=\"Index\"]:nth-child(62)"
           ]
         },
         {
@@ -7199,7 +9446,7 @@
           "impact": null,
           "html": "<a class=\"kg-node kg-patient\" href=\"/Provider/Patients/Details/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4\">",
           "target": [
-            ".kg-patient:nth-child(37)"
+            ".kg-patient:nth-child(63)"
           ]
         },
         {
@@ -7223,9 +9470,9 @@
             }
           ],
           "impact": null,
-          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"252.37\" cy=\"320.3\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"end\" x=\"221.94\" y=\"324.3\">XR-204</text></a>",
+          "html": "<a class=\"kg-node kg-device\" href=\"/Provider/Devices/Index\"><circle cx=\"381.34\" cy=\"142.8\" r=\"16\"></circle><text class=\"kg-label\" text-anchor=\"middle\" x=\"381.34\" y=\"115.29\">XR-204</text></a>",
           "target": [
-            ".kg-device[href$=\"Index\"]:nth-child(38)"
+            ".kg-device[href$=\"Index\"]:nth-child(64)"
           ]
         }
       ]
@@ -7756,7 +10003,7 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"590\" y=\"446\">5 people</text>",
+          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"590\" y=\"446\">10 people</text>",
           "target": [
             "text[y=\"446\"]"
           ],
@@ -8188,9 +10435,9 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"808.74\" y=\"284.93\">Casey Nguyen</text>",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"725.19\" y=\"292.47\">Casey Nguyen</text>",
           "target": [
-            ".kg-label[x=\"808.74\"][y=\"284.93\"]"
+            ".kg-label[y=\"292.47\"][x=\"725.19\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
         },
@@ -8224,9 +10471,9 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"808.74\" y=\"300.93\">6 sessions</text>",
+          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"725.19\" y=\"308.47\">6 sessions</text>",
           "target": [
-            ".kg-sub[x=\"808.74\"][y=\"300.93\"]"
+            ".kg-sub[y=\"308.47\"][x=\"725.19\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
         },
@@ -8260,9 +10507,9 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<text class=\"kg-label\" text-anchor=\"start\" x=\"958.06\" y=\"324.3\">MOB-7740</text>",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"798.66\" y=\"115.29\">MOB-7740</text>",
           "target": [
-            "text[x=\"958.06\"]"
+            ".kg-label[x=\"798.66\"][y=\"115.29\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
         },
@@ -8296,9 +10543,225 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"725.19\" y=\"567.53\">Jordan Kim</text>",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"808.74\" y=\"284.93\">Devon Okonkwo</text>",
           "target": [
-            ".kg-label[x=\"725.19\"][y=\"567.53\"]"
+            ".kg-label[y=\"284.93\"][x=\"808.74\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "8.3pt (11px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"808.74\" y=\"300.93\">4 sessions</text>",
+          "target": [
+            ".kg-sub[y=\"300.93\"][x=\"808.74\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "9.8pt (13px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-label\" text-anchor=\"start\" x=\"958.06\" y=\"324.3\">MOB-6620</text>",
+          "target": [
+            "text[x=\"958.06\"][y=\"324.3\"][text-anchor=\"start\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "9.8pt (13px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"808.74\" y=\"427.07\">Elena Rossi</text>",
+          "target": [
+            ".kg-label[y=\"427.07\"][x=\"808.74\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "8.3pt (11px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"808.74\" y=\"443.07\">4 sessions</text>",
+          "target": [
+            ".kg-sub[y=\"443.07\"][x=\"808.74\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "9.8pt (13px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-label\" text-anchor=\"start\" x=\"958.06\" y=\"543.7\">XR-307</text>",
+          "target": [
+            "text[x=\"958.06\"][y=\"543.7\"][text-anchor=\"start\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "9.8pt (13px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"725.19\" y=\"567.53\">Harper Lin</text>",
+          "target": [
+            ".kg-label[y=\"567.53\"][x=\"725.19\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
         },
@@ -8334,7 +10797,7 @@
           "impact": "serious",
           "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"725.19\" y=\"583.53\">4 sessions</text>",
           "target": [
-            ".kg-sub[x=\"725.19\"][y=\"583.53\"]"
+            ".kg-sub[y=\"583.53\"][x=\"725.19\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
         },
@@ -8368,9 +10831,9 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"798.66\" y=\"744.71\">MOB-5521</text>",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"798.66\" y=\"744.71\">MOB-8814</text>",
           "target": [
-            "text[x=\"798.66\"]"
+            ".kg-label[x=\"798.66\"][y=\"744.71\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
         },
@@ -8404,9 +10867,9 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"454.81\" y=\"567.53\">Sam Patel</text>",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"590\" y=\"600\">Jordan Kim</text>",
           "target": [
-            ".kg-label[x=\"454.81\"][y=\"567.53\"]"
+            "text[y=\"600\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
         },
@@ -8440,9 +10903,9 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"454.81\" y=\"583.53\">6 sessions</text>",
+          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"590\" y=\"616\">4 sessions</text>",
           "target": [
-            ".kg-sub[x=\"454.81\"][y=\"583.53\"]"
+            "text[y=\"616\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
         },
@@ -8476,9 +10939,9 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"381.34\" y=\"744.71\">XR-118</text>",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"590\" y=\"819\">MOB-5521</text>",
           "target": [
-            "text[x=\"381.34\"]"
+            "text[y=\"819\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
         },
@@ -8512,9 +10975,9 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"371.26\" y=\"284.93\">Taylor Brooks</text>",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"454.81\" y=\"567.53\">Marcus Webb</text>",
           "target": [
-            ".kg-label[x=\"371.26\"][y=\"284.93\"]"
+            ".kg-label[y=\"567.53\"][x=\"454.81\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
         },
@@ -8548,9 +11011,9 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"371.26\" y=\"300.93\">4 sessions</text>",
+          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"454.81\" y=\"583.53\">4 sessions</text>",
           "target": [
-            ".kg-sub[x=\"371.26\"][y=\"300.93\"]"
+            ".kg-sub[y=\"583.53\"][x=\"454.81\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
         },
@@ -8584,9 +11047,333 @@
           "all": [],
           "none": [],
           "impact": "serious",
-          "html": "<text class=\"kg-label\" text-anchor=\"end\" x=\"221.94\" y=\"324.3\">XR-204</text>",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"381.34\" y=\"744.71\">MOB-4401</text>",
           "target": [
-            "text[x=\"221.94\"]"
+            ".kg-label[x=\"381.34\"][y=\"744.71\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "9.8pt (13px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"371.26\" y=\"427.07\">Priya Shah</text>",
+          "target": [
+            ".kg-label[y=\"427.07\"][x=\"371.26\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "8.3pt (11px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"371.26\" y=\"443.07\">3 sessions</text>",
+          "target": [
+            ".kg-sub[y=\"443.07\"][x=\"371.26\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "9.8pt (13px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-label\" text-anchor=\"end\" x=\"221.94\" y=\"543.7\">XR-221</text>",
+          "target": [
+            "text[x=\"221.94\"][y=\"543.7\"][text-anchor=\"end\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "9.8pt (13px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"371.26\" y=\"284.93\">Sam Patel</text>",
+          "target": [
+            ".kg-label[y=\"284.93\"][x=\"371.26\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "8.3pt (11px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"371.26\" y=\"300.93\">6 sessions</text>",
+          "target": [
+            ".kg-sub[y=\"300.93\"][x=\"371.26\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "9.8pt (13px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-label\" text-anchor=\"end\" x=\"221.94\" y=\"324.3\">XR-118</text>",
+          "target": [
+            "text[x=\"221.94\"][y=\"324.3\"][text-anchor=\"end\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "9.8pt (13px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"454.81\" y=\"292.47\">Taylor Brooks</text>",
+          "target": [
+            ".kg-label[y=\"292.47\"][x=\"454.81\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "8.3pt (11px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-sub\" text-anchor=\"middle\" x=\"454.81\" y=\"308.47\">4 sessions</text>",
+          "target": [
+            ".kg-sub[y=\"308.47\"][x=\"454.81\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": null,
+                "bgColor": null,
+                "contrastRatio": 0,
+                "fontSize": "9.8pt (13px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1",
+                "shadowColor": null,
+                "colorParse": null
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg class=\"knowledge-graph-svg\" viewBox=\"0 0 1180 940\" role=\"group\" aria-labelledby=\"kg-title kg-desc\">",
+                  "target": [
+                    "svg"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text class=\"kg-label\" text-anchor=\"middle\" x=\"381.34\" y=\"115.29\">XR-204</text>",
+          "target": [
+            ".kg-label[x=\"381.34\"][y=\"115.29\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
         }
