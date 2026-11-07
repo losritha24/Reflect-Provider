@@ -20,12 +20,14 @@ public class MessagesController : Controller
     private readonly IPatientRepository _patients;
     private readonly ICurrentUserService _user;
     private readonly TeamStore _team;
+    private readonly AuditLog _audit;
 
-    public MessagesController(IPatientRepository patients, ICurrentUserService user, TeamStore team)
+    public MessagesController(IPatientRepository patients, ICurrentUserService user, TeamStore team, AuditLog audit)
     {
         _patients = patients;
         _user = user;
         _team = team;
+        _audit = audit;
     }
 
     public async Task<IActionResult> Index(Guid? patientId, CancellationToken ct)
@@ -50,7 +52,7 @@ public class MessagesController : Controller
         var providerId = ProviderScope.CurrentProviderId(_user);
         _team.Queue(providerId, patient.Id, patient.DisplayName, guard.Sanitized);
         // The audit trail records that a message was sent, never its content or the patient's name.
-        _team.Record(User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "provider", "message-queued", patient.ExternalPatientId);
+        await _audit.RecordAsync(User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "provider", "message-queued", patient.ExternalPatientId, ct);
         TempData["MessageNotice"] = guard.Redactions.Count > 0
             ? $"Queued. We removed possible identifiers from your text ({string.Join(", ", guard.Redactions)}). Nothing is delivered in this prototype."
             : "Queued. Nothing is delivered in this prototype.";

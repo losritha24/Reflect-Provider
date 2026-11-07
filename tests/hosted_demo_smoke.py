@@ -1,5 +1,6 @@
 """Run after dotnet build; uses an isolated temporary account database."""
 import html
+import json
 import http.client
 import os
 from pathlib import Path
@@ -20,6 +21,7 @@ with tempfile.TemporaryDirectory(prefix='reflect-smoke-') as directory:
     password = secrets.token_urlsafe(24) + 'aA1!'
     env = dict(os.environ, ASPNETCORE_ENVIRONMENT='Production', Demo__Enabled='true',
                Demo__Email='reviewer@example.invalid', Demo__Password=password,
+               Integration__Enabled='true', Integration__ApiKey=secrets.token_urlsafe(40),
                AllowedHosts='127.0.0.1', Hosting__HttpsAtEdge='true',
                AccountStore__Path=str(Path(directory) / 'accounts/provider.db'),
                Clinical__Path=str(Path(directory) / 'clinical/clinical.db'))
@@ -158,6 +160,41 @@ with tempfile.TemporaryDirectory(prefix='reflect-smoke-') as directory:
             assert 'not delivered' in outbox and '555-123-4567' not in outbox, 'Identifiers must be removed and status shown'
             assert 'not delivered' not in jar_request(admin, '/Provider/Messages/Index')[2], 'Outbox is per provider'
             print('PASS: messages are queued per provider with identifiers removed and no delivery claim')
+            # Ingest API: key required, idempotent, validated, and visible on the dashboard.
+            ingest_key = env['Integration__ApiKey']
+            row = re.findall(r'<td>(PT-\d+)</td>\s*<td>[^<]*</td>\s*<td>\s*<form[^>]*>\s*<input type="hidden" name="patientId" value="([0-9a-f-]{36})"', team_page)[-1]
+            ingest_body = json.dumps(dict(externalPatientId=row[0], startedAt=time.strftime('%Y-%m-%dT%H:%M:%S+00:00', time.gmtime(time.time() - 3600)),
+                                           durationMinutes=11, platform='Mobile', moduleName='Photo Coloring', affectScore=6))
+            def ingest_request(body, key):
+                headers = {'Content-Type': 'application/json'}
+                if key: headers['X-Reflect-Integration-Key'] = key
+                return request('/api/v1/ingest/sessions', 'POST', body, '', headers)
+            assert ingest_request(ingest_body, '')[0] == 401 and ingest_request(ingest_body, 'wrong-key')[0] == 401, 'Ingest needs the key'
+            first = ingest_request(ingest_body, ingest_key)
+            again = ingest_request(ingest_body, ingest_key)
+            assert first[0] == 202 and again[0] == 202 and json.loads(first[2])['id'] == json.loads(again[2])['id'], 'Replay must be idempotent'
+            bad_module = json.dumps(dict(json.loads(ingest_body), moduleName='Hope Tree'))
+            assert ingest_request(bad_module, ingest_key)[0] == 400, 'Wrong-platform module must be refused'
+            assert ingest_request(json.dumps(dict(json.loads(ingest_body), startedAt='2099-01-01T00:00:00+00:00')), ingest_key)[0] == 400, 'Future start must be refused'
+            assert ingest_request(json.dumps(dict(json.loads(ingest_body), externalPatientId='NO-SUCH-ID')), ingest_key)[0] == 404
+            _, _, shown = jar_request(admin, f'/Provider/Patients/Details/{row[1]}?tab=timeline')
+            assert shown.count('Photo Coloring') >= 1, 'Ingested session must be visible on the patient timeline'
+            print('PASS: ingest requires its key, is idempotent, validates input, and ingested sessions appear for the provider')
+            # Follow-ups: create, complete, stale version, and cross-provider denial.
+            _, _, details = jar_request(invitee, f'/Provider/Patients/Details/{patient_id}')
+            assert jar_request(invitee, '/Provider/FollowUps/Create', 'POST', dict(patientId=patient_id, title='Check in about sleep', note='Brief note', due='2026-01-01', __RequestVerificationToken=csrf_of(details)))[0] == 302
+            _, _, details = jar_request(invitee, f'/Provider/Patients/Details/{patient_id}')
+            assert 'Check in about sleep' in details and 'Overdue' in details, 'Follow-up should show as overdue'
+            task_id = re.search(r'name="id" value="([0-9a-f-]{36})"', details)[1]
+            version = re.search(r'name="version" value="(\d+)"', details)[1]
+            assert jar_request(admin, '/Provider/FollowUps/Update', 'POST', dict(id=task_id, patientId=patient_id, action='complete', version=version, __RequestVerificationToken=csrf_of(jar_request(admin, '/Provider/Team/Index')[2])))[0] == 404, 'Another provider must not update it'
+            assert jar_request(invitee, '/Provider/FollowUps/Update', 'POST', dict(id=task_id, patientId=patient_id, action='complete', version=version, __RequestVerificationToken=csrf_of(details)))[0] == 302
+            _, _, details = jar_request(invitee, f'/Provider/Patients/Details/{patient_id}')
+            assert jar_request(invitee, '/Provider/FollowUps/Update', 'POST', dict(id=task_id, patientId=patient_id, action='dismiss', version=version, __RequestVerificationToken=csrf_of(details)))[0] == 302
+            _, _, details = jar_request(invitee, f'/Provider/Patients/Details/{patient_id}')
+            assert 'changed since you opened it' in details, 'A stale version must be refused with a message'
+            assert jar_request(invitee, '/Provider/Digest/Index')[0] == 200
+            print('PASS: follow-ups are provider-scoped, versioned, and refuse stale or cross-provider changes')
             _, _, settings = jar_request(invitee, '/Provider/Settings/Index')
             status, _, _ = jar_request(invitee, '/Provider/Settings/Display', 'POST', dict(theme='dark', textSize='125%', landingPage='Patients', timeZone='America/Chicago', clock='24h', __RequestVerificationToken=csrf_of(settings)))
             assert status == 302
@@ -168,6 +205,44 @@ with tempfile.TemporaryDirectory(prefix='reflect-smoke-') as directory:
             bad = jar_request(invitee, '/Provider/Settings/Display', 'POST', dict(theme='dark', textSize='', landingPage='Dashboard', timeZone='Not/AZone', clock='12h', __RequestVerificationToken=csrf_of(settings)))
             assert bad[0] == 400
             print('PASS: settings save to the account, apply theme, and reject unknown time zones')
+            # Two-step sign-in: the password alone must not open a session once MFA is on.
+            import base64, hmac, hashlib, struct
+            def totp(key):
+                raw = key.replace(' ', '').upper()
+                secret = base64.b32decode(raw + '=' * ((8 - len(raw) % 8) % 8))
+                counter = int(time.time() // 30)
+                digest = hmac.new(secret, struct.pack('>Q', counter), hashlib.sha1).digest()
+                offset = digest[-1] & 15
+                return '%06d' % ((struct.unpack('>I', digest[offset:offset + 4])[0] & 0x7fffffff) % 1000000)
+            _, _, mfa_page = jar_request(invitee, '/Provider/Settings/Mfa')
+            mfa_key = re.search(r'class="mfa-key">([^<]+)<', mfa_page)[1]
+            assert jar_request(invitee, '/Provider/Settings/MfaEnable', 'POST', dict(code='000000', __RequestVerificationToken=csrf_of(mfa_page)))[0] == 400
+            status, _, codes_page = jar_request(invitee, '/Provider/Settings/MfaEnable', 'POST', dict(code=totp(mfa_key), __RequestVerificationToken=csrf_of(mfa_page)))
+            recovery = re.findall(r'<code>([^<]+)</code>', codes_page)
+            assert status == 200 and len(recovery) == 10, 'MFA did not enable with recovery codes'
+            def password_step():
+                jar = {}
+                _, _, page = jar_request(jar, '/Account/Login')
+                status, resp, _ = jar_request(jar, '/Account/Login', 'POST', dict(Email='pat.provider@example.invalid', Password=new_password, ReturnUrl='', __RequestVerificationToken=csrf_of(page)))
+                return jar, status, resp
+            jar, status, resp = password_step()
+            assert status == 302 and resp.getheader('Location') == '/Account/Verify' and 'ReflectProvider.Auth' not in jar, 'Password alone must not sign in'
+            assert jar_request(jar, '/Provider/Patients/Index')[0] == 302, 'No session before the second step'
+            _, _, verify_page = jar_request(jar, '/Account/Verify')
+            status, _, wrong = jar_request(jar, '/Account/Verify', 'POST', dict(Code='000000', __RequestVerificationToken=csrf_of(verify_page)))
+            assert status == 200 and 'did not work' in wrong and 'ReflectProvider.Auth' not in jar
+            status, _, _ = jar_request(jar, '/Account/Verify', 'POST', dict(Code=totp(mfa_key), __RequestVerificationToken=csrf_of(verify_page)))
+            assert status == 302 and 'ReflectProvider.Auth' in jar and jar_request(jar, '/Provider/Patients/Index')[0] == 200, 'A valid code must sign in'
+            jar2, _, _ = password_step()
+            _, _, verify_page = jar_request(jar2, '/Account/Verify')
+            status, _, _ = jar_request(jar2, '/Account/Verify', 'POST', dict(Code=recovery[0], UseRecoveryCode='true', __RequestVerificationToken=csrf_of(verify_page)))
+            assert status == 302 and 'ReflectProvider.Auth' in jar2, 'A recovery code must sign in once'
+            jar3, _, _ = password_step()
+            _, _, verify_page = jar_request(jar3, '/Account/Verify')
+            status, _, _ = jar_request(jar3, '/Account/Verify', 'POST', dict(Code=recovery[0], UseRecoveryCode='true', __RequestVerificationToken=csrf_of(verify_page)))
+            assert status == 200 and 'ReflectProvider.Auth' not in jar3, 'A used recovery code must not work again'
+            assert jar_request({}, '/Account/Verify')[0] == 302, 'Verify without a password step must bounce to login'
+            print('PASS: two-step sign-in blocks password-only access, accepts authenticator and one-time recovery codes')
             # Deactivation blocks sign-in.
             _, _, team_page = jar_request(admin, '/Provider/Team/Index')
             assert jar_request(admin, '/Provider/Team/SetActive', 'POST', dict(id=provider_id, active='false', __RequestVerificationToken=csrf_of(team_page)))[0] == 302
@@ -177,6 +252,12 @@ with tempfile.TemporaryDirectory(prefix='reflect-smoke-') as directory:
             status, _, _ = jar_request(fresh, '/Account/Login', 'POST', dict(Email='pat.provider@example.invalid', Password=new_password, ReturnUrl='', __RequestVerificationToken=csrf_of(login_page)))
             assert status == 200 and 'ReflectProvider.Auth' not in fresh, 'Deactivated account must not sign in'
             print('PASS: a deactivated provider cannot sign in')
+            # Demo reset rebuilds the synthetic data and returns every patient to the admin.
+            _, _, team_page = jar_request(admin, '/Provider/Team/Index')
+            assert jar_request(admin, '/Provider/Team/ResetDemo', 'POST', dict(__RequestVerificationToken=csrf_of(team_page)))[0] == 302
+            _, _, after_reset = jar_request(admin, '/Provider/Patients/Index?search=Sam')
+            assert 'Sam Patel' in after_reset and jar_request(admin, f'/Provider/Patients/Details/{patient_id}')[0] == 200, 'Reset must return patients to the admin'
+            print('PASS: demo reset rebuilds the synthetic data and returns every patient to the admin')
             if os.environ.get('REFLECT_BROWSER') == '1':
                 from browser_checks import run_browser
                 run_browser(f'http://127.0.0.1:{port}', 'reviewer@example.invalid', password)

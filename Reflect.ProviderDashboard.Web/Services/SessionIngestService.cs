@@ -9,6 +9,8 @@ using Reflect.ProviderDashboard.Web.Models.Integration;
 
 namespace Reflect.ProviderDashboard.Web.Services;
 
+public sealed class AmbiguousPatientException(string message) : Exception(message);
+
 public sealed class SessionIngestService
 {
     private readonly ClinicalDbContext _db;
@@ -44,11 +46,23 @@ public sealed class SessionIngestService
         var module = ReflectModuleCatalog.Find(platform, request.ModuleName)
             ?? throw new ArgumentException($"Module is not in the Reflect {(platform == TherapyPlatform.Vr ? "XR" : "Mobile")} catalog.", nameof(request));
 
+        var startedAtUtc = _clock.ToUtc(request.StartedAt);
+        var now = DateTimeOffset.UtcNow;
+        if (startedAtUtc > now.AddMinutes(10) || startedAtUtc < now.AddYears(-2))
+            throw new ArgumentException("Session start must be within the last two years and not in the future.", nameof(request));
+        if ((request.HardwareId?.Length ?? 0) > 64)
+            throw new ArgumentException("Hardware ID must be 64 characters or fewer.", nameof(request));
+
         var normalizedPatientId = externalPatientId.ToLower();
-        var patient = await _db.Patients.FirstOrDefaultAsync(
-            candidate => candidate.ExternalPatientId.ToLower() == normalizedPatientId, ct);
-        if (patient is null)
+        var matches = await _db.Patients
+            .Where(candidate => candidate.ExternalPatientId.ToLower() == normalizedPatientId)
+            .Take(2).ToListAsync(ct);
+        if (matches.Count == 0)
             throw new EntityNotFoundException("Patient not found.");
+        // The same external ID can exist under two providers; never guess which patient a record belongs to.
+        if (matches.Count > 1)
+            throw new AmbiguousPatientException("More than one patient has that external ID.");
+        var patient = matches[0];
 
         Guid? deviceId = null;
         if (!string.IsNullOrWhiteSpace(request.HardwareId))
@@ -64,7 +78,7 @@ public sealed class SessionIngestService
         var session = new TherapySession
         {
             PatientId = patient.Id,
-            StartedAtUtc = _clock.ToUtc(request.StartedAt),
+            StartedAtUtc = startedAtUtc,
             DurationMinutes = request.DurationMinutes,
             Platform = platform,
             ModuleName = module.Name,
@@ -72,6 +86,12 @@ public sealed class SessionIngestService
             AffectScore = request.AffectScore,
             DeviceId = deviceId
         };
+        // Replaying the same POST must not create a duplicate: the natural key is the whole session identity.
+        var duplicate = await _db.Sessions.FirstOrDefaultAsync(existing =>
+            existing.PatientId == patient.Id && existing.StartedAtUtc == startedAtUtc
+            && existing.Platform == platform && existing.ModuleName == module.Name
+            && existing.DurationMinutes == request.DurationMinutes, ct);
+        if (duplicate is not null) return duplicate;
         _db.Sessions.Add(session);
         await _db.SaveChangesAsync(ct);
         return session;

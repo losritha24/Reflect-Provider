@@ -15,6 +15,7 @@ public sealed class TeamViewModel
     public string NewInviteLink { get; set; }
     public string NewInviteEmail { get; set; }
     public string Error { get; set; }
+    public bool CanResetDemo { get; set; }
 
     public string ProviderLabel(string providerId) =>
         string.IsNullOrEmpty(providerId) ? "Unassigned"

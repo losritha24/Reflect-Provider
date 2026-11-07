@@ -1,0 +1,79 @@
+@model Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Digest.DigestViewModel
+@using Reflect.ProviderDashboard.Web.Extensions
+@{
+    ViewData["Title"] = "Weekly digest";
+    var s = Model.Snapshot;
+}
+<div class="report-page-heading mb-4">
+    <div>
+        <p class="eyebrow">Last seven days</p>
+        <h1 class="page-title mb-1">Weekly digest</h1>
+        <p class="text-muted fs-13 mb-0">@Model.From.ToUsDateTimeString() to @Model.To.ToUsDateTimeString() · @s.ActivePatientCount people on your caseload · synthetic records</p>
+    </div>
+    <div class="report-actions no-print"><button type="button" class="btn btn-primary" id="digestPrint">Print this page</button></div>
+</div>
+
+<div class="stat-grid">
+    <div class="card custom-card"><div class="card-body"><div class="stat-label">Sessions</div><div class="stat-value">@s.SessionsLast7Days</div></div></div>
+    <div class="card custom-card"><div class="card-body"><div class="stat-label">Reflect XR (VR)</div><div class="stat-value">@s.VrSessionsLast7Days</div></div></div>
+    <div class="card custom-card"><div class="card-body"><div class="stat-label">Reflect Mobile</div><div class="stat-value">@s.MobileSessionsLast7Days</div></div></div>
+    <div class="card custom-card"><div class="card-body"><div class="stat-label">Follow-ups due</div><div class="stat-value">@Model.Due.Count</div></div></div>
+</div>
+
+<section class="work-panel" aria-labelledby="digest-quiet">
+    <div class="section-heading"><div><h2 id="digest-quiet">Quieter than last week</h2><p class="text-muted">Fewer sessions this week than the week before.</p></div></div>
+    @if (s.NeedsAttention.Count == 0) { <p class="empty-state">Nobody on your caseload is quieter than last week.</p> }
+    else
+    {
+        <ul class="followup-list">
+        @foreach (var row in s.NeedsAttention)
+        {
+            <li class="followup"><div><a class="patient-name" asp-controller="Patients" asp-action="Details" asp-route-id="@row.PatientId">@row.PatientName</a><p class="mb-0">@row.CurrentSessions sessions this week, @row.PreviousSessions the week before.</p></div></li>
+        }
+        </ul>
+    }
+</section>
+
+<section class="work-panel" aria-labelledby="digest-affect">
+    <div class="section-heading"><div><h2 id="digest-affect">Below their own baseline</h2><p class="text-muted">Latest affect marker is below that person’s usual range. Not a diagnosis.</p></div></div>
+    @if (s.AffectDeviations.Count == 0) { <p class="empty-state">Everyone’s latest marker is within their usual range.</p> }
+    else
+    {
+        <ul class="followup-list">
+        @foreach (var row in s.AffectDeviations)
+        {
+            <li class="followup"><div><a class="patient-name" asp-controller="Patients" asp-action="Details" asp-route-id="@row.PatientId">@row.PatientName</a><p class="mb-0">Latest @row.LatestScore against a personal baseline of @row.PersonalBaseline.ToString("0.0").</p></div></li>
+        }
+        </ul>
+    }
+</section>
+
+<section class="work-panel" aria-labelledby="digest-due">
+    <div class="section-heading"><div><h2 id="digest-due">Your follow-ups</h2><p class="text-muted">Open reminders that are overdue or due within a week.</p></div></div>
+    @if (Model.Due.Count == 0) { <p class="empty-state">No follow-ups are due.</p> }
+    else
+    {
+        <ul class="followup-list">
+        @foreach (var due in Model.Due)
+        {
+            <li class="followup"><div><a class="patient-name" asp-controller="Patients" asp-action="Details" asp-route-id="@due.Task.PatientId" asp-fragment="followups">@due.PatientName</a> <span class="badge @(due.Overdue ? "bg-warning-transparent" : "bg-info-transparent")">@(due.Overdue ? "Overdue" : "Due soon")</span><p class="mb-0">@due.Task.Title · @due.Task.DueAtUtc!.Value.UtcDateTime.ToString("MMM d")</p></div></li>
+        }
+        </ul>
+    }
+</section>
+
+<section class="work-panel" aria-labelledby="digest-programs">
+    <div class="section-heading"><div><h2 id="digest-programs">What people used</h2><p class="text-muted">Sessions this week by Reflect program.</p></div></div>
+    @if (Model.Programs.Count == 0) { <p class="empty-state">No sessions this week.</p> }
+    else
+    {
+        <table class="table"><caption class="visually-hidden">Sessions by program, last seven days</caption>
+            <thead><tr><th scope="col">Program</th><th scope="col">Sessions</th></tr></thead>
+            <tbody>@foreach (var p in Model.Programs) { <tr><td>@p.Group</td><td>@p.Sessions</td></tr> }</tbody>
+        </table>
+    }
+</section>
+
+@section Scripts {
+    <script nonce="@Context.GetCspNonce()">document.getElementById('digestPrint')?.addEventListener('click', function () { window.print(); });</script>
+}

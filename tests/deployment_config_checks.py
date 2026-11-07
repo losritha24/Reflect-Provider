@@ -17,7 +17,9 @@ cases += [
     ({'Hosting__KnownProxies__0': '*'}, 'KnownProxies'),
     ({'Hosting__KnownProxies__0': '0.0.0.0'}, 'KnownProxies'),
     ({'Hosting__KnownProxies__0': '127.0.0.1', 'Hosting__HttpsAtEdge': 'true'}, 'not both'),
-    ({'Demo__Enabled': 'true', 'Demo__Email': ' ', 'Demo__Password': ' '}, 'Demo mode requires')
+    ({'Demo__Enabled': 'true', 'Demo__Email': ' ', 'Demo__Password': ' '}, 'Demo mode requires'),
+    ({'Integration__Enabled': 'true', 'Integration__ApiKey': 'short'}, 'Integration:ApiKey'),
+    ({'Integration__Enabled': 'true', 'Integration__ApiKey': 'reflect-demo-ingest-key-reflect-demo-ingest-key'}, 'Integration:ApiKey')
 ]
 for settings, expected in cases:
     with tempfile.TemporaryDirectory(prefix='reflect-config-') as directory:

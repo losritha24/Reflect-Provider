@@ -103,6 +103,58 @@
             </details>
         }
     </section>
+    <section class="work-panel" aria-labelledby="followups-heading" id="followups">
+        <div class="section-heading">
+            <div>
+                <h2 id="followups-heading">Follow-ups</h2>
+                <p class="text-muted">Your reminders for this person. Only you can see them. Keep notes brief and avoid diagnoses.</p>
+            </div>
+        </div>
+        @if (TempData["FollowUpNotice"] is string followNotice) { <div class="callout" role="status">@followNotice</div> }
+        @if (TempData["FollowUpError"] is string followError) { <div class="callout" role="alert">@followError</div> }
+        @if (Model.FollowUps.Count == 0)
+        {
+            <p class="empty-state">No follow-ups yet.</p>
+        }
+        else
+        {
+            <ul class="followup-list">
+            @foreach (var task in Model.FollowUps)
+            {
+                var overdue = task.Status == Reflect.ProviderDashboard.Domain.Entities.FollowUpStatus.Open && task.DueAtUtc is { } dueAt && dueAt < DateTimeOffset.UtcNow;
+                <li class="followup @(task.Status == Reflect.ProviderDashboard.Domain.Entities.FollowUpStatus.Open ? "" : "is-done")">
+                    <div>
+                        <strong>@task.Title</strong>
+                        <span class="badge @(overdue ? "bg-warning-transparent" : "bg-info-transparent")">@(task.Status == Reflect.ProviderDashboard.Domain.Entities.FollowUpStatus.Open ? (overdue ? "Overdue" : "Open") : task.Status.ToString())</span>
+                        @if (task.DueAtUtc is { } dueDate) { <span class="text-muted fs-13">Due @dueDate.UtcDateTime.ToString("MMM d, yyyy")</span> }
+                        @if (!string.IsNullOrEmpty(task.Note)) { <p class="mb-0">@task.Note</p> }
+                    </div>
+                    <form asp-controller="FollowUps" asp-action="Update" method="post" class="assign-form">
+                        <input type="hidden" name="id" value="@task.Id" />
+                        <input type="hidden" name="patientId" value="@Model.PatientId" />
+                        <input type="hidden" name="version" value="@task.Version" />
+                        @if (task.Status == Reflect.ProviderDashboard.Domain.Entities.FollowUpStatus.Open)
+                        {
+                            <button type="submit" name="action" value="complete" class="btn btn-outline-secondary">Mark done</button>
+                            <button type="submit" name="action" value="dismiss" class="btn btn-outline-secondary">Dismiss</button>
+                        }
+                        else
+                        {
+                            <button type="submit" name="action" value="reopen" class="btn btn-outline-secondary">Reopen</button>
+                        }
+                    </form>
+                </li>
+            }
+            </ul>
+        }
+        <form asp-controller="FollowUps" asp-action="Create" method="post" class="settings-form">
+            <input type="hidden" name="patientId" value="@Model.PatientId" />
+            <div class="filter-field"><label for="fu-title">New follow-up</label><input id="fu-title" name="title" maxlength="120" required placeholder="For example: check in about sleep routine" /></div>
+            <div class="filter-field"><label for="fu-note">Note (optional)</label><textarea id="fu-note" name="note" rows="2" maxlength="1000"></textarea></div>
+            <div class="filter-field"><label for="fu-due">Due date (optional)</label><input id="fu-due" name="due" type="date" /></div>
+            <div><button type="submit" class="btn btn-primary">Add follow-up</button></div>
+        </form>
+    </section>
     <section class="work-panel" aria-labelledby="programs-heading">
         <div class="section-heading">
             <div>
@@ -120,15 +172,19 @@
             <div class="table-responsive" tabindex="0" role="region" aria-label="Programs used table; scroll horizontally for more columns">
                 <table class="table">
                     <caption class="visually-hidden">Sessions by program for @Model.DisplayName</caption>
-                <thead><tr><th scope="col">Program</th><th scope="col">Sessions</th><th scope="col">Modules tried</th></tr></thead>
+                <thead><tr><th scope="col">Program</th><th scope="col">Sessions</th><th scope="col">Last 30 days</th><th scope="col">Modules tried</th></tr></thead>
                 <tbody>
                 @foreach (var program in Model.ProgramUsage)
                 {
-                    <tr><td>@program.Group</td><td>@program.Sessions</td><td>@string.Join(", ", program.Modules)</td></tr>
+                    <tr><td>@program.Group</td><td>@program.Sessions</td><td>@program.Last30Days</td><td>@string.Join(", ", program.Modules)</td></tr>
                 }
                 </tbody>
                 </table>
             </div>
+            @if (Model.NotTried.Count > 0)
+            {
+                <p class="text-muted fs-13">Not yet tried: @string.Join(", ", Model.NotTried).</p>
+            }
         }
     </section>
     <section class="work-panel" aria-labelledby="devices-heading">
@@ -167,6 +223,16 @@
                 <option value="">All platforms</option>
                 <option value="Vr">Reflect XR (VR)</option>
                 <option value="Mobile">Reflect Mobile</option>
+            </select>
+        </div>
+        <div class="filter-field">
+            <label for="program">Program</label>
+            <select id="program" name="program">
+                <option value="">All programs</option>
+                @foreach (var group in Model.ProgramGroups)
+                {
+                    <option value="@group" selected="@(Model.Program == group)">@group</option>
+                }
             </select>
         </div>
         <div class="filter-field">

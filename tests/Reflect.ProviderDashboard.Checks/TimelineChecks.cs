@@ -51,6 +51,14 @@ public static class TimelineChecks
         Check(future.Sessions.All(s => s.StartedAtUtc <= future.AsOfUtc) && future.TotalSessions == allModel.TotalSessions,
             "Future sessions are excluded from totals and timeline");
 
+        var cc = (PatientDetailsViewModel)((ViewResult)await controller.Details(patient.Id, CancellationToken.None, tab: "timeline", program: "Creative Calm")).Model!;
+        Check(cc.Sessions.All(s => s.ModuleGroup == "Creative Calm") && cc.Program == "Creative Calm" && cc.TotalSessions == allModel.TotalSessions,
+            "Program filter narrows the timeline without changing totals");
+        Check(await controller.Details(patient.Id, CancellationToken.None, tab: "timeline", program: "Not A Program") is BadRequestResult,
+            "An unknown program is rejected");
+        Check(allModel.ProgramUsage.All(u => u.Last30Days <= u.Sessions) && allModel.NotTried.All(g => allModel.ProgramUsage.All(u => u.Group != g)),
+            "Program usage reports recent counts and programs not yet tried");
+
         Check(await controller.Details(Guid.Empty, CancellationToken.None) is NotFoundResult,
             "Missing patient ID remains 404");
         var strangerPatients = new InMemoryPatientRepository(new FakeCurrentUser(Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc")));

@@ -52,6 +52,10 @@ public sealed class IngestController : ControllerBase
         {
             return NotFound();
         }
+        catch (AmbiguousPatientException)
+        {
+            return Conflict(new { error = "More than one patient has that external ID." });
+        }
         catch (ArgumentException ex)
         {
             return BadRequest(new { error = ex.Message });

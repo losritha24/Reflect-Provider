@@ -99,6 +99,9 @@
         <a class="nav-link @(controller == "Reports" ? "active" : "")" data-short="R" aria-label="Reports" href="@Url.Action("Index", "Reports", new { area = "Provider" })">
             <span class="nav-link-label">Reports</span>
         </a>
+        <a class="nav-link @(controller == "Digest" ? "active" : "")" data-short="W" aria-label="Weekly digest" href="@Url.Action("Index", "Digest", new { area = "Provider" })">
+            <span class="nav-link-label">Weekly digest</span>
+        </a>
         <a class="nav-link @(controller == "Messages" ? "active" : "")" data-short="M" aria-label="Messages" href="@Url.Action("Index", "Messages", new { area = "Provider" })">
             <span class="nav-link-label">Messages</span>
         </a>

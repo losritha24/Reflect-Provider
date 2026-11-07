@@ -117,6 +117,13 @@
     </div>
 </section>
 
+@if (Model.CanResetDemo)
+{
+<section class="work-panel" aria-labelledby="reset-heading">
+    <div class="section-heading"><div><h2 id="reset-heading">Reset demo data</h2><p class="text-muted">Rebuilds the synthetic patients and sessions with fresh dates, assigns every patient back to you, and clears invites and queued messages. Other providers you invited lose their patients. Demo servers only.</p></div></div>
+    <form asp-action="ResetDemo" method="post"><button type="submit" class="btn btn-outline-secondary">Reset demo data</button></form>
+</section>
+}
 <section class="work-panel" aria-labelledby="audit-heading">
     <div class="section-heading"><div><h2 id="audit-heading">Audit trail</h2><p class="text-muted">Latest 30 events. Records who did what, never patient names or message text.</p></div></div>
     @if (Model.Audit.Count == 0)

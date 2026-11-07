@@ -50,9 +50,9 @@
             <p>Required with the cloud host, database, any AI vendor, and any email or push service before real patient data is used. Messages to patients are a prototype outbox; nothing is delivered, and future push notifications will carry no patient information.</p>
         </article>
         <article class="safeguard">
-            <span class="pill pill-gap">Not yet</span>
-            <h3>Durable audit trail and MFA</h3>
-            <p>Account, assignment and message events are logged in memory today and reset on restart. Still needed: a durable record of who viewed which patient, and multi-factor sign-in through the facility identity provider.</p>
+            <span class="pill pill-ok">In place</span>
+            <h3>Audit trail and two-step sign-in</h3>
+            <p>Sign-ins, invitations, assignments, record views, report exports and settings changes go to a durable, hash-chained log that records IDs and never patient names. Authenticator-app two-step sign-in is available to every provider and can be required for admins by configuration. Still to do: ship the log to external storage, enforce MFA by default, and single sign-on.</p>
         </article>
     </div>
 </section>

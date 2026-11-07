@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Reflect.ProviderDashboard.Domain.Exceptions;
+using Reflect.ProviderDashboard.Web.Data;
 using Reflect.ProviderDashboard.Web.Infrastructure;
 using Reflect.ProviderDashboard.Web.Models.Identity;
 using Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Team;
@@ -18,12 +19,33 @@ public class TeamController : Controller
     private readonly UserManager<ProviderUser> _users;
     private readonly PatientAssignmentService _assignments;
     private readonly TeamStore _team;
+    private readonly AuditLog _audit;
+    private readonly IConfiguration _configuration;
+    private readonly ClinicalDbContext _clinical;
 
-    public TeamController(UserManager<ProviderUser> users, PatientAssignmentService assignments, TeamStore team)
+    public TeamController(UserManager<ProviderUser> users, PatientAssignmentService assignments, TeamStore team, AuditLog audit, IConfiguration configuration, ClinicalDbContext clinical)
     {
+        _clinical = clinical;
+        _configuration = configuration;
         _users = users;
         _assignments = assignments;
         _team = team;
+        _audit = audit;
+    }
+
+    // Optional hard requirement: admins must have two-step sign-in before managing people.
+    public override async Task OnActionExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context, Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate next)
+    {
+        if (_configuration.GetValue<bool>("Security:RequireMfaForAdmins"))
+        {
+            var user = await _users.GetUserAsync(User);
+            if (user is not null && !user.TwoFactorEnabled)
+            {
+                context.Result = RedirectToAction("Mfa", "Settings");
+                return;
+            }
+        }
+        await next();
     }
 
     public async Task<IActionResult> Index(CancellationToken ct) => View(await BuildAsync(ct));
@@ -39,17 +61,32 @@ public class TeamController : Controller
             return await WithError("An account with that email already exists.", ct);
 
         var token = _team.CreateInvite(address, name, ActorEmail, out var invite);
-        _team.Record(ActorEmail, "invite-created", $"Invited {invite.Email}");
+        await _audit.RecordAsync(ActorEmail, "invite-created", $"Invited {invite.Email}");
         var vm = await BuildAsync(ct);
         vm.NewInviteLink = Url.Action("AcceptInvite", "Account", new { area = "", token }, Request.Scheme);
         vm.NewInviteEmail = invite.Email;
         return View("Index", vm);
     }
 
+    /// <summary>Disposable demo only: rebuild the synthetic data with fresh dates and put every patient back with the signed-in admin.</summary>
     [HttpPost]
-    public IActionResult Revoke(Guid id)
+    public async Task<IActionResult> ResetDemo(CancellationToken ct)
     {
-        if (_team.Revoke(id)) _team.Record(ActorEmail, "invite-revoked", id.ToString("N")[..8]);
+        if (!_configuration.GetValue<bool>("Demo:Enabled")) return NotFound();
+        var adminId = _users.GetUserId(User);
+        if (string.IsNullOrEmpty(adminId)) return Forbid();
+        InMemoryDataStore.Seed();
+        InMemoryDataStore.AssignPatientsToProvider(adminId);
+        await ClinicalSeeder.EnsureAsync(_clinical, adminId, reseed: true, ct);
+        _team.Clear();
+        await _audit.RecordAsync(ActorEmail, "demo-reset", "Synthetic data rebuilt", ct);
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Revoke(Guid id)
+    {
+        if (_team.Revoke(id)) await _audit.RecordAsync(ActorEmail, "invite-revoked", id.ToString("N")[..8]);
         return RedirectToAction(nameof(Index));
     }
 
@@ -67,7 +104,7 @@ public class TeamController : Controller
         try
         {
             var previous = await _assignments.AssignAsync(patientId, providerId, ct);
-            _team.Record(ActorEmail, "patient-assigned", $"Patient moved {(previous.Length == 0 ? "from unassigned" : "between providers")}{(providerId.Length == 0 ? " to unassigned" : "")}");
+            await _audit.RecordAsync(ActorEmail, "patient-assigned", $"Patient moved {(previous.Length == 0 ? "from unassigned" : "between providers")}{(providerId.Length == 0 ? " to unassigned" : "")}");
         }
         catch (EntityNotFoundException) { return NotFound(); }
         return RedirectToAction(nameof(Index));
@@ -83,7 +120,7 @@ public class TeamController : Controller
         await _users.SetLockoutEndDateAsync(user, active ? null : DateTimeOffset.MaxValue);
         // Existing sessions end at their next security-stamp check or within the one-hour cookie lifetime.
         await _users.UpdateSecurityStampAsync(user);
-        _team.Record(ActorEmail, active ? "account-reactivated" : "account-deactivated", user.Email ?? "");
+        await _audit.RecordAsync(ActorEmail, active ? "account-reactivated" : "account-deactivated", user.Email ?? "");
         return RedirectToAction(nameof(Index));
     }
 
@@ -114,7 +151,8 @@ public class TeamController : Controller
             Providers = providers,
             Invites = _team.Invites(),
             Patients = await _assignments.ListAsync(ct),
-            Audit = _team.Audit(null, 30),
+            Audit = await _audit.QueryAsync(null, 30, ct),
+            CanResetDemo = _configuration.GetValue<bool>("Demo:Enabled"),
             Now = DateTimeOffset.UtcNow
         };
     }

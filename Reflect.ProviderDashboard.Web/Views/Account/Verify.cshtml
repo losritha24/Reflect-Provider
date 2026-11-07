@@ -1,0 +1,26 @@
+@model Reflect.ProviderDashboard.Web.Models.ViewModels.Account.VerifyViewModel
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Verify sign-in";
+}
+
+<main class="login-page">
+    <section class="login-panel" aria-labelledby="verify-heading">
+        <div class="login-form-wrap">
+            <p class="eyebrow">Two-step sign-in</p>
+            <h1 id="verify-heading" class="page-title">Enter your code</h1>
+            <p class="text-muted login-intro">Open your authenticator app and enter the 6-digit code for Reflect Provider. Lost your phone? Use a recovery code instead.</p>
+            <form asp-controller="Account" asp-action="Verify" method="post" class="login-form">
+                <div asp-validation-summary="ModelOnly" class="login-validation" role="alert"></div>
+                <div class="login-field">
+                    <label asp-for="Code"></label>
+                    <input asp-for="Code" autocomplete="one-time-code" inputmode="numeric" autofocus />
+                    <span asp-validation-for="Code" class="login-field-error"></span>
+                </div>
+                <label class="fs-13"><input type="checkbox" asp-for="UseRecoveryCode" /> This is a recovery code</label>
+                <button type="submit" class="btn btn-primary login-submit">Verify</button>
+            </form>
+            <p class="login-account-link"><a asp-controller="Account" asp-action="Login">Start over</a></p>
+        </div>
+    </section>
+</main>

@@ -21,9 +21,11 @@ fonts. Preserve the Reflect coral/indigo brand and existing area routing.
   The catalog is the consumer list. Do not show consumer prices in this clinical
   dashboard; clinical editions are priced separately.
 - Accounts are invite-only. Team pages need `Facility_Admin` (`FacilityAdminOnly` policy) and show
-  patient IDs only, never names or sessions. Invites, audit entries and the message outbox live in
-  `TeamStore` (in memory, resets on restart); never store raw invite tokens, patient names or
-  message text in the audit trail. Account preferences are `pref.*` Identity claims
+  patient IDs only, never names or sessions. Invites and the message outbox live in `TeamStore`
+  (in memory, resets on restart). Security events go through `AuditLog` (durable, hash-chained, in the
+  account database; append-only, IDs only): never put raw invite tokens, patient names, message text or
+  secrets in it. New tables for existing databases go through `SchemaUpgrade.EnsureTablesAsync` until
+  migrations exist. Account preferences are `pref.*` Identity claims
   (`ProviderPreferences`). Do not claim messages are delivered or alerts are sent: both are prototypes.
 - Keep filter state through navigation. Use typed local routes; encode user text.
   Test keyboard behavior, empty results, future dates and authorization failures.

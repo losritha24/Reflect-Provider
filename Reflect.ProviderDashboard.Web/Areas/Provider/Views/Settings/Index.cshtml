@@ -68,7 +68,7 @@
 </section>
 
 <section class="work-panel" aria-labelledby="notify-heading">
-    <div class="section-heading"><div><h2 id="notify-heading">Notifications</h2><p class="text-muted">Choose what you want to hear about. These are saved, but alerts are not sent yet in this prototype.</p></div></div>
+    <div class="section-heading"><div><h2 id="notify-heading">Notifications</h2><p class="text-muted">Choose what you want to hear about. Emails are generic (a count and a prompt to sign in, never patient details) and are sent once a day when the server has email delivery configured. Until then, nothing is sent.</p></div></div>
     <form asp-action="Notifications" method="post" class="settings-form">
         <fieldset class="settings-fieldset"><legend>Tell me when</legend>
             <label><input type="checkbox" name="notifyQuieter" value="true" checked="@p.NotifyQuieter" /> A patient is quieter than usual</label>
@@ -85,6 +85,12 @@
         <div class="filter-field"><label for="quietTo">Quiet hours end</label><input id="quietTo" name="quietTo" type="time" value="@p.QuietTo" /></div>
         <div><button type="submit" class="btn btn-primary">Save notification settings</button></div>
     </form>
+    <form asp-action="TestNotification" method="post"><button type="submit" class="btn btn-outline-secondary">Send me a test notification</button></form>
+</section>
+
+<section class="work-panel" aria-labelledby="security-heading">
+    <div class="section-heading"><div><h2 id="security-heading">Sign-in security</h2><p class="text-muted">Add a second step with an authenticator app so a stolen password is not enough.</p></div></div>
+    <a class="btn btn-outline-secondary" asp-action="Mfa">Manage two-step sign-in</a>
 </section>
 
 <section class="work-panel" aria-labelledby="plan-heading">

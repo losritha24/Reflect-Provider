@@ -12,6 +12,8 @@ public sealed class ClinicalDbContext(DbContextOptions<ClinicalDbContext> option
 {
     public DbSet<Patient> Patients => Set<Patient>();
     public DbSet<TherapySession> Sessions => Set<TherapySession>();
+    public DbSet<FollowUpTask> FollowUps => Set<FollowUpTask>();
+    public DbSet<FollowUpEvent> FollowUpEvents => Set<FollowUpEvent>();
 
     // UTC ticks sort and compare identically on SQLite and Postgres (SQLite cannot ORDER BY DateTimeOffset).
     private static readonly ValueConverter<DateTimeOffset, long> UtcTicks = new(
@@ -33,6 +35,32 @@ public sealed class ClinicalDbContext(DbContextOptions<ClinicalDbContext> option
             e.Property(p => p.DateDeleted).HasConversion(NullableUtcTicks);
             e.HasIndex(p => new { p.AssignedProviderId, p.ExternalPatientId }).IsUnique();
             e.HasQueryFilter(p => !p.IsDeleted);
+        });
+        model.Entity<FollowUpTask>(e =>
+        {
+            e.ToTable("FollowUps");
+            e.HasKey(f => f.Id);
+            e.Property(f => f.Title).HasMaxLength(120).IsRequired();
+            e.Property(f => f.Note).HasMaxLength(1000);
+            e.Property(f => f.Version).IsConcurrencyToken();
+            e.Property(f => f.CreatedByProviderId).HasMaxLength(450);
+            e.Property(f => f.DueAtUtc).HasConversion(NullableUtcTicks);
+            e.Property(f => f.DateCreated).HasConversion(UtcTicks);
+            e.Property(f => f.DateDeleted).HasConversion(NullableUtcTicks);
+            e.HasIndex(f => new { f.PatientId, f.Status });
+            e.HasOne<Patient>().WithMany().HasForeignKey(f => f.PatientId).OnDelete(DeleteBehavior.Cascade);
+            e.HasQueryFilter(f => !f.IsDeleted);
+        });
+        model.Entity<FollowUpEvent>(e =>
+        {
+            e.ToTable("FollowUpEvents");
+            e.HasKey(f => f.Id);
+            e.Property(f => f.Action).HasMaxLength(32).IsRequired();
+            e.Property(f => f.ActorProviderId).HasMaxLength(450);
+            e.Property(f => f.DateCreated).HasConversion(UtcTicks);
+            e.Property(f => f.DateDeleted).HasConversion(NullableUtcTicks);
+            e.HasIndex(f => f.TaskId);
+            e.HasQueryFilter(f => !f.IsDeleted);
         });
         model.Entity<TherapySession>(e =>
         {

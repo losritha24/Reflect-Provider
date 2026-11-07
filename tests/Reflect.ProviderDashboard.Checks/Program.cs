@@ -300,6 +300,29 @@ Check(ingested.ModuleName == "Emotions", "Ingest canonicalizes module names to t
 Check(ingested.StartedAtUtc.Offset == TimeSpan.Zero && ingested.StartedAtUtc.Hour == 21,
     "Accepted ingest rows are stored in UTC");
 Check(await clinicalDb.Sessions.CountAsync() == beforeCount + 1, "Ingest appends a session without rewriting history");
+var replay = await ingest.IngestAsync(new SessionIngestRequest
+{
+    ExternalPatientId = "PT-10085", StartedAt = offsetStamp, DurationMinutes = 12, Platform = "Mobile", ModuleName = "Emotions",
+    ReflectionSummary = "UTC normalize", AffectScore = 6, HardwareId = "MOB-7740"
+}, ct);
+Check(replay.Id == ingested.Id && await clinicalDb.Sessions.CountAsync() == beforeCount + 1, "Replaying an ingest request does not create a duplicate session");
+foreach (var (label, start, hardware) in new[] { ("a future start", DateTimeOffset.UtcNow.AddDays(2), ""), ("a start older than two years", DateTimeOffset.UtcNow.AddYears(-3), ""), ("an oversized hardware id", offsetStamp, new string('h', 65)) })
+{
+    try
+    {
+        await ingest.IngestAsync(new SessionIngestRequest { ExternalPatientId = "PT-10085", StartedAt = start, DurationMinutes = 10, Platform = "Mobile", ModuleName = "Emotions", HardwareId = hardware }, ct);
+        throw new Exception($"Ingest accepted {label}");
+    }
+    catch (ArgumentException) { Console.WriteLine($"PASS: Ingest rejects {label}"); }
+}
+clinicalDb.Patients.Add(new Reflect.ProviderDashboard.Domain.Entities.Patient { DisplayName = "Duplicate Id", ExternalPatientId = "PT-10085", AssignedProviderId = "another-provider" });
+await clinicalDb.SaveChangesAsync(ct);
+try
+{
+    await ingest.IngestAsync(new SessionIngestRequest { ExternalPatientId = "PT-10085", StartedAt = offsetStamp.AddMinutes(-30), DurationMinutes = 10, Platform = "Mobile", ModuleName = "Emotions" }, ct);
+    throw new Exception("Ambiguous external ID was accepted");
+}
+catch (AmbiguousPatientException) { Console.WriteLine("PASS: An external ID shared by two providers is refused instead of guessed"); }
 var caseyId = InMemoryDataStore.Patients.Single(p => p.ExternalPatientId == "PT-10085").Id;
 var ingestSessions = new EfTherapySessionRepository(clinicalDb, new EfPatientRepository(clinicalDb, currentUser));
 Check((await ingestSessions.GetByPatientIdAsync(caseyId, ct)).Any(s => s.Id == ingested.Id),
@@ -361,6 +384,8 @@ await Reflect.ProviderDashboard.Checks.TimelineChecks.RunAsync();
 await Reflect.ProviderDashboard.Checks.ChatAndTimeChecks.RunAsync();
 await Reflect.ProviderDashboard.Checks.ClinicalStoreChecks.RunAsync();
 await Reflect.ProviderDashboard.Checks.TeamChecks.RunAsync();
+await Reflect.ProviderDashboard.Checks.FollowUpChecks.RunAsync();
+await Reflect.ProviderDashboard.Checks.NotificationChecks.RunAsync();
 await Reflect.ProviderDashboard.Checks.OpenRouterChecks.RunAsync();
 
 sealed class TestCurrentUserService(Guid? userId, bool authenticated = true, bool provider = true) : ICurrentUserService

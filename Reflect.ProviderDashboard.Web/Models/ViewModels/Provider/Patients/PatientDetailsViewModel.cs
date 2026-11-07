@@ -34,8 +34,12 @@ public class PatientDetailsViewModel
     public string TrajectoryChartSvg { get; set; } = string.Empty;
     public List<CareDevice> Devices { get; set; } = new();
     public List<ProgramUsageRow> ProgramUsage { get; set; } = new();
+    public List<FollowUpTask> FollowUps { get; set; } = new();
+    public string Program { get; set; } = "";
+    public List<string> NotTried { get; set; } = new();
+    public IReadOnlyList<string> ProgramGroups => ReflectModuleCatalog.All.Select(m => m.Group).Distinct().ToList();
 
-    public sealed record ProgramUsageRow(string Group, int Sessions, IReadOnlyList<string> Modules);
+    public sealed record ProgramUsageRow(string Group, int Sessions, int Last30Days, IReadOnlyList<string> Modules);
 
     public async Task PrepareData(
         Guid patientId,
@@ -82,8 +86,10 @@ public class PatientDetailsViewModel
         ProgramUsage = patientSessions
             .GroupBy(s => ReflectModuleCatalog.Find(s.Platform, s.ModuleName)?.Group ?? "Other")
             .OrderByDescending(g => g.Count()).ThenBy(g => g.Key)
-            .Select(g => new ProgramUsageRow(g.Key, g.Count(), g.Select(s => s.ModuleName).Distinct().OrderBy(n => n).ToList()))
+            .Select(g => new ProgramUsageRow(g.Key, g.Count(), g.Count(s => s.StartedAtUtc >= AsOfUtc.AddDays(-30)), g.Select(s => s.ModuleName).Distinct().OrderBy(n => n).ToList()))
             .ToList();
+        NotTried = ReflectModuleCatalog.All.Select(m => m.Group).Distinct()
+            .Where(group => group != "Getting Started" && ProgramUsage.All(u => u.Group != group)).ToList();
 
         var timeline = patientSessions.AsEnumerable();
         if (Platform.HasValue) timeline = timeline.Where(s => s.Platform == Platform.Value);

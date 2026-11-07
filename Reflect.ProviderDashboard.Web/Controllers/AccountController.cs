@@ -7,6 +7,7 @@ using Reflect.ProviderDashboard.Web.Infrastructure;
 using Reflect.ProviderDashboard.Web.Models.ViewModels.Account;
 using Reflect.ProviderDashboard.Web.Models.Identity;
 using Reflect.ProviderDashboard.Web.Services;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace Reflect.ProviderDashboard.Web.Controllers;
 
@@ -18,14 +19,19 @@ public sealed class AccountController : Controller
     private readonly IHostEnvironment _environment;
     private readonly IConfiguration _configuration;
     private readonly TeamStore _team;
+    private readonly AuditLog _audit;
+    private readonly IDataProtector _pending;
+    private const string PendingCookie = "ReflectProvider.Mfa";
     private bool LoginEnabled => _environment.IsDevelopment() || _configuration.GetValue<bool>("Demo:Enabled");
 
     public AccountController(
         UserManager<ProviderUser> userManager,
         SignInManager<ProviderUser> signInManager,
-        IHostEnvironment environment, IConfiguration configuration, TeamStore team)
+        IHostEnvironment environment, IConfiguration configuration, TeamStore team, AuditLog audit, IDataProtectionProvider protection)
     {
+        _pending = protection.CreateProtector("Reflect.Mfa.Pending.v1");
         _team = team;
+        _audit = audit;
         _userManager = userManager;
         _signInManager = signInManager;
         _environment = environment;
@@ -75,12 +81,84 @@ public sealed class AccountController : Controller
             return View(model);
         }
 
+        // Second factor: the password alone must never open a session for an account that enabled MFA.
+        if (user.TwoFactorEnabled)
+        {
+            var payload = string.Join('|', user.Id, DateTimeOffset.UtcNow.AddMinutes(5).UtcTicks, model.RememberMe ? "1" : "0",
+                Url.IsLocalUrl(model.ReturnUrl) ? Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(model.ReturnUrl)) : "");
+            Response.Cookies.Append(PendingCookie, _pending.Protect(payload), new CookieOptions
+            {
+                HttpOnly = true, Secure = !_environment.IsDevelopment() || Request.IsHttps, SameSite = SameSiteMode.Strict,
+                MaxAge = TimeSpan.FromMinutes(5), IsEssential = true
+            });
+            return RedirectToAction(nameof(Verify));
+        }
+
         await _signInManager.SignInWithClaimsAsync(
             user,
             model.RememberMe,
             new[] { new Claim("display_name", user.DisplayName) });
-        _team.Record(user.Email, "sign-in", "Signed in");
+        await _audit.RecordAsync(user.Email, "sign-in", "Signed in");
         return RedirectToLocal(model.ReturnUrl, await LandingAsync(user));
+    }
+
+    [AllowAnonymous]
+    [HttpGet]
+    public async Task<IActionResult> Verify()
+    {
+        if (!LoginEnabled) return NotFound();
+        return await ReadPendingAsync() is null ? RedirectToAction(nameof(Login)) : View(new VerifyViewModel());
+    }
+
+    [AllowAnonymous]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("account")]
+    public async Task<IActionResult> Verify(VerifyViewModel model)
+    {
+        if (!LoginEnabled) return NotFound();
+        var pending = await ReadPendingAsync();
+        if (pending is null) return RedirectToAction(nameof(Login));
+        var (user, remember, returnUrl) = pending.Value;
+        if (!ModelState.IsValid) return View(model);
+        if (await _userManager.IsLockedOutAsync(user))
+        {
+            ModelState.AddModelError(string.Empty, "Too many attempts. Try again later.");
+            return View(model);
+        }
+
+        var code = model.Code.Replace(" ", "").Replace("-", "");
+        var ok = model.UseRecoveryCode
+            ? (await _userManager.RedeemTwoFactorRecoveryCodeAsync(user, model.Code.Trim())).Succeeded
+            : await _userManager.VerifyTwoFactorTokenAsync(user, TokenOptions.DefaultAuthenticatorProvider, code);
+        if (!ok)
+        {
+            await _userManager.AccessFailedAsync(user);
+            await _audit.RecordAsync(user.Email, "mfa-failed", model.UseRecoveryCode ? "Recovery code" : "Authenticator code");
+            ModelState.AddModelError(string.Empty, "That code did not work. Check your authenticator app and try again.");
+            return View(model);
+        }
+
+        await _userManager.ResetAccessFailedCountAsync(user);
+        Response.Cookies.Delete(PendingCookie);
+        await _signInManager.SignInWithClaimsAsync(user, remember, new[] { new Claim("display_name", user.DisplayName) });
+        await _audit.RecordAsync(user.Email, "sign-in", model.UseRecoveryCode ? "Signed in with MFA recovery code" : "Signed in with MFA");
+        return RedirectToLocal(returnUrl, await LandingAsync(user));
+    }
+
+    private async Task<(ProviderUser User, bool Remember, string ReturnUrl)?> ReadPendingAsync()
+    {
+        if (!Request.Cookies.TryGetValue(PendingCookie, out var cookie)) return null;
+        try
+        {
+            var parts = _pending.Unprotect(cookie).Split('|');
+            if (parts.Length != 4 || !long.TryParse(parts[1], out var ticks) || new DateTimeOffset(ticks, TimeSpan.Zero) < DateTimeOffset.UtcNow) return null;
+            var user = await _userManager.FindByIdAsync(parts[0]);
+            if (user is null || !user.TwoFactorEnabled) return null;
+            var returnUrl = parts[3].Length == 0 ? null : System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(parts[3]));
+            return (user, parts[2] == "1", returnUrl);
+        }
+        catch (Exception ex) when (ex is System.Security.Cryptography.CryptographicException or FormatException) { return null; }
     }
 
     [AllowAnonymous]
@@ -121,7 +199,7 @@ public sealed class AccountController : Controller
             return View(model);
         }
         _team.MarkAccepted(invite.Id);
-        _team.Record(user.Email, "invite-accepted", "Created account from invite");
+        await _audit.RecordAsync(user.Email, "invite-accepted", "Created account from invite");
         await _signInManager.SignInWithClaimsAsync(user, isPersistent: false, new[] { new Claim("display_name", user.DisplayName) });
         return RedirectToLocal(null);
     }

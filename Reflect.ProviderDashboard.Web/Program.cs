@@ -42,6 +42,13 @@ var trustedProxies = proxyAddresses.Select(address =>
     return parsed;
 }).ToArray();
 var httpsAtEdge = builder.Configuration.GetValue<bool>("Hosting:HttpsAtEdge");
+// A guessable ingest key is a write path into patient records: refuse weak or placeholder keys outside Development.
+if (!builder.Environment.IsDevelopment() && builder.Configuration.GetValue<bool>("Integration:Enabled"))
+{
+    var ingestKey = builder.Configuration["Integration:ApiKey"] ?? "";
+    if (ingestKey.Length < 32 || ingestKey.Contains("demo", StringComparison.OrdinalIgnoreCase) || ingestKey.Contains("changeme", StringComparison.OrdinalIgnoreCase))
+        throw new InvalidOperationException("Integration:ApiKey must be at least 32 characters and not a placeholder when Integration:Enabled is true.");
+}
 if (httpsAtEdge && trustedProxies.Length > 0)
     throw new InvalidOperationException("Choose Hosting:HttpsAtEdge or Hosting:KnownProxies, not both.");
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
@@ -168,7 +175,16 @@ builder.Services.AddScoped<ITherapySessionRepository, EfTherapySessionRepository
 builder.Services.AddScoped<ICareDeviceRepository, InMemoryCareDeviceRepository>();
 builder.Services.AddScoped<SessionIngestService>();
 builder.Services.AddScoped<PatientAssignmentService>();
+builder.Services.AddScoped<FollowUpService>();
+builder.Services.Configure<NotificationOptions>(builder.Configuration.GetSection(NotificationOptions.SectionName));
+builder.Services.AddScoped<NotificationService>();
+if (builder.Configuration.GetSection("Notifications:Smtp:Host").Value is { Length: > 0 })
+    builder.Services.AddSingleton<INotificationSender, SmtpNotificationSender>();
+else
+    builder.Services.AddSingleton<INotificationSender, LogOnlyNotificationSender>();
+builder.Services.AddHostedService<NotificationWorker>();
 builder.Services.AddSingleton<TeamStore>();
+builder.Services.AddScoped<AuditLog>();
 builder.Services.Configure<Reflect.ProviderDashboard.Web.Services.Chat.OpenRouterOptions>(
     builder.Configuration.GetSection(Reflect.ProviderDashboard.Web.Services.Chat.OpenRouterOptions.SectionName));
 builder.Services.AddSingleton<Reflect.ProviderDashboard.Web.Services.Chat.StubChatResponder>();
@@ -199,6 +215,7 @@ await using (var scope = app.Services.CreateAsyncScope())
 {
     var database = scope.ServiceProvider.GetRequiredService<ProviderDbContext>();
     await database.Database.EnsureCreatedAsync();
+    await SchemaUpgrade.EnsureTablesAsync(database, default, "AuditEvents");
 
     if (!OperatingSystem.IsWindows())
     {

@@ -9,25 +9,21 @@ public sealed record Invite(
     Guid Id, string Email, string DisplayName, string TokenHash,
     DateTimeOffset CreatedUtc, DateTimeOffset ExpiresUtc, string CreatedBy, InviteStatus Status);
 
-public sealed record AuditEntry(DateTimeOffset AtUtc, string Actor, string Action, string Detail);
-
 public sealed record OutboxMessage(
     Guid Id, string ProviderId, Guid PatientId, string PatientLabel, string Body,
     DateTimeOffset CreatedUtc, string Status);
 
 /// <summary>
-/// Single-instance prototype store for invites, the audit trail and the patient message outbox.
+/// Single-instance prototype store for invites and the patient message outbox (the audit trail is durable: see AuditLog).
 /// Resets on restart. Replace with tables in the account/clinical databases (see docs/TODO.md).
 /// Invite tokens are stored only as SHA-256 hashes; the raw token is shown once to the admin.
 /// </summary>
 public sealed class TeamStore(TimeProvider clock)
 {
     public static readonly TimeSpan InviteLifetime = TimeSpan.FromHours(72);
-    private const int MaxAudit = 500;
 
     private readonly object gate = new();
     private readonly List<Invite> invites = [];
-    private readonly List<AuditEntry> audit = [];
     private readonly List<OutboxMessage> outbox = [];
 
     public static string Hash(string token) =>
@@ -83,18 +79,10 @@ public sealed class TeamStore(TimeProvider clock)
         }
     }
 
-    public void Record(string actor, string action, string detail)
+    /// <summary>Demo reset only: forgets invites and queued messages.</summary>
+    public void Clear()
     {
-        lock (gate)
-        {
-            audit.Add(new AuditEntry(clock.GetUtcNow(), actor, action, detail));
-            if (audit.Count > MaxAudit) audit.RemoveRange(0, audit.Count - MaxAudit);
-        }
-    }
-
-    public IReadOnlyList<AuditEntry> Audit(Func<AuditEntry, bool> filter = null, int take = 50)
-    {
-        lock (gate) return audit.Where(filter ?? (_ => true)).OrderByDescending(a => a.AtUtc).Take(take).ToList();
+        lock (gate) { invites.Clear(); outbox.Clear(); }
     }
 
     public OutboxMessage Queue(string providerId, Guid patientId, string patientLabel, string body)

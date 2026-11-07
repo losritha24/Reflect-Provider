@@ -17,12 +17,15 @@ public class ReportsController : Controller
     private readonly IPatientRepository _patients;
     private readonly ITherapySessionRepository _sessions;
     private readonly ICompanyClock _clock;
+    private readonly Services.AuditLog _audit;
 
     public ReportsController(
         IPatientRepository patients,
         ITherapySessionRepository sessions,
-        ICompanyClock clock)
+        ICompanyClock clock,
+        Services.AuditLog audit = null)
     {
+        _audit = audit;
         _patients = patients;
         _sessions = sessions;
         _clock = clock;
@@ -84,6 +87,8 @@ public class ReportsController : Controller
                 ct);
             if (!vm.HasCaseload)
                 return NotFound();
+            if (_audit is not null && User?.Identity?.IsAuthenticated == true)
+                await _audit.RecordAsync(User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "provider", "report-exported", $"{rangeFrom:yyyy-MM-dd} to {rangeTo:yyyy-MM-dd}", ct);
             var bytes = ClinicalReportPdf.From(vm);
             var fileName = $"reflect-report-{Slug(vm.PatientName)}-{rangeFrom:yyyyMMdd}-{rangeTo:yyyyMMdd}.pdf";
             return File(bytes, "application/pdf", fileName);

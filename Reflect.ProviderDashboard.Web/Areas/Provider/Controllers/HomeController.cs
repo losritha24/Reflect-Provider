@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Reflect.ProviderDashboard.Domain.Interfaces;
 using Reflect.ProviderDashboard.Web.Infrastructure;
+using Reflect.ProviderDashboard.Web.Services;
 using Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Dashboard;
 using Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Graph;
 using Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Trust;
@@ -18,6 +19,7 @@ public class HomeController : Controller
     private readonly ICompanyClock _clock;
     private readonly IHostEnvironment _environment;
     private readonly IConfiguration _configuration;
+    private readonly FollowUpService _followUps;
 
     public HomeController(
         IPatientRepository patients,
@@ -25,8 +27,10 @@ public class HomeController : Controller
         ICareDeviceRepository devices,
         ICompanyClock clock,
         IHostEnvironment environment,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        FollowUpService followUps = null)
     {
+        _followUps = followUps;
         _patients = patients;
         _sessions = sessions;
         _devices = devices;
@@ -46,6 +50,7 @@ public class HomeController : Controller
     {
         var vm = new ProviderDashboardViewModel();
         await vm.PrepareData(_patients, _sessions, ct);
+        if (_followUps is not null) vm.DueFollowUps = (await _followUps.DueAsync(7, ct)).ToList();
         return View(vm);
     }
 

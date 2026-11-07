@@ -1,0 +1,49 @@
+@model Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Settings.MfaViewModel
+@{
+    ViewData["Title"] = "Two-step sign-in";
+}
+<div class="mb-4">
+    <p class="eyebrow">Your account</p>
+    <h1 class="page-title mb-1">Two-step sign-in</h1>
+    <p class="text-muted fs-13 mb-0"><a asp-action="Index">Back to settings</a></p>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Error)) { <div class="callout" role="alert">@Model.Error</div> }
+
+@if (Model.RecoveryCodes.Count > 0)
+{
+    <section class="work-panel" aria-labelledby="codes-heading">
+        <h2 id="codes-heading">Two-step sign-in is on</h2>
+        <div class="callout" role="status"><strong>Save these recovery codes now.</strong> Each works once if you lose your phone. They are shown only this one time.</div>
+        <ul class="recovery-codes">
+            @foreach (var code in Model.RecoveryCodes) { <li><code>@code</code></li> }
+        </ul>
+    </section>
+}
+else if (Model.Enabled)
+{
+    <section class="work-panel" aria-labelledby="on-heading">
+        <h2 id="on-heading">Two-step sign-in is on</h2>
+        <p class="text-muted">@Model.RecoveryCodesLeft recovery codes left.</p>
+        <form asp-action="MfaDisable" method="post" class="settings-form">
+            <div class="filter-field"><label for="mfa-password">Current password</label><input id="mfa-password" name="password" type="password" autocomplete="current-password" required /></div>
+            <div><button type="submit" class="btn btn-outline-secondary">Turn off two-step sign-in</button></div>
+        </form>
+    </section>
+}
+else
+{
+    <section class="work-panel" aria-labelledby="setup-heading">
+        <h2 id="setup-heading">Set up an authenticator app</h2>
+        <ol>
+            <li>Install an authenticator app (for example Google Authenticator, Microsoft Authenticator or 1Password).</li>
+            <li>Add an account and choose “enter a setup key”. Use this key: <code class="mfa-key">@Model.Key</code></li>
+            <li>Enter the 6-digit code the app shows to finish.</li>
+        </ol>
+        <p class="text-muted fs-13">Setup link for apps that accept one: <a href="@Model.Uri">open in authenticator</a>. Keep the key private.</p>
+        <form asp-action="MfaEnable" method="post" class="settings-form">
+            <div class="filter-field"><label for="mfa-code">6-digit code</label><input id="mfa-code" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" required /></div>
+            <div><button type="submit" class="btn btn-primary">Turn on two-step sign-in</button></div>
+        </form>
+    </section>
+}

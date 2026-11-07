@@ -343,3 +343,8 @@ summary { cursor:pointer; }
 .settings-fieldset input[type="checkbox"] { width:1.1rem; height:1.1rem; flex:none; margin:0; }
 .assign-form { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; }
 .assign-form select { width:auto; min-width:14rem; max-width:100%; }
+.followup-list { list-style:none; margin:0 0 1.25rem; padding:0; display:grid; gap:.75rem; }
+.followup { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; padding:.85rem 1rem; border:1px solid var(--default-border); border-radius:var(--radius-control); flex-wrap:wrap; }
+.followup.is-done strong { text-decoration:line-through; color:var(--text-muted); }
+.recovery-codes { list-style:none; margin:1rem 0 0; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(12rem,1fr)); gap:.5rem; }
+.recovery-codes code, .mfa-key { font-size:1rem; letter-spacing:.04em; }

@@ -5,6 +5,7 @@ namespace Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Dashboard;
 
 public class ProviderDashboardViewModel
 {
+    public List<Reflect.ProviderDashboard.Web.Services.DueFollowUp> DueFollowUps { get; set; } = new();
     public DateTimeOffset AsOfUtc { get; private set; }
     public List<AttentionRow> NeedsAttention { get; private set; } = new();
     public List<AffectDeviationRow> AffectDeviations { get; private set; } = new();

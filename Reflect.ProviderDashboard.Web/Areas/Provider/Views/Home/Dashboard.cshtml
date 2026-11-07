@@ -76,6 +76,24 @@
         <p>Each session’s affect marker is compared with the mean of that patient’s prior markers in a 28-day window (up to five sessions, at least three). A flag is raised when the latest score is at least two points below that personal mean and below their usual range. Other patients’ scores are never used.</p>
     </details>
 </section>
+@if (Model.DueFollowUps.Count > 0)
+{
+<section class="work-panel" aria-labelledby="due-heading">
+    <div class="section-heading"><div><h2 id="due-heading">Follow-ups due</h2><p class="text-muted">Your open reminders that are overdue or due within a week.</p></div></div>
+    <ul class="followup-list">
+    @foreach (var due in Model.DueFollowUps)
+    {
+        <li class="followup">
+            <div>
+                <a class="patient-name" asp-controller="Patients" asp-action="Details" asp-route-id="@due.Task.PatientId" asp-fragment="followups">@due.PatientName</a>
+                <span class="badge @(due.Overdue ? "bg-warning-transparent" : "bg-info-transparent")">@(due.Overdue ? "Overdue" : "Due soon")</span>
+                <p class="mb-0">@due.Task.Title · @due.Task.DueAtUtc!.Value.UtcDateTime.ToString("MMM d")</p>
+            </div>
+        </li>
+    }
+    </ul>
+</section>
+}
 <section class="work-panel recent-panel" aria-labelledby="recent-heading">
     <div class="section-heading"><div><h2 id="recent-heading">Recent activity</h2><p class="text-muted">The latest sessions in your assigned caseload. Times shown in @Clock.Abbreviation (stored UTC).</p></div><a asp-controller="Patients" asp-action="Index">All patients</a></div>
     <div class="activity-feed">

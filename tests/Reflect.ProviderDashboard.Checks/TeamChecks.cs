@@ -45,15 +45,43 @@ public static class TeamChecks
         clock.Now = clock.Now + TeamStore.InviteLifetime + TimeSpan.FromSeconds(1);
         Check(team.FindUsable(expiring) is null, "Invites expire after 72 hours");
 
-        team.Record("a@example.invalid", "x", "one");
-        team.Record("b@example.invalid", "y", "two");
-        Check(team.Audit(a => a.Actor == "a@example.invalid").Count == 1 && team.Audit().Count >= 2, "Audit entries can be filtered by actor");
         var sent = team.Queue("provider-1", Guid.NewGuid(), "Sam", "hello");
         Check(team.Outbox("provider-1").Count == 1 && team.Outbox("provider-2").Count == 0 && sent.Status.Contains("not delivered"),
             "Messages are queued per provider and labelled as not delivered");
 
+        await CheckAuditAsync(clock);
         await CheckAssignmentAsync();
         CheckPreferences();
+    }
+
+    private static async Task CheckAuditAsync(TimeProvider clock)
+    {
+        await using var connection = new SqliteConnection("Data Source=:memory:");
+        await connection.OpenAsync();
+        var options = new DbContextOptionsBuilder<ProviderDbContext>().UseSqlite(connection).Options;
+        await using var db = new ProviderDbContext(options);
+        await db.Database.EnsureCreatedAsync();
+        var audit = new AuditLog(db, clock);
+        await audit.RecordAsync("a@example.invalid", "x", "one");
+        await audit.RecordAsync("b@example.invalid", "y", "two");
+        await audit.RecordAsync("a@example.invalid", "z", new string('d', 900));
+        var mine = await audit.QueryAsync("a@example.invalid");
+        Check(mine.Count == 2 && (await audit.QueryAsync()).Count == 3 && mine[0].Detail.Length == 500,
+            "Audit entries are durable, filterable by actor, and bounded in length");
+        Check(await audit.VerifyAsync() is null, "An untouched audit chain verifies");
+        await db.Database.ExecuteSqlRawAsync("UPDATE \"AuditEvents\" SET \"Detail\" = 'edited' WHERE \"Action\" = 'y'");
+        Check(await audit.VerifyAsync() == 2, "Editing an audit row is detected as the first broken link");
+
+        // Existing databases get new tables without touching old ones.
+        await using var oldDb = new SqliteConnection("Data Source=:memory:");
+        await oldDb.OpenAsync();
+        var oldOptions = new DbContextOptionsBuilder<ProviderDbContext>().UseSqlite(oldDb).Options;
+        await using var legacy = new ProviderDbContext(oldOptions);
+        await legacy.Database.EnsureCreatedAsync();
+        await legacy.Database.ExecuteSqlRawAsync("DROP TABLE \"AuditEvents\"");
+        await SchemaUpgrade.EnsureTablesAsync(legacy, CancellationToken.None, "AuditEvents");
+        await new AuditLog(legacy, clock).RecordAsync("c@example.invalid", "q", "after upgrade");
+        Check((await new AuditLog(legacy, clock).QueryAsync()).Count == 1, "A missing table is created on an existing database");
     }
 
     private static async Task CheckAssignmentAsync()

@@ -16,9 +16,13 @@ public class PatientsController : Controller
     private readonly IPatientRepository _patients;
     private readonly ITherapySessionRepository _sessions;
     private readonly ICareDeviceRepository _devices;
+    private readonly Services.AuditLog _audit;
+    private readonly Services.FollowUpService _followUps;
 
-    public PatientsController(IPatientRepository patients, ITherapySessionRepository sessions, ICareDeviceRepository devices)
+    public PatientsController(IPatientRepository patients, ITherapySessionRepository sessions, ICareDeviceRepository devices, Services.AuditLog audit = null, Services.FollowUpService followUps = null)
     {
+        _audit = audit;
+        _followUps = followUps;
         _patients = patients;
         _sessions = sessions;
         _devices = devices;
@@ -46,16 +50,19 @@ public class PatientsController : Controller
         string search = null,
         EngagementTrend? trend = null,
         int page = 1,
-        string tab = "overview")
+        string tab = "overview",
+        string program = null)
     {
         if (id == Guid.Empty) return NotFound();
+        program = string.IsNullOrWhiteSpace(program) ? null : program.Trim();
         if (!ModelState.IsValid
             || (platform.HasValue && !Enum.IsDefined(platform.Value))
             || (days.HasValue && days is not (7 or 30 or 90))
             || (trend.HasValue && !Enum.IsDefined(trend.Value))
             || page < 1
             || search?.Length > 200
-            || (tab != "overview" && tab != "timeline"))
+            || (tab != "overview" && tab != "timeline")
+            || (program is not null && !Domain.Catalog.ReflectModuleCatalog.All.Any(m => m.Group.Equals(program, StringComparison.OrdinalIgnoreCase))))
         {
             return BadRequest();
         }
@@ -76,6 +83,16 @@ public class PatientsController : Controller
                 trend,
                 page,
                 tab);
+            if (program is not null)
+            {
+                vm.Program = Domain.Catalog.ReflectModuleCatalog.All.First(m => m.Group.Equals(program, StringComparison.OrdinalIgnoreCase)).Group;
+                vm.Sessions = vm.Sessions.Where(s => s.ModuleGroup == vm.Program).ToList();
+                vm.Tab = "timeline";
+            }
+            if (_followUps is not null) vm.FollowUps = (await _followUps.ListAsync(id, ct)).ToList();
+            // Who opened which record (ID only, never the name). Skipped where there is no signed-in user.
+            if (_audit is not null && User?.Identity?.IsAuthenticated == true)
+                await _audit.RecordAsync(User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "provider", "patient-viewed", vm.ExternalPatientId, ct);
             return View(vm);
         }
         catch (EntityNotFoundException)

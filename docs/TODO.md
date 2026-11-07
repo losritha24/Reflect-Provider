@@ -87,6 +87,18 @@ Deployment instructions are in [COMPETITION-DEPLOYMENT.md](COMPETITION-DEPLOYMEN
 - [ ] Move care devices (and assignments) into `ClinicalDbContext`; they are still in memory.
 - [x] README, the provider menu JSON and the screen table now describe the clinical store and Dashboard home. Keep NEXT-STEPS current as the schema changes.
 
+### Delivered Nov 6 (second pass)
+- [x] Ingest: idempotent, start-time bounds, hardware-id limit, ambiguous-id refusal (409), production key-strength guard, HTTP-level tests.
+- [x] Durable hash-chained audit log (account DB) incl. patient views and report exports; Team and Settings read from it.
+- [x] Follow-up tasks (versioned, append-only history, provider-scoped) on the patient record and dashboard.
+- [x] Program filter on the timeline, per-program last-30-day counts and "not yet tried".
+- [x] Weekly digest page (printable).
+- [x] Generic email notifications: preferences, quiet hours, daily worker, test button. Off until SMTP is configured; untested against a real mail server.
+- [x] TOTP MFA with recovery codes; `Security:RequireMfaForAdmins` option.
+- [x] Demo: reset button, `docs/DEMO-SCRIPT.md`.
+- [x] `docs/SECURITY-KNOWN-ISSUES.md` and `docs/SECURITY-REVIEW-PROMPT.md` for an outside review.
+- [ ] Still open: care devices in the clinical DB (device lookups for ingest are still in memory), versioned migrations, MFA enforced by default, TOTP replay protection, push notifications, two-way messaging, SSO.
+
 ### Module catalog follow-ups
 - [ ] Plan/entitlement per patient or device (Free/Basic/Premium/XR Home): flag modules outside the plan and show AI image usage against the 20/30 monthly allowance. Needs a schema change and seed data.
 - [ ] Program filter next to the platform filter on the patient timeline, and program-level trends.

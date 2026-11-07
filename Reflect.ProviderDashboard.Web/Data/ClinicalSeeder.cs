@@ -16,8 +16,11 @@ public static class ClinicalSeeder
         if (reseed && db.Database.IsSqlite())
             await db.Database.EnsureDeletedAsync(ct);
         await db.Database.EnsureCreatedAsync(ct);
+        await SchemaUpgrade.EnsureTablesAsync(db, ct, "FollowUps", "FollowUpEvents");
         if (reseed)
         {
+            await db.FollowUpEvents.IgnoreQueryFilters().ExecuteDeleteAsync(ct);
+            await db.FollowUps.IgnoreQueryFilters().ExecuteDeleteAsync(ct);
             await db.Sessions.IgnoreQueryFilters().ExecuteDeleteAsync(ct);
             await db.Patients.IgnoreQueryFilters().ExecuteDeleteAsync(ct);
         }
