@@ -1,0 +1,45 @@
+@model RemovePatientViewModel
+@{
+    ViewData["Title"] = "Remove patient";
+}
+<div class="mb-4">
+    <p class="eyebrow">Caseload</p>
+    <h1 class="page-title mb-1">Remove a patient</h1>
+    <p class="text-muted fs-13 mb-0">Use this when someone is no longer using Reflect XR or Reflect Mobile. They leave your caseload; session history is not rewritten.</p>
+</div>
+
+@if (Model.Patients.Count == 0)
+{
+    <p class="empty-state">No assigned patients to remove.</p>
+    <a class="btn btn-outline-secondary" asp-action="Index">Back to patients</a>
+}
+else
+{
+    <form asp-action="Remove" method="post" class="work-panel patient-create" aria-labelledby="remove-patient-heading">
+        <h2 id="remove-patient-heading">Who to remove</h2>
+        <p class="text-muted">Assigned devices return to storage. The person no longer appears on the graph, reports, or this list.</p>
+        <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
+        <div class="filter-field">
+            <label asp-for="PatientId"></label>
+            <select asp-for="PatientId">
+                <option value="">Choose a patient</option>
+                @foreach (var patient in Model.Patients)
+                {
+                    <option value="@patient.Id">@patient.DisplayName · @patient.ExternalPatientId</option>
+                }
+            </select>
+            <span asp-validation-for="PatientId" class="field-error"></span>
+        </div>
+        <div class="filter-field">
+            <label class="confirm-row">
+                <input asp-for="Confirm" />
+                This person is no longer using Reflect XR or Reflect Mobile.
+            </label>
+            <span asp-validation-for="Confirm" class="field-error"></span>
+        </div>
+        <div class="patient-create-actions">
+            <button type="submit" class="btn btn-primary">Remove from caseload</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+        </div>
+    </form>
+}

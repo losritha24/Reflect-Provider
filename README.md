@@ -30,6 +30,8 @@ Account creation is enabled only in Development. Sign-in is also available in Pr
 | Provider dashboard | `/Provider/Home/Dashboard` |
 | Trust, time zones, HIPAA, ingest | `/Provider/Home/Trust` |
 | Patient list | `/Provider/Patients/Index` |
+| Add patient | `/Provider/Patients/Create` |
+| Remove patient | `/Provider/Patients/Remove` |
 | Patient detail (overview + sessions) | `/Provider/Patients/Details/{patientId}` |
 | Reports (print and PDF) | `/Provider/Reports/Index` |
 | Devices | `/Provider/Devices/Index` |

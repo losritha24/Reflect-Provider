@@ -2,6 +2,8 @@
 
 ## 2026-11-06
 
+- Expanded the synthetic caseload with five more patients and official Reflect module sessions.
+- Clinicians can add a patient, prefill fields from a text PDF, or remove someone who is no longer using Reflect.
 - Documented the full architecture: production ingest path, prototype request flow, and clinical data model.
 - Seeded sessions now use official Reflect Mobile and Reflect XR Home module titles (Breathing Mandala, Color Psychology, Flow, and so on).
 - Added a Reports page: pick a patient and date range, preview name / period / main module, then print or download a PDF.

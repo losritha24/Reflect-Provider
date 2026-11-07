@@ -52,7 +52,17 @@ summary { cursor:pointer; }
 [data-theme-mode="dark"] .filter-toolbar { background:var(--custom-white); }
 .filter-field { flex:1 1 14rem; display:flex; flex-direction:column; gap:.4rem; }
 .filter-field label { font-size:.85rem; }
-.filter-field input, .filter-field select { width:100%; min-height:44px; border:1px solid var(--default-border); border-radius:.4rem; padding:.65rem; background:var(--header-bg); color:var(--default-text-color); font:inherit; }
+.filter-field input, .filter-field select, .filter-field textarea { width:100%; min-height:44px; border:1px solid var(--default-border); border-radius:.4rem; padding:.65rem; background:var(--header-bg); color:var(--default-text-color); font:inherit; }
+.filter-field textarea { min-height:7rem; resize:vertical; }
+.patient-create { display:grid; gap:.9rem; max-width:36rem; }
+.patient-create h2 { margin-bottom:.15rem; }
+.patient-create-actions { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:.4rem; }
+.field-error { color:#a43e3e; font-size:.8125rem; }
+.field-error:empty { display:none; }
+.import-notice { margin:0; padding:.75rem .9rem; border-left:3px solid var(--soft-coral); background:rgba(244,170,155,.12); border-radius:0 .5rem .5rem 0; font-size:.9rem; }
+.confirm-row { display:flex; align-items:flex-start; gap:.6rem; font-size:.95rem; line-height:1.45; }
+.confirm-row input { width:1.15rem; height:1.15rem; min-height:0; margin-top:.2rem; flex:none; }
+.filter-field input[type="file"] { padding:.45rem; }
 .filter-toolbar > a { padding-block:.7rem; }
 .patient-timeline { list-style:none; margin:1.5rem 0 0; padding:0; }
 .patient-timeline > li { display:grid; grid-template-columns:11rem minmax(0,1fr); gap:1.5rem; padding-bottom:1.5rem; }

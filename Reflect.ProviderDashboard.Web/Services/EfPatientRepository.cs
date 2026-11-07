@@ -48,4 +48,49 @@ public class EfPatientRepository(ClinicalDbContext db, ICurrentUserService curre
         return await Accessible().FirstOrDefaultAsync(p => p.Id == id, ct)
             ?? throw new EntityNotFoundException("Patient not found.");
     }
+
+    public async Task<Patient> AddAsync(string displayName, string externalPatientId, DateOnly dateOfBirth, string notesSummary, CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
+        var providerId = ProviderScope.CurrentProviderId(currentUser);
+        if (string.IsNullOrWhiteSpace(providerId))
+            throw new InvalidOperationException("A signed-in provider is required to add a patient.");
+
+        var name = displayName.Trim();
+        var externalId = externalPatientId.Trim();
+        var duplicate = await db.Patients.IgnoreQueryFilters()
+            .AnyAsync(patient =>
+                patient.AssignedProviderId == providerId
+                && patient.ExternalPatientId.ToLower() == externalId.ToLower(), ct);
+        if (duplicate)
+            throw new DuplicateExternalPatientIdException();
+
+        var patient = new Patient
+        {
+            DisplayName = name,
+            ExternalPatientId = externalId,
+            DateOfBirth = dateOfBirth,
+            NotesSummary = notesSummary?.Trim() ?? string.Empty,
+            Trend = EngagementTrend.Stable,
+            AssignedProviderId = providerId
+        };
+        db.Patients.Add(patient);
+        await db.SaveChangesAsync(ct);
+        return patient;
+    }
+
+    public async Task RemoveAsync(Guid id, CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
+        var providerId = ProviderScope.CurrentProviderId(currentUser);
+        if (string.IsNullOrWhiteSpace(providerId))
+            throw new InvalidOperationException("A signed-in provider is required to remove a patient.");
+
+        var patient = await db.Patients.FirstOrDefaultAsync(
+                item => item.Id == id && item.AssignedProviderId == providerId, ct)
+            ?? throw new EntityNotFoundException("Patient not found.");
+        patient.IsDeleted = true;
+        patient.DateDeleted = DateTimeOffset.UtcNow;
+        await db.SaveChangesAsync(ct);
+    }
 }

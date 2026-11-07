@@ -71,8 +71,22 @@ public static class ClinicalStoreChecks
         try { await mine.SearchAsync(null, null, 1, 10, new CancellationToken(true)); throw new Exception("Cancellation was ignored"); }
         catch (OperationCanceledException) { Console.WriteLine("PASS: DB search honors cancellation"); }
 
-        var gone = await db.Patients.FirstAsync(p => p.Id == all[0].Id);
-        gone.IsDeleted = true; await db.SaveChangesAsync();
-        Check((await mine.GetAllAsync(ct)).Count == seededPatients - 1, "Soft-deleted patients are hidden");
+        var added = await mine.AddAsync("Riley Chen", "PT-10991", new DateOnly(1992, 4, 8), "Synthetic intake note.", ct);
+        Check(added.AssignedProviderId == owner.ToString() && (await mine.GetByIdAsync(added.Id, ct)).ExternalPatientId == "PT-10991",
+            "Database-backed add assigns the patient to the signed-in provider");
+        try { await mine.AddAsync("Riley Two", "pt-10991", new DateOnly(1992, 4, 8), "", ct); throw new Exception("Duplicate patient ID was stored"); }
+        catch (DuplicateExternalPatientIdException) { Console.WriteLine("PASS: Database rejects duplicate caseload patient IDs"); }
+        Check((await other.GetAllAsync(ct)).Count == 0, "Another provider cannot list a newly added patient");
+        try { await other.RemoveAsync(added.Id, ct); throw new Exception("Cross-provider remove succeeded"); }
+        catch (EntityNotFoundException) { Console.WriteLine("PASS: Another provider cannot remove a caseload member"); }
+        await mine.RemoveAsync(added.Id, ct);
+        try { await mine.GetByIdAsync(added.Id, ct); throw new Exception("Removed database patient remained visible"); }
+        catch (EntityNotFoundException) { Console.WriteLine("PASS: Database-backed remove hides the patient"); }
+        Check((await mine.GetAllAsync(ct)).Count == seededPatients, "Removing an added patient restores the seeded caseload size");
+
+        await mine.RemoveAsync(all[0].Id, ct);
+        var remaining = await mine.GetAllAsync(ct);
+        Check(remaining.Count == seededPatients - 1 && remaining.All(patient => patient.Id != all[0].Id),
+            "Soft-deleted patients are hidden");
     }
 }

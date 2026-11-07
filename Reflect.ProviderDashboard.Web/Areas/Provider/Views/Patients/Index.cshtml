@@ -2,10 +2,16 @@
 @{
     ViewData["Title"] = "Patients";
 }
-<div class="mb-4">
-    <p class="eyebrow">Caseload</p>
-    <h1 class="page-title mb-1">Patients</h1>
-    <p class="text-muted fs-13 mb-0">Engagement across Reflect XR and Reflect Mobile (synthetic records).</p>
+<div class="report-page-heading">
+    <div>
+        <p class="eyebrow">Caseload</p>
+        <h1 class="page-title mb-1">Patients</h1>
+        <p class="text-muted fs-13 mb-0">Engagement across Reflect XR and Reflect Mobile (synthetic records).</p>
+    </div>
+    <div class="report-actions">
+        <a class="btn btn-primary-light" asp-action="Create">Add patient</a>
+        <a class="btn btn-outline-secondary" asp-action="Remove">Remove patient</a>
+    </div>
 </div>
 
 <form method="get" class="filter-toolbar">

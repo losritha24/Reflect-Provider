@@ -18,6 +18,11 @@ public static class InMemoryDataStore
     public static readonly Guid MobileJordanId = Guid.Parse("dddddddd-dddd-dddd-dddd-ddddddddddd4");
     public static readonly Guid MobileCaseyId = Guid.Parse("dddddddd-dddd-dddd-dddd-ddddddddddd5");
     public static readonly Guid MobileAlexId = Guid.Parse("dddddddd-dddd-dddd-dddd-ddddddddddd6");
+    public static readonly Guid HeadsetPriyaId = Guid.Parse("dddddddd-dddd-dddd-dddd-ddddddddddd7");
+    public static readonly Guid MobileMarcusId = Guid.Parse("dddddddd-dddd-dddd-dddd-ddddddddddd8");
+    public static readonly Guid HeadsetElenaId = Guid.Parse("dddddddd-dddd-dddd-dddd-ddddddddddd9");
+    public static readonly Guid MobileDevonId = Guid.Parse("dddddddd-dddd-dddd-dddd-dddddddddda0");
+    public static readonly Guid MobileHarperId = Guid.Parse("dddddddd-dddd-dddd-dddd-dddddddddda1");
 
     public static void AssignPatientsToProvider(string providerId)
     {
@@ -26,6 +31,15 @@ public static class InMemoryDataStore
 
         foreach (var patient in Patients)
             patient.AssignedProviderId = providerId;
+    }
+
+    public static void AddPatient(Patient patient)
+    {
+        ArgumentNullException.ThrowIfNull(patient);
+        if (Patients is List<Patient> list)
+            list.Add(patient);
+        else
+            Patients = Patients.Append(patient).ToList();
     }
 
     public static void Seed()
@@ -76,6 +90,51 @@ public static class InMemoryDataStore
                 DateOfBirth = new DateOnly(1996, 9, 18),
                 Trend = EngagementTrend.Stable,
                 NotesSummary = "Balanced XR and mobile use; working through Journey and Catharsis."
+            },
+            new()
+            {
+                Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa6"),
+                DisplayName = "Priya Shah",
+                ExternalPatientId = "PT-10096",
+                DateOfBirth = new DateOnly(1985, 4, 21),
+                Trend = EngagementTrend.Improving,
+                NotesSummary = "Using Hope Tree and Future Self in XR to name supports for the next month."
+            },
+            new()
+            {
+                Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa7"),
+                DisplayName = "Marcus Webb",
+                ExternalPatientId = "PT-10107",
+                DateOfBirth = new DateOnly(1990, 8, 3),
+                Trend = EngagementTrend.Stable,
+                NotesSummary = "Prefers short mobile art sessions: Photo Coloring, Creativity, and Floating Bubbles."
+            },
+            new()
+            {
+                Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa8"),
+                DisplayName = "Elena Rossi",
+                ExternalPatientId = "PT-10118",
+                DateOfBirth = new DateOnly(1972, 12, 14),
+                Trend = EngagementTrend.Stable,
+                NotesSummary = "Regular XR practice with Self Compassion and Finding Balance after morning walks."
+            },
+            new()
+            {
+                Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa9"),
+                DisplayName = "Devon Okonkwo",
+                ExternalPatientId = "PT-10129",
+                DateOfBirth = new DateOnly(1998, 2, 9),
+                Trend = EngagementTrend.Improving,
+                NotesSummary = "Mixing Pour Paint on mobile with New Pathways in XR; engagement is picking up."
+            },
+            new()
+            {
+                Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa10"),
+                DisplayName = "Harper Lin",
+                ExternalPatientId = "PT-10140",
+                DateOfBirth = new DateOnly(2003, 6, 27),
+                Trend = EngagementTrend.Stable,
+                NotesSummary = "Consistent evening mobile use of Self and the prompt pathways."
             }
         };
 
@@ -86,6 +145,11 @@ public static class InMemoryDataStore
         var sam = patients[2].Id;
         var taylor = patients[3].Id;
         var casey = patients[4].Id;
+        var priya = patients[5].Id;
+        var marcus = patients[6].Id;
+        var elena = patients[7].Id;
+        var devon = patients[8].Id;
+        var harper = patients[9].Id;
 
         var sessions = new List<TherapySession>
         {
@@ -117,7 +181,31 @@ public static class InMemoryDataStore
             Session(casey, now.AddDays(-12), 18, TherapyPlatform.Mobile, ReflectModules.Mobile.BreathingMandala, "Completed Breathing Mandala; rated the week near usual.", 6, MobileCaseyId),
             Session(casey, now.AddDays(-9), 19, TherapyPlatform.Mobile, ReflectModules.Mobile.AiCreatedMandala, "Generated a mandala of five supports in AI Created Mandala.", 6, MobileCaseyId),
             Session(casey, now.AddDays(-5), 32, TherapyPlatform.Vr, ReflectModules.Xr.Catharsis, "Tracked anger→sadness shift during Catharsis.", 4, null),
-            Session(casey, now.AddDays(-2).AddHours(-1), 24, TherapyPlatform.Mobile, ReflectModules.Mobile.Journey, "Wrote a letter to a lost family member in Journey.", 3, MobileCaseyId)
+            Session(casey, now.AddDays(-2).AddHours(-1), 24, TherapyPlatform.Mobile, ReflectModules.Mobile.Journey, "Wrote a letter to a lost family member in Journey.", 3, MobileCaseyId),
+
+            Session(priya, now.AddDays(-11), 30, TherapyPlatform.Vr, ReflectModules.Xr.HopeTree, "Named three supports on the Hope Tree.", 6, HeadsetPriyaId),
+            Session(priya, now.AddDays(-6), 28, TherapyPlatform.Vr, ReflectModules.Xr.FutureSelf, "Spoke with a calmer future self about work strain.", 7, HeadsetPriyaId),
+            Session(priya, now.AddDays(-2), 32, TherapyPlatform.Vr, ReflectModules.Xr.AppreciationOfLife, "Listed small daily goods in Appreciation of Life.", 7, HeadsetPriyaId),
+
+            Session(marcus, now.AddDays(-13), 16, TherapyPlatform.Mobile, ReflectModules.Mobile.PhotoColoring, "Colored a kitchen photo after dinner.", 5, MobileMarcusId),
+            Session(marcus, now.AddDays(-8), 18, TherapyPlatform.Mobile, ReflectModules.Mobile.Creativity, "Tried a short Creativity prompt on the commute.", 6, MobileMarcusId),
+            Session(marcus, now.AddDays(-3), 14, TherapyPlatform.Mobile, ReflectModules.Mobile.FloatingBubbles, "Used Floating Bubbles to settle before sleep.", 6, MobileMarcusId),
+            Session(marcus, now.AddDays(-1), 17, TherapyPlatform.Mobile, ReflectModules.Mobile.PhotoColoring, "Returned to Photo Coloring; mood near usual.", 6, MobileMarcusId),
+
+            Session(elena, now.AddDays(-15), 26, TherapyPlatform.Vr, ReflectModules.Xr.SelfCompassion, "Completed Self Compassion without rushing.", 6, HeadsetElenaId),
+            Session(elena, now.AddDays(-9), 24, TherapyPlatform.Vr, ReflectModules.Xr.FindingBalance, "Practiced Finding Balance after a morning walk.", 6, HeadsetElenaId),
+            Session(elena, now.AddDays(-4), 22, TherapyPlatform.Vr, ReflectModules.Xr.PresentSelfInside, "Checked in with Present Self Inside.", 6, HeadsetElenaId),
+            Session(elena, now.AddDays(-1), 25, TherapyPlatform.Vr, ReflectModules.Xr.SelfCompassion, "Repeated Self Compassion; affect stayed even.", 6, HeadsetElenaId),
+
+            Session(devon, now.AddDays(-10), 20, TherapyPlatform.Mobile, ReflectModules.Mobile.PourPaint, "Poured cool colors after a long shift.", 5, MobileDevonId),
+            Session(devon, now.AddDays(-7), 34, TherapyPlatform.Vr, ReflectModules.Xr.NewPathways, "Tried New Pathways for the first time this month.", 6, null),
+            Session(devon, now.AddDays(-3), 16, TherapyPlatform.Mobile, ReflectModules.Mobile.Emotions, "Labeled the week in Emotions.", 6, MobileDevonId),
+            Session(devon, now.AddDays(-1), 19, TherapyPlatform.Mobile, ReflectModules.Mobile.PourPaint, "Longer Pour Paint session; reported more ease.", 7, MobileDevonId),
+
+            Session(harper, now.AddDays(-14), 15, TherapyPlatform.Mobile, ReflectModules.Mobile.Self, "Evening Self check-in after class.", 5, MobileHarperId),
+            Session(harper, now.AddDays(-8), 18, TherapyPlatform.Mobile, ReflectModules.Mobile.OptionsPromptPathway, "Chose a prompt in Options Prompt Pathway.", 6, MobileHarperId),
+            Session(harper, now.AddDays(-4), 16, TherapyPlatform.Mobile, ReflectModules.Mobile.SelectFromImagesPathway, "Picked images for the week in Select from Images Pathway.", 6, MobileHarperId),
+            Session(harper, now.AddDays(-1), 14, TherapyPlatform.Mobile, ReflectModules.Mobile.Self, "Short Self session before bed.", 6, MobileHarperId)
         };
 
         var devices = new List<CareDevice>
@@ -127,7 +215,12 @@ public static class InMemoryDataStore
             new() { Id = HeadsetUnassignedId, DisplayName = "Reflect XR headset XR-090", Kind = DeviceKind.XrHeadset, HardwareId = "XR-090", CurrentPatientId = null },
             new() { Id = MobileJordanId, DisplayName = "Reflect Mobile · Jordan", Kind = DeviceKind.MobileApp, HardwareId = "MOB-5521", CurrentPatientId = jordan },
             new() { Id = MobileCaseyId, DisplayName = "Reflect Mobile · Casey", Kind = DeviceKind.MobileApp, HardwareId = "MOB-7740", CurrentPatientId = casey },
-            new() { Id = MobileAlexId, DisplayName = "Reflect Mobile · Alex", Kind = DeviceKind.MobileApp, HardwareId = "MOB-3318", CurrentPatientId = alex }
+            new() { Id = MobileAlexId, DisplayName = "Reflect Mobile · Alex", Kind = DeviceKind.MobileApp, HardwareId = "MOB-3318", CurrentPatientId = alex },
+            new() { Id = HeadsetPriyaId, DisplayName = "Reflect XR headset XR-221", Kind = DeviceKind.XrHeadset, HardwareId = "XR-221", CurrentPatientId = priya },
+            new() { Id = MobileMarcusId, DisplayName = "Reflect Mobile · Marcus", Kind = DeviceKind.MobileApp, HardwareId = "MOB-4401", CurrentPatientId = marcus },
+            new() { Id = HeadsetElenaId, DisplayName = "Reflect XR headset XR-307", Kind = DeviceKind.XrHeadset, HardwareId = "XR-307", CurrentPatientId = elena },
+            new() { Id = MobileDevonId, DisplayName = "Reflect Mobile · Devon", Kind = DeviceKind.MobileApp, HardwareId = "MOB-6620", CurrentPatientId = devon },
+            new() { Id = MobileHarperId, DisplayName = "Reflect Mobile · Harper", Kind = DeviceKind.MobileApp, HardwareId = "MOB-8814", CurrentPatientId = harper }
         };
 
         var assignments = new List<DeviceAssignment>
@@ -137,7 +230,12 @@ public static class InMemoryDataStore
             Assignment(HeadsetUnassignedId, alex, now.AddDays(-40), now.AddDays(-3)),
             Assignment(MobileJordanId, jordan, now.AddDays(-40), null),
             Assignment(MobileCaseyId, casey, now.AddDays(-40), null),
-            Assignment(MobileAlexId, alex, now.AddDays(-40), null)
+            Assignment(MobileAlexId, alex, now.AddDays(-40), null),
+            Assignment(HeadsetPriyaId, priya, now.AddDays(-40), null),
+            Assignment(MobileMarcusId, marcus, now.AddDays(-40), null),
+            Assignment(HeadsetElenaId, elena, now.AddDays(-40), null),
+            Assignment(MobileDevonId, devon, now.AddDays(-40), null),
+            Assignment(MobileHarperId, harper, now.AddDays(-40), null)
         };
 
         Patients = patients;

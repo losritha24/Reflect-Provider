@@ -1,4 +1,5 @@
 using Reflect.ProviderDashboard.Domain.Entities;
+using Reflect.ProviderDashboard.Domain.Enums;
 using Reflect.ProviderDashboard.Domain.Exceptions;
 using Reflect.ProviderDashboard.Domain.Interfaces;
 using Reflect.ProviderDashboard.Web.Infrastructure;
@@ -50,6 +51,43 @@ public class InMemoryPatientRepository : IPatientRepository
         }
 
         return Task.FromResult(patient);
+    }
+
+    public Task<Patient> AddAsync(string displayName, string externalPatientId, DateOnly dateOfBirth, string notesSummary, CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
+        var providerId = _currentUser.IsAuthenticated && _currentUser.IsInRole(ProviderAuthorization.ProviderRole)
+            ? _currentUser.UserId?.ToString() : null;
+        if (string.IsNullOrWhiteSpace(providerId))
+            throw new InvalidOperationException("A signed-in provider is required to add a patient.");
+
+        var name = displayName.Trim();
+        var externalId = externalPatientId.Trim();
+        if (AccessiblePatients().Any(patient =>
+                string.Equals(patient.ExternalPatientId, externalId, StringComparison.OrdinalIgnoreCase)))
+            throw new DuplicateExternalPatientIdException();
+
+        var patient = new Patient
+        {
+            DisplayName = name,
+            ExternalPatientId = externalId,
+            DateOfBirth = dateOfBirth,
+            NotesSummary = notesSummary?.Trim() ?? string.Empty,
+            Trend = EngagementTrend.Stable,
+            AssignedProviderId = providerId
+        };
+        InMemoryDataStore.AddPatient(patient);
+        return Task.FromResult(patient);
+    }
+
+    public Task RemoveAsync(Guid id, CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
+        var patient = AccessiblePatients().FirstOrDefault(item => item.Id == id && !item.IsDeleted)
+            ?? throw new EntityNotFoundException("Patient not found.");
+        patient.IsDeleted = true;
+        patient.DateDeleted = DateTimeOffset.UtcNow;
+        return Task.CompletedTask;
     }
 
     private IEnumerable<Patient> AccessiblePatients()

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Reflect.ProviderDashboard.Domain.Enums;
 using Reflect.ProviderDashboard.Domain.Exceptions;
@@ -73,12 +74,94 @@ catch (EntityNotFoundException)
 
 var graph = new Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Graph.KnowledgeGraphViewModel();
 await graph.PrepareData(patients, sessions, devices, ct);
-Check(graph.PatientCount == 5 && graph.Nodes.Count(node => node.Kind == "patient") == 5,
+Check(graph.PatientCount == InMemoryDataStore.Patients.Count
+    && graph.Nodes.Count(node => node.Kind == "patient") == InMemoryDataStore.Patients.Count,
     "Knowledge graph includes every assigned patient");
 Check(graph.Edges.Any(edge => edge.To == "attention" || edge.Label.Contains("quieter", StringComparison.OrdinalIgnoreCase)),
     "Knowledge graph links quieter patients to the attention signal");
 Check(graph.Svg.Contains("Caseload activity knowledge graph", StringComparison.Ordinal),
     "Knowledge graph renders an accessible SVG");
+
+Check(controller.Create() is ViewResult, "Add-patient form renders");
+controller.ModelState.AddModelError("DisplayName", "Required");
+Check(await controller.Create(new CreatePatientViewModel
+{
+    DisplayName = "A",
+    ExternalPatientId = "PT-19999",
+    DateOfBirth = new DateOnly(1990, 1, 1)
+}, ct) is ViewResult, "Invalid add-patient posts redisplay the form");
+controller.ModelState.Clear();
+var created = await patients.AddAsync("Riley Chen", "PT-10991", new DateOnly(1992, 4, 8), "Synthetic intake note.", ct);
+Check(created.AssignedProviderId == currentUser.UserId!.Value.ToString()
+    && created.Trend == EngagementTrend.Stable
+    && (await patients.GetByIdAsync(created.Id, ct)).DisplayName == "Riley Chen",
+    "Added patients belong to the signed-in provider");
+Check(await controller.Create(new CreatePatientViewModel
+{
+    DisplayName = "Riley Duplicate",
+    ExternalPatientId = "PT-10991",
+    DateOfBirth = new DateOnly(1992, 4, 8)
+}, ct) is ViewResult, "Duplicate patient IDs stay on the form");
+try
+{
+    await patients.AddAsync("Riley Chen", "PT-10991", new DateOnly(1992, 4, 8), "", ct);
+    throw new Exception("Duplicate patient ID was allowed");
+}
+catch (DuplicateExternalPatientIdException) { Console.WriteLine("PASS: Duplicate caseload patient IDs are rejected"); }
+Check((await otherProvider.GetAllAsync(ct)).Count == 0, "Another provider cannot see a newly added patient");
+try
+{
+    await new InMemoryPatientRepository(new TestCurrentUserService(currentUser.UserId, true, false))
+        .AddAsync("No Role", "PT-00000", new DateOnly(1990, 1, 1), "", ct);
+    throw new Exception("A non-provider was allowed to add a patient");
+}
+catch (InvalidOperationException) { Console.WriteLine("PASS: Non-providers cannot add patients"); }
+
+Check(await controller.Remove(ct) is ViewResult, "Remove-patient form renders");
+Check(await controller.Remove(new RemovePatientViewModel { PatientId = created.Id, Confirm = false }, ct) is ViewResult,
+    "Removal without confirmation redisplays the form");
+try
+{
+    await otherProvider.RemoveAsync(created.Id, ct);
+    throw new Exception("Another provider was allowed to remove a caseload member");
+}
+catch (EntityNotFoundException) { Console.WriteLine("PASS: Providers cannot remove another provider's patient"); }
+await patients.RemoveAsync(created.Id, ct);
+try
+{
+    await patients.GetByIdAsync(created.Id, ct);
+    throw new Exception("Removed patient remained visible");
+}
+catch (EntityNotFoundException) { Console.WriteLine("PASS: Removed patients leave the caseload"); }
+Check((await patients.SearchAsync("Riley Chen", null, 1, 10, ct)).TotalCount == 0,
+    "Removed patients are excluded from search");
+
+var labeledPdf = IntakeLabeledPdf.Create("Morgan Lee", "PT-11002", "1987-06-15", "Prefers evening mobile sessions.");
+var draft = IntakePdfReader.Read(new MemoryStream(labeledPdf));
+Check(draft.DisplayName == "Morgan Lee" && draft.ExternalPatientId == "PT-11002"
+    && draft.DateOfBirth == new DateOnly(1987, 6, 15)
+    && draft.NotesSummary.Contains("evening mobile", StringComparison.Ordinal),
+    "A labeled intake PDF fills name, ID, date of birth, and notes");
+var pdfFile = new FormFile(new MemoryStream(labeledPdf), 0, labeledPdf.Length, "document", "intake.pdf")
+{
+    Headers = new HeaderDictionary(),
+    ContentType = "application/pdf"
+};
+var imported = await Task.FromResult(controller.FromDocument(pdfFile)) as ViewResult;
+Check(imported?.Model is CreatePatientViewModel filled
+    && filled.DisplayName == "Morgan Lee"
+    && filled.ExternalPatientId == "PT-11002"
+    && filled.DateOfBirth == new DateOnly(1987, 6, 15),
+    "Read PDF prefills the add-patient form");
+var notPdf = new FormFile(new MemoryStream("not a pdf"u8.ToArray()), 0, 9, "document", "notes.txt")
+{
+    Headers = new HeaderDictionary(),
+    ContentType = "text/plain"
+};
+Check(controller.FromDocument(notPdf) is ViewResult rejected
+    && rejected.Model is CreatePatientViewModel notice
+    && notice.ImportNotice.Contains("not a PDF", StringComparison.OrdinalIgnoreCase),
+    "Non-PDF uploads do not prefill the form");
 
 var dashboard = new Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Dashboard.ProviderDashboardViewModel();
 await dashboard.PrepareData(patients, sessions, ct);
@@ -112,6 +195,20 @@ Check((await sessions.GetByPatientIdAsync(alex.Id, ct)).Any(session => session.D
     "Past sessions keep the original device reference after reassignment");
 Check((await devices.GetHistoryAsync(unassignedHeadset.Id, ct)).Count >= 2,
     "Reassignment appends history instead of binding the device to one patient lifecycle");
+await devices.ReassignAsync(unassignedHeadset.Id, casey.Id, ct);
+var leaving = await patients.AddAsync("Lea Offboard", "PT-18888", new DateOnly(1991, 2, 2), "", ct);
+await devices.ReassignAsync(unassignedHeadset.Id, leaving.Id, ct);
+Check(unassignedHeadset.CurrentPatientId == leaving.Id, "A leaving patient can hold a device before removal");
+controller.ModelState.Clear();
+Check(await controller.Remove(new RemovePatientViewModel { PatientId = leaving.Id, Confirm = true }, ct) is RedirectToActionResult,
+    "Confirmed removal redirects to the caseload");
+Check(unassignedHeadset.CurrentPatientId is null, "Removing a patient returns assigned devices to storage");
+try
+{
+    await patients.GetByIdAsync(leaving.Id, ct);
+    throw new Exception("Removed patient remained on the caseload");
+}
+catch (EntityNotFoundException) { Console.WriteLine("PASS: Confirmed removal hides the patient"); }
 await devices.ReassignAsync(unassignedHeadset.Id, null, ct);
 
 var otherSessions = new InMemoryTherapySessionRepository(otherProvider);

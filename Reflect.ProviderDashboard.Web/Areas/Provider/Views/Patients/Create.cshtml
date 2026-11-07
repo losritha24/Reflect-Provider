@@ -1,0 +1,55 @@
+@model CreatePatientViewModel
+@{
+    ViewData["Title"] = "Add patient";
+}
+<div class="mb-4">
+    <p class="eyebrow">Caseload</p>
+    <h1 class="page-title mb-1">Add a patient</h1>
+    <p class="text-muted fs-13 mb-0">Adds someone to your assigned caseload only. Use a fictional record in this prototype.</p>
+</div>
+
+<form asp-action="FromDocument" method="post" enctype="multipart/form-data" class="work-panel patient-create" aria-labelledby="import-pdf-heading">
+    <h2 id="import-pdf-heading">Prefill from a PDF</h2>
+    <p class="text-muted">Reads labeled fields from a text-based PDF (Name, Patient ID, Date of birth, Notes). Scanned photos are not OCR’d. Nothing from the file is stored.</p>
+    <div class="filter-field">
+        <label for="document">Intake PDF</label>
+        <input id="document" name="document" type="file" accept="application/pdf,.pdf" />
+    </div>
+    <button type="submit" class="btn btn-outline-secondary">Read PDF</button>
+</form>
+
+<form asp-action="Create" method="post" class="work-panel patient-create" aria-labelledby="create-patient-heading">
+    <h2 id="create-patient-heading">Who to add</h2>
+    <p class="text-muted">Name and patient ID are required so ingest and reports can match this person later.</p>
+    @if (!string.IsNullOrWhiteSpace(Model.ImportNotice))
+    {
+        <p class="import-notice" role="status">@Model.ImportNotice</p>
+    }
+    <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
+    <div class="filter-field">
+        <label asp-for="DisplayName"></label>
+        <input asp-for="DisplayName" autocomplete="name" maxlength="200" autofocus />
+        <span asp-validation-for="DisplayName" class="field-error"></span>
+    </div>
+    <div class="filter-field">
+        <label asp-for="ExternalPatientId"></label>
+        <input asp-for="ExternalPatientId" maxlength="64" aria-describedby="external-id-help" />
+        <span id="external-id-help" class="text-muted fs-13">Facility-style ID, for example PT-10100. Must be unique on this caseload.</span>
+        <span asp-validation-for="ExternalPatientId" class="field-error"></span>
+    </div>
+    <div class="filter-field">
+        <label asp-for="DateOfBirth"></label>
+        <input asp-for="DateOfBirth" type="date" />
+        <span asp-validation-for="DateOfBirth" class="field-error"></span>
+    </div>
+    <div class="filter-field">
+        <label asp-for="NotesSummary"></label>
+        <textarea asp-for="NotesSummary" rows="4" maxlength="2000" aria-describedby="notes-help"></textarea>
+        <span id="notes-help" class="text-muted fs-13">Optional. Synthetic context only — not a diagnosis.</span>
+        <span asp-validation-for="NotesSummary" class="field-error"></span>
+    </div>
+    <div class="patient-create-actions">
+        <button type="submit" class="btn btn-primary">Add to caseload</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+    </div>
+</form>

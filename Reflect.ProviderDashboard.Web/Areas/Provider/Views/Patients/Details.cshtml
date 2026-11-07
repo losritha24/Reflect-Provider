@@ -9,6 +9,7 @@
     <div class="mt-2">
         <a class="btn btn-outline-secondary" asp-action="Index" asp-route-search="@Model.Search" asp-route-trend="@Model.Trend" asp-route-page="@Model.Page">Back to patients</a>
         <a class="btn btn-primary-light" asp-controller="Reports" asp-action="Index" asp-route-patientId="@Model.PatientId">Open report</a>
+        <a class="btn btn-outline-secondary" asp-action="Remove" asp-route-patientId="@Model.PatientId">Remove patient</a>
     </div>
 </div>
 
