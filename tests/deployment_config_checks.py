@@ -22,7 +22,8 @@ cases += [
 for settings, expected in cases:
     with tempfile.TemporaryDirectory(prefix='reflect-config-') as directory:
         env = dict(os.environ, ASPNETCORE_ENVIRONMENT='Production', Demo__Enabled='false', AllowedHosts='127.0.0.1', Hosting__HttpsAtEdge='false',
-                   AccountStore__Path=str(Path(directory) / 'accounts/db.sqlite'))
+                   AccountStore__Path=str(Path(directory) / 'accounts/db.sqlite'),
+                   Clinical__Path=str(Path(directory) / 'clinical/db.sqlite'))
         env.update(settings)
         with open(Path(directory) / 'log', 'w+') as log:
             process = subprocess.Popen([dotnet, str(root / 'Reflect.ProviderDashboard.Web/bin/Debug/net10.0/Reflect.ProviderDashboard.Web.dll'), '--urls', 'http://127.0.0.1:0'],

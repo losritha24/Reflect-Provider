@@ -44,7 +44,6 @@
   --primary-rgb: 255, 130, 130;
   --danger-rgb: 255, 130, 130;
   --success-rgb: 31, 48, 94;
-  --warning-rgb: 232, 163, 61;
   --info-rgb: 88, 111, 138;
   --default-text-color: #1F305E;
   --text-muted: #4B6079; /* Slate-derived text meets contrast on cool-gray surfaces. */
@@ -59,11 +58,12 @@
   --link-color: var(--twilight-indigo);
   --action-text: var(--twilight-indigo);
   --focus-ring: var(--slate-blue);
+  --radius-control: 0.375rem;
+  --radius-panel: 0.625rem;
 }
 
 [data-theme-mode="dark"] {
   --success-rgb: 154, 168, 218;
-  --warning-rgb: 240, 185, 104;
   --info-rgb: 141, 163, 194;
   --default-text-color: rgba(255, 255, 255, 0.85);
   --text-muted: rgba(255, 255, 255, 0.75);
@@ -100,10 +100,15 @@ body {
   line-height: 1.5;
 }
 
-h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-link, .eyebrow {
+h1, h2, .page-title, .card-title, .eyebrow {
   font-family: var(--heading-font-family);
   font-weight: 700;
   letter-spacing: 0.04em;
+}
+h3, h4, h5, h6 {
+  font-family: var(--default-font-family);
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 .page-title {
@@ -181,9 +186,8 @@ h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-li
   color: var(--sidebar-brand-color);
 }
 .sidebar-brand-sub {
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0;
   color: var(--light-coral);
   margin-top: 0.2rem;
 }
@@ -194,35 +198,36 @@ h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-li
   color: rgba(250, 250, 251, 0.82);
   text-decoration: none;
   padding: 0.6rem 0.75rem;
-  border-radius: 999px;
+  min-height: 2.75rem;
+  border-radius: var(--radius-control);
   margin-bottom: 0.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.8125rem;
+  font-family: var(--default-font-family);
+  font-weight: 400;
+  font-size: 0.875rem;
+  letter-spacing: 0;
 }
 .sidebar .nav-link::before { content: none; }
-.sidebar .nav-link.active,
 .sidebar .nav-link:hover {
-  background: rgba(255, 130, 130, 0.16);
+  background: rgba(250, 250, 251, 0.08);
   color: #fff;
 }
+/* Pale coral tint plus a thin coral bar; text stays light because the rail is indigo. */
 .sidebar .nav-link.active {
-  background: var(--soft-coral);
-  color: var(--action-text);
+  background: rgba(255, 130, 130, 0.14);
+  box-shadow: inset 0.125rem 0 0 var(--soft-coral);
+  color: #fff;
 }
 .sidebar .category {
-  font-size: 0.6875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  letter-spacing: 0;
   color: rgba(250, 250, 251, 0.75);
   padding: 0.85rem 0.75rem 0.3rem;
 }
 .sidebar-footer {
   margin-top: auto;
   padding: 1rem 0.5rem 0.25rem;
-  font-size: 0.6875rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0;
   color: rgba(250, 250, 251, 0.75);
 }
 .sidebar #tourOpen {
@@ -271,23 +276,24 @@ h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-li
 
 .breadcrumb-bar {
   padding: 0.5rem 1.5rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.8125rem;
+  letter-spacing: 0;
   color: var(--text-muted);
   border-bottom: 1px solid var(--default-border);
   background: var(--custom-white);
 }
-.page-content { padding: 1.5rem; flex: 1; }
+/* Bottom room so the floating assistant button never sits on the last row or pagination. */
+.page-content { padding: 1.5rem 1.5rem 5.5rem; flex: 1; }
 
 .btn {
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   padding: 0.5rem 1rem;
   cursor: pointer;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-family: var(--default-font-family);
+  font-weight: 400;
+  font-size: 0.875rem;
+  letter-spacing: 0;
   background: transparent;
   color: var(--default-text-color);
   text-decoration: none;
@@ -295,11 +301,17 @@ h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-li
   align-items: center;
   justify-content: center;
 }
+/* The primary call to action keeps the brand's condensed bold uppercase; other buttons are sentence case. */
 .btn-primary,
 .btn-primary-light {
   background: var(--soft-coral);
   color: var(--action-text);
   border-color: var(--soft-coral);
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 .btn-primary:hover,
 .btn-primary-light:hover {
@@ -317,21 +329,16 @@ h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-li
 .card.custom-card {
   background: var(--custom-white);
   border: 1px solid var(--default-border);
-  border-radius: 1rem;
+  border-radius: var(--radius-panel);
   margin-bottom: 1rem;
-  box-shadow: 0 8px 24px rgba(31, 48, 94, 0.04);
 }
 .card.custom-card .card-header {
   padding: 0.95rem 1.15rem;
   border-bottom: 1px solid var(--default-border);
 }
 .card.custom-card .card-body { padding: 1.15rem; }
-.card.card-clickable { cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; }
-.card.card-clickable:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(31, 48, 94, 0.08);
-  border-color: var(--light-coral);
-}
+.card.card-clickable { cursor: pointer; transition: border-color 0.14s ease; }
+.card.card-clickable:hover { border-color: var(--slate-blue); }
 
 .stat-grid {
   display: grid;
@@ -347,11 +354,10 @@ h1, h2, h3, h4, h5, h6, .page-title, .card-title, .btn, .badge, .sidebar .nav-li
 }
 .stat-label {
   font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   color: var(--text-muted);
-  font-family: var(--heading-font-family);
-  font-weight: 600;
+  font-family: var(--default-font-family);
+  font-weight: 400;
 }
 
 .table-responsive { overflow-x: auto; }
@@ -369,10 +375,10 @@ table.table td {
 }
 table.table th {
   background: transparent;
-  font-family: var(--heading-font-family);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.8125rem;
+  font-family: var(--default-font-family);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
 table.table tbody tr:last-child td { border-bottom: none; }
@@ -382,9 +388,10 @@ table.table tbody tr:last-child td { border-bottom: none; }
   align-items: center;
   padding: 0.25rem 0.6rem;
   border-radius: 999px;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-family: var(--default-font-family);
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0;
 }
 .bg-success-transparent { background: rgba(31, 48, 94, 0.1); color: var(--twilight-indigo); }
 .bg-warning-transparent { background: var(--pale-coral); color: #9a4d3d; }
@@ -422,9 +429,9 @@ table.table tbody tr:last-child td { border-bottom: none; }
 }
 .nav-tabs .nav-link.active {
   color: var(--twilight-indigo);
-  border-bottom-color: var(--soft-coral);
+  border-bottom-color: var(--twilight-indigo);
 }
-[data-theme-mode="dark"] .nav-tabs .nav-link.active { color: var(--off-white); }
+[data-theme-mode="dark"] .nav-tabs .nav-link.active { color: var(--off-white); border-bottom-color: var(--soft-coral); }
 
 .row-link { cursor: pointer; }
 .row-link:hover { background: rgba(253, 230, 217, 0.55); }
@@ -522,18 +529,18 @@ table.table tbody tr:last-child td { border-bottom: none; }
   letter-spacing: 0.01em;
 }
 .login-story-copy > p:last-child { max-width: 28rem; color: rgba(250, 250, 251, 0.76); font-size: 1.05rem; }
-.login-story-footnote { position: relative; z-index: 1; margin: 0; color: rgba(250, 250, 251, 0.56); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.login-story-footnote { position: relative; z-index: 1; margin: 0; color: rgba(250, 250, 251, 0.56); font-size: 0.75rem; letter-spacing: 0; }
 .login-panel { display: grid; place-items: center; padding: clamp(1.5rem, 5vw, 5rem); }
 .login-form-wrap { width: min(100%, 27rem); }
 .login-intro { margin: 0.65rem 0 1.75rem; }
 .login-demo-note { display: grid; gap: 0.2rem; margin-bottom: 1.5rem; padding: 0.85rem 1rem; border-left: 3px solid var(--soft-coral); border-radius: 0.25rem 0.75rem 0.75rem 0.25rem; background: var(--off-white); font-size: 0.8125rem; }
-.login-demo-note strong { color: var(--twilight-indigo); font-family: var(--heading-font-family); letter-spacing: 0.06em; text-transform: uppercase; }
+.login-demo-note strong { color: var(--twilight-indigo); font-family: var(--heading-font-family); letter-spacing: 0; }
 .login-demo-note span { color: var(--text-muted); }
 .login-form { display: grid; gap: 1.15rem; }
 .login-field { display: grid; gap: 0.4rem; }
-.login-field label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.login-field label { font-size: 0.8125rem; font-weight: 400; letter-spacing: 0; }
 .login-field input { width: 100%; min-height: 3rem; padding: 0.7rem 0.85rem; border: 1px solid var(--default-border); border-radius: 0.6rem; background: var(--custom-white); color: var(--default-text-color); font: inherit; }
-.login-field input:focus { outline: 3px solid rgba(255, 130, 130, 0.24); border-color: var(--soft-coral); }
+.login-field input:focus { outline: 3px solid var(--focus-ring); outline-offset: 2px; border-color: var(--focus-ring); }
 .login-remember { display: inline-flex; align-items: center; gap: 0.55rem; color: var(--text-muted); font-size: 0.8125rem; cursor: pointer; }
 .login-remember input { width: 1rem; height: 1rem; accent-color: var(--twilight-indigo); }
 .login-submit { width: 100%; min-height: 3rem; margin-top: 0.2rem; }
@@ -541,7 +548,7 @@ table.table tbody tr:last-child td { border-bottom: none; }
 .login-validation:empty, .login-field-error:empty { display: none; }
 .login-security-note { margin: 1.5rem 0 0; color: var(--text-muted); font-size: 0.75rem; line-height: 1.6; }
 .login-account-link { margin: 1.25rem 0 0; text-align: center; color: var(--text-muted); font-size: 0.8125rem; }
-.login-account-link a { color: #b94f4f; font-weight: 600; text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+.login-account-link a { color: var(--link-color); font-weight: 400; text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
 .login-account-link a:hover { color: var(--twilight-indigo); }
 .logout-form { margin: 0; }
 

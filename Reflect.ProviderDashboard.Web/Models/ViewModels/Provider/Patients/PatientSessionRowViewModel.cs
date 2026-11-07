@@ -1,3 +1,4 @@
+using Reflect.ProviderDashboard.Domain.Catalog;
 using Reflect.ProviderDashboard.Domain.Entities;
 using Reflect.ProviderDashboard.Domain.Enums;
 using Reflect.ProviderDashboard.Web.Extensions;
@@ -11,6 +12,7 @@ public class PatientSessionRowViewModel
     public int DurationMinutes { get; set; }
     public string PlatformLabel { get; set; } = string.Empty;
     public string ModuleName { get; set; } = string.Empty;
+    public string ModuleGroup { get; set; } = string.Empty;
     public string ReflectionSummary { get; set; } = string.Empty;
     public int? AffectScore { get; set; }
 
@@ -23,6 +25,7 @@ public class PatientSessionRowViewModel
             DurationMinutes = session.DurationMinutes,
             PlatformLabel = session.Platform == TherapyPlatform.Vr ? "Reflect XR (VR)" : "Reflect Mobile",
             ModuleName = session.ModuleName,
+            ModuleGroup = ReflectModuleCatalog.Find(session.Platform, session.ModuleName)?.Group ?? string.Empty,
             ReflectionSummary = session.ReflectionSummary,
             AffectScore = session.AffectScore
         };

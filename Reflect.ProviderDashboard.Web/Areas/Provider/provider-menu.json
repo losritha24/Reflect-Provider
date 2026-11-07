@@ -1,10 +1,11 @@
 [
   { "isCategory": true, "label": "Overview" },
-  { "label": "Graph", "url": "/Provider/Home/Graph", "icon": "ri-share-line" },
   { "label": "Dashboard", "url": "/Provider/Home/Dashboard", "icon": "ri-dashboard-line" },
-  { "label": "Trust", "url": "/Provider/Home/Trust", "icon": "ri-shield-check-line" },
+  { "label": "Privacy & trust", "url": "/Provider/Home/Trust", "icon": "ri-shield-check-line" },
   { "isCategory": true, "label": "Caseload" },
   { "label": "Patients", "url": "/Provider/Patients/Index", "icon": "ri-team-line" },
   { "label": "Reports", "url": "/Provider/Reports/Index", "icon": "ri-file-text-line" },
-  { "label": "Devices", "url": "/Provider/Devices/Index", "icon": "ri-tablet-line" }
+  { "label": "Devices", "url": "/Provider/Devices/Index", "icon": "ri-tablet-line" },
+  { "label": "Caseload map", "url": "/Provider/Home/Graph", "icon": "ri-share-line" },
+  { "label": "Module reference", "url": "/Provider/Modules", "icon": "ri-book-open-line" }
 ]

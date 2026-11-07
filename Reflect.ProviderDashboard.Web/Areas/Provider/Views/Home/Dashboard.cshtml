@@ -46,7 +46,14 @@
     <p class="platform-footnote">Different ways to engage.<br /><strong>The same person at the center.</strong></p>
 </aside>
 </div>
-<section class="work-panel" aria-labelledby="affect-heading">
+<aside class="suggestion" aria-labelledby="suggest-heading">
+    <div>
+        <h2 id="suggest-heading">See your caseload as a map</h2>
+        <p class="text-muted">People, the experiences they use, and their devices in one picture. Coral marks a change from someone’s usual pattern.</p>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Graph">Open caseload map</a>
+</aside>
+<section class="work-panel affect-panel" aria-labelledby="affect-heading">
     <div class="section-heading"><h2 id="affect-heading">Emotional trajectory</h2><span class="badge bg-warning-transparent">@Model.AffectDeviations.Count @(Model.AffectDeviations.Count == 1 ? "self-baseline flag" : "self-baseline flags")</span></div>
     <p class="text-muted">Affect is compared with each person’s own rolling baseline, not a caseload or population average.</p>
     @if (Model.AffectDeviations.Count == 0)
@@ -74,7 +81,7 @@
     <div class="activity-feed">
     @foreach (var row in Model.RecentSessions)
     {
-        <article class="activity-item"><span class="activity-marker" aria-hidden="true"></span><div><a class="patient-name" asp-action="Details" asp-controller="Patients" asp-route-id="@row.PatientId">@row.PatientName</a><p>@row.ModuleName</p></div><span class="badge @(row.PlatformLabel.Contains("VR") ? "bg-primary-transparent" : "bg-info-transparent")">@row.PlatformLabel</span><div class="activity-time">@row.SessionDateTimeDisplay<span>@row.DurationMinutes minutes</span></div></article>
+        <article class="activity-item"><span class="activity-marker" aria-hidden="true"></span><div><a class="patient-name" asp-action="Details" asp-controller="Patients" asp-route-id="@row.PatientId">@row.PatientName</a><p>@(string.IsNullOrEmpty(row.ModuleGroup) ? row.ModuleName : $"{row.ModuleGroup} · {row.ModuleName}")</p></div><span class="badge @(row.PlatformLabel.Contains("VR") ? "bg-primary-transparent" : "bg-info-transparent")">@row.PlatformLabel</span><div class="activity-time">@row.SessionDateTimeDisplay<span>@row.DurationMinutes minutes</span></div></article>
     }
     @if (Model.RecentSessions.Count == 0) { <p class="empty-state">No sessions recorded for your assigned patients yet.</p> }
     </div>

@@ -26,9 +26,10 @@ Account creation is enabled only in Development. Sign-in is also available in Pr
 
 | Screen | URL |
 |--------|-----|
-| Activity knowledge graph (post-login home) | `/Provider/Home/Graph` |
-| Provider dashboard | `/Provider/Home/Dashboard` |
-| Trust, time zones, HIPAA, ingest | `/Provider/Home/Trust` |
+| Provider dashboard (post-login home) | `/Provider/Home/Dashboard` |
+| Caseload map (knowledge graph) | `/Provider/Home/Graph` |
+| Privacy & trust, time zones, HIPAA, ingest | `/Provider/Home/Trust` |
+| Module reference | `/Provider/Modules` |
 | Patient list | `/Provider/Patients/Index` |
 | Patient detail (overview + sessions) | `/Provider/Patients/Details/{patientId}` |
 | Reports (print and PDF) | `/Provider/Reports/Index` |
@@ -49,13 +50,15 @@ Example patient: `aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3` (Sam Patel — declining
 **This prototype:**
 
 - `Reflect.ProviderDashboard.Domain` — entities, enums, repository interfaces
-- `Reflect.ProviderDashboard.Web` — MVC `Provider` area, in-memory patient repositories, local Identity accounts in SQLite
+- `Reflect.ProviderDashboard.Web` — MVC `Provider` area, EF Core clinical store (SQLite locally; PostgreSQL selectable), local Identity accounts in SQLite
 - Stand-in layout/CSS/JS under `wwwroot/standins/` (delete on merge into Reflect XR)
 
 ## Entities added
 
 - `Patient` — caseload member (synthetic ID, engagement trend, notes)
 - `TherapySession` — session date/time, duration, platform (VR/Mobile), module, reflection summary
+- `ReflectModuleCatalog` — official module list (14 Mobile, 17 XR) with program group, AI flag and minimum
+  mobile plan. Seed data and ingest validate against it; `/Provider/Modules` shows it as a reference page.
 
 ## Menu JSON (for Reflect XR merge)
 
@@ -96,6 +99,7 @@ Development environment publicly. `/health/live` reports process liveness only.
 
 - [Installed shared skills](skills/README.md)
 - [Latest local vulnerability assessment](docs/SECURITY-TEST-REPORT.md)
+- [Design direction](docs/DESIGN.md)
 - [Brand-constrained UI implementation plan](docs/UI-IMPLEMENTATION-PLAN.md)
 
 ### Stable local demo login

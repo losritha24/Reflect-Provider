@@ -29,7 +29,7 @@ public sealed class IngestController : ControllerBase
     }
 
     [HttpPost("sessions")]
-    public IActionResult Sessions([FromBody] SessionIngestRequest request)
+    public async Task<IActionResult> Sessions([FromBody] SessionIngestRequest request)
     {
         if (!_configuration.GetValue<bool>("Integration:Enabled"))
             return NotFound();
@@ -40,7 +40,7 @@ public sealed class IngestController : ControllerBase
 
         try
         {
-            var session = _ingest.Ingest(request);
+            var session = await _ingest.IngestAsync(request, HttpContext.RequestAborted);
             return Accepted(new
             {
                 session.Id,

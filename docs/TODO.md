@@ -24,6 +24,9 @@ clinical production readiness.
 - [x] Separate `/health/live` and Identity-schema `/health/ready` probes.
 - [x] Exclude Development settings from published output.
 - [x] Add reproducible verification entry point and expanded browser/configuration/state checks.
+- [x] Official module catalog (14 Mobile + 17 XR, from the 2026-09-09 Product Catalog): seed data uses real
+  modules, ingest rejects unknown or wrong-platform modules and stores the catalog spelling, sessions show
+  "Program · Module", patient overview has a "Programs used" panel, sidebar "Module reference" page.
 - [x] Prepare Render Free blueprint, native Linux container CI and Copilot instructions.
 
 ## Release gates
@@ -43,9 +46,10 @@ Deployment instructions are in [COMPETITION-DEPLOYMENT.md](COMPETITION-DEPLOYMEN
 - [x] HIPAA safeguards position (docs/HIPAA-SAFEGUARDS.md).
 - [x] Time zone (EST/EDT) shown with every timestamp; DST boundary checks.
 - [x] First-time "Take the tour" dialog (stored in localStorage only).
-- [x] Assistant chatbot skeleton: guardrail, stub responder, rate limit, tests. No model.
+- [x] Assistant chatbot skeleton: floating logo bubble on every page, guardrail, stub responder, rate limit, tests. No model.
+- [x] Privacy & trust page redesigned with honest status pills (In place / Production target / Not yet).
 - [x] Remove unused patientsIndexController.js (selector never matched the view).
-- [ ] Run `python3 tests/verify.py --browser` (Playwright not installed on this machine) and confirm the tour/chat pages pass axe.
+- [x] `tests/verify.py --browser` passes (108 checks); axe shows no WCAG A/AA violations on dashboard, Privacy & trust, caseload map, devices, open chat panel and tour dialog (Nov 6).
 - [ ] Tech-stack slide: C#/ASP.NET MVC, JS, SQLite now / Postgres planned, Python test tooling only.
 - [ ] 4-minute talk track and backup screen recording (7-minute slot).
 - [ ] Rehearse cold start on Render Free (sleeps after 15 min; open the URL before presenting).
@@ -67,9 +71,28 @@ Deployment instructions are in [COMPETITION-DEPLOYMENT.md](COMPETITION-DEPLOYMEN
 - [ ] Narrow-screen caseload: show name, last activity and review action at 390px without scrolling (Patients/Index.cshtml `text-nowrap`).
 - [ ] Browser tests: empty search result, boundary pages, keyboard search→filter→patient→back.
 - [ ] Manual screen-reader and keyboard pass (record separately).
-- [ ] Configurable time zone (user/facility setting).
-- [ ] Chat page and tour included in axe/browser coverage.
-- [ ] Orientation beyond the tour: help page or knowledge map.
+- [x] Company-wide display time zone via `Company:TimeZone` (UTC stored). [ ] Per-user/facility setting is still open.
+- [x] Add Trust, caseload map, Module reference, open chat panel and tour dialog to `tests/browser_checks.py`; axe reports zero A/AA violations on all audited views (Nov 6).
+- [x] Caseload knowledge graph landing page and Trust/connectivity page (added by teammate/Freebuff). Graph is now a dashboard suggestion + "Caseload map" nav link, not the landing page.
+
+## Found in review of the Graph / Ingest / Trust commits (Nov 6)
+
+- [x] **Ingest reaches the dashboard.** `SessionIngestService` writes through `ClinicalDbContext`; the checks confirm an accepted session is visible through `EfTherapySessionRepository`. The disposable demo still reseeds on restart by design.
+- [x] Ingest resolves patients through `ClinicalDbContext` rather than the global seed list.
+- [ ] Ingest is not idempotent: replaying a POST creates a duplicate session. Add a client event ID or (patient, startedAt, module) uniqueness.
+- [ ] Ingest input limits: catalog validation, external-ID length and reflection-summary length are in place; still reject absurd/future `startedAt` values.
+- [ ] Ingest startup guard: when `Integration:Enabled`, require a strong `Integration:ApiKey` from a host secret; never ship a key in appsettings; add a rate limit tuned for integrations and an audit entry per accepted row.
+- [ ] Ingest check coverage: current tests call the service directly. Add HTTP-level tests (disabled → 404, missing/wrong key → 401, oversize → 413, valid → 202 and visible in the dashboard).
+- [x] Trust page wording now calls the integration a shared-secret header and marks encryption at rest and the BAA as production targets.
+- [ ] Move care devices (and assignments) into `ClinicalDbContext`; they are still in memory.
+- [x] README, the provider menu JSON and the screen table now describe the clinical store and Dashboard home. Keep NEXT-STEPS current as the schema changes.
+
+### Module catalog follow-ups
+- [ ] Plan/entitlement per patient or device (Free/Basic/Premium/XR Home): flag modules outside the plan and show AI image usage against the 20/30 monthly allowance. Needs a schema change and seed data.
+- [ ] Program filter next to the platform filter on the patient timeline, and program-level trends.
+- [ ] Tour copy and chatbot starter chips still use generic wording; use real module names and let the stub answer "what does Hope Tree do?" from the catalog (no API).
+- [ ] Catalog is a consumer list; confirm with Persistent Technology whether clinical editions add or rename modules before real data.
+- [ ] Catalog changes need a code change; decide whether it should move to a table once migrations exist.
 
 ## Assistant: before connecting a model
 

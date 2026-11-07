@@ -162,6 +162,6 @@ public sealed class AccountController : Controller
             return Redirect(returnUrl);
         }
 
-        return RedirectToAction("Graph", "Home", new { area = "Provider" });
+        return RedirectToAction("Dashboard", "Home", new { area = "Provider" });
     }
 }

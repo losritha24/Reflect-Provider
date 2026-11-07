@@ -1,58 +1,85 @@
 @model Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Trust.TrustViewModel
 @{
-    ViewData["Title"] = "Trust and connectivity";
+    ViewData["Title"] = "Privacy and trust";
 }
-<div class="mb-4">
-    <p class="eyebrow">Company handoff</p>
-    <h1 class="page-title mb-1">Trust and connectivity</h1>
-    <p class="text-muted fs-13 mb-0">Time stored in UTC for RDS PostgreSQL. Displayed in the company zone. Synthetic records only — HIPAA-aligned target, not a certified production system.</p>
+<header class="trust-hero">
+    <p class="eyebrow">Privacy &amp; trust</p>
+    <h1 class="page-title">How client data is protected</h1>
+    <p class="trust-lede">Reflect is designed around HIPAA’s privacy and security safeguards. This page is plain about which protections exist today and which are still the production target.</p>
+</header>
+
+<ul class="trust-status" aria-label="Current environment">
+    <li><span>Data</span><strong>Fictional records only</strong></li>
+    <li><span>Connection</span><strong>@(Model.HttpsActive ? "HTTPS active" : "HTTP: use the HTTPS address")</strong></li>
+    <li><span>HSTS</span><strong>@(Model.HstsEnabled ? "On" : "Off in Development")</strong></li>
+    <li><span>Times shown in</span><strong>@Model.TimeZoneLabel · @Model.TimeZoneIana</strong></li>
+</ul>
+
+<div class="callout" role="note">
+    <strong>This demo is not a HIPAA-covered production system.</strong>
+    A real deployment also needs signed agreements, workforce training, facility policies and a risk analysis. Those are organizational, not something software alone provides.
 </div>
 
+<section class="work-panel" aria-labelledby="safeguards-heading">
+    <h2 id="safeguards-heading">Safeguards at a glance</h2>
+    <p class="text-muted">Status reflects this prototype, not the final product.</p>
+    <div class="safeguard-grid">
+        <article class="safeguard">
+            <span class="pill pill-ok">In place</span>
+            <h3>Access control</h3>
+            <p>Unique clinician sign-in, temporary lockout after repeated failures, one-hour sessions, and a caseload limited to each provider’s assigned patients.</p>
+        </article>
+        <article class="safeguard">
+            <span class="pill pill-ok">In place</span>
+            <h3>Encryption in transit</h3>
+            <p>HTTPS redirect, secure cookies, a strict content policy and no-store headers on private pages. HSTS is enabled in Production.</p>
+        </article>
+        <article class="safeguard">
+            <span class="pill pill-ok">In place</span>
+            <h3>Minimum necessary</h3>
+            <p>Providers only see assigned patients. The assistant removes common identifiers (email, phone, SSN, dates and record numbers) before processing and does not save messages. Names are not reliably detected, so do not enter them.</p>
+        </article>
+        <article class="safeguard">
+            <span class="pill pill-target">Production target</span>
+            <h3>Encryption at rest</h3>
+            <p>A managed, encrypted database with managed keys. The local demo store is not encrypted.</p>
+        </article>
+        <article class="safeguard">
+            <span class="pill pill-target">Production target</span>
+            <h3>Business associate agreements</h3>
+            <p>Required with the cloud host, database and any AI vendor before real patient data is used.</p>
+        </article>
+        <article class="safeguard">
+            <span class="pill pill-gap">Not yet</span>
+            <h3>Audit trail and MFA</h3>
+            <p>A durable record of who viewed which patient, and multi-factor sign-in through the facility identity provider.</p>
+        </article>
+    </div>
+</section>
+
 <section class="work-panel" aria-labelledby="arch-heading">
-    <h2 id="arch-heading">Architecture</h2>
-    <p class="text-muted">Future production path. This prototype implements the dashboard, UTC clock, TLS, and a signed ingest hook.</p>
+    <h2 id="arch-heading">Where data travels</h2>
+    <p class="text-muted">The production path. This prototype implements the dashboard, UTC storage and TLS.</p>
     <ol class="arch-flow">
-        <li>
-            <strong>Reflect XR / Mobile</strong>
-            <span>Session events leave the headset or app over TLS.</span>
-        </li>
-        <li>
-            <strong>Ingest options</strong>
-            <span>HTTPS JSON API, nightly encrypted batch, or future FHIR from the EHR.</span>
-        </li>
-        <li>
-            <strong>Clinical API</strong>
-            <span>Auth, audit, minimum-necessary access. HIPAA boundary.</span>
-        </li>
-        <li>
-            <strong>Amazon RDS for PostgreSQL</strong>
-            <span><code>timestamptz</code> in UTC. Encrypted at rest. Company BAA.</span>
-        </li>
-        <li>
-            <strong>Provider dashboard</strong>
-            <span>Converts UTC to @Model.TimeZoneLabel (@Model.TimeZoneIana) for clinicians. HTTPS + HSTS.</span>
-        </li>
+        <li><strong>Reflect XR &amp; Mobile</strong><span>Session events leave the headset or app over TLS.</span></li>
+        <li><strong>Ingest</strong><span>HTTPS API, encrypted nightly batch, or FHIR from the EHR.</span></li>
+        <li><strong>Clinical API</strong><span>Authentication, audit and minimum-necessary access. The HIPAA boundary.</span></li>
+        <li><strong>Database</strong><span>Times in UTC. Target: encrypted at rest, covered by a BAA.</span></li>
+        <li><strong>Provider dashboard</strong><span>Shows times in @Model.TimeZoneLabel to clinicians, over HTTPS.</span></li>
     </ol>
 </section>
 
-<section class="work-panel" aria-labelledby="tz-heading">
-    <h2 id="tz-heading">Time zones</h2>
-    <p>Every session, assignment, and comparison window is stored as UTC. The dashboard never writes a local wall-clock to the database. Display uses the company zone so a facility in one region does not mix offsets.</p>
-    <ul>
-        <li>Storage contract: RDS PostgreSQL <code>timestamptz</code>, UTC.</li>
-        <li>Display zone: <strong>@Model.TimeZoneLabel</strong> · <code>@Model.TimeZoneIana</code> (configurable in <code>Company:TimeZone</code>).</li>
-        <li>Source details still show the original UTC instant.</li>
-        <li>Needs Attention windows are computed in UTC, then labeled in @Model.TimeZoneLabel.</li>
-    </ul>
-</section>
-
 <section class="work-panel" aria-labelledby="ingest-heading">
-    <h2 id="ingest-heading">How data can be uploaded</h2>
-    <p class="text-muted">Three company options. The first is wired in this prototype behind an integration key.</p>
-    <article class="signal-card">
-        <h3>1. HTTPS JSON ingest (ready now)</h3>
-        <p><code>POST @Model.IngestPath</code> with header <code>X-Reflect-Integration-Key</code>. Send <code>startedAt</code> with an offset or <code>Z</code>; the server stores UTC. Integration is @(Model.IntegrationEnabled ? "enabled in this environment" : "disabled until Integration:Enabled is set").</p>
-        <pre class="ingest-sample" tabindex="0">POST /api/v1/ingest/sessions
+    <h2 id="ingest-heading">How data can be brought in</h2>
+    <p class="text-muted">Three options for facilities. Only the first has any code today.</p>
+    <div class="path-grid">
+        <article class="path">
+            <span class="pill pill-target">Prototype</span>
+            <h3>HTTPS JSON API</h3>
+            <p>A facility system posts sessions with a shared-secret header; times are converted to UTC. Currently @(Model.IntegrationEnabled ? "enabled in this environment" : "off until it is configured").</p>
+            <details class="ingest-details">
+                <summary>Show example request</summary>
+                <pre class="ingest-sample" tabindex="0">POST @Model.IngestPath
 X-Reflect-Integration-Key: (facility secret)
 Content-Type: application/json
 
@@ -66,66 +93,37 @@ Content-Type: application/json
   "affectScore": 6,
   "hardwareId": "MOB-7740"
 }</pre>
-    </article>
-    <article class="signal-card">
-        <h3>2. Encrypted batch (future nightly load)</h3>
-        <p>CSV or Parquet dropped to a private S3 bucket (KMS) or SFTP. A worker normalizes timestamps to UTC and upserts into RDS. Use when XR/Mobile cannot call the API in real time.</p>
-    </article>
-    <article class="signal-card">
-        <h3>3. EHR / FHIR R4 (future)</h3>
-        <p>Encounter and Observation resources from the facility EHR over mutually authenticated TLS. Map patient MRN to <code>externalPatientId</code>. Same UTC storage rule.</p>
-    </article>
-    <p>Private connectivity later: VPC peering or PrivateLink from Reflect XR into the clinical API. No public database ports.</p>
+            </details>
+        </article>
+        <article class="path">
+            <span class="pill pill-gap">Planned</span>
+            <h3>Encrypted batch</h3>
+            <p>CSV or Parquet files delivered to a private bucket or SFTP, normalized to UTC and loaded overnight. For apps that can’t call the API in real time.</p>
+        </article>
+        <article class="path">
+            <span class="pill pill-gap">Planned</span>
+            <h3>EHR (FHIR R4)</h3>
+            <p>Encounter and Observation resources over mutually authenticated TLS, mapping each record number to the external patient ID.</p>
+        </article>
+    </div>
 </section>
 
-<section class="work-panel" aria-labelledby="hipaa-heading">
-    <h2 id="hipaa-heading">HIPAA check</h2>
-    <p><strong>This demo is not a HIPAA-covered production system.</strong> Records are fictional. The production target is HIPAA-aligned:</p>
-    <ul>
-        <li>Business Associate Agreement with the cloud provider (for example AWS RDS).</li>
-        <li>Unique clinician IDs, unique user authentication, automatic logoff (1-hour cookie here), emergency access procedure owned by the facility.</li>
-        <li>Encryption in transit (TLS 1.2+) and at rest (RDS encryption + KMS).</li>
-        <li>Audit controls on access to electronic PHI; this prototype logs HTTP but does not yet retain a clinical audit table.</li>
-        <li>Minimum necessary: a provider sees only assigned patients.</li>
-        <li>Integrity: hashed passwords, antiforgery on browser posts, UTC timestamps that cannot drift by local clock.</li>
-        <li>Transmission security: HTTPS redirection, HSTS in Production, CSP, no PHI in query strings.</li>
-    </ul>
-    <p class="text-muted">A covered entity still needs workforce training, facility policies, and a risk analysis. Those are organizational, not this prototype.</p>
+<section class="work-panel" aria-labelledby="tz-heading">
+    <h2 id="tz-heading">Time zones</h2>
+    <p>Every session and comparison window is stored in UTC and converted for display, so a local clock can never reorder history. Times here are shown in <strong>@Model.TimeZoneLabel</strong> (<code>@Model.TimeZoneIana</code>), and each record’s source details still show the original UTC instant.</p>
 </section>
 
 <section class="work-panel" aria-labelledby="cia-heading">
-    <h2 id="cia-heading">Security (CIA)</h2>
-    <table class="table">
-        <caption>Confidentiality, integrity, availability in this system</caption>
-        <thead>
-        <tr>
-            <th scope="col">Goal</th>
-            <th scope="col">How it is met</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">Confidentiality</th>
-            <td>TLS certificate on the connection@(Model.HttpsActive ? " (this request is HTTPS)" : " (this request is HTTP — use the HTTPS URL)"), role-based sign-in, assignment-scoped caseload, CSP, no-store cache headers, HttpOnly cookies.</td>
-        </tr>
-        <tr>
-            <th scope="row">Integrity</th>
-            <td>ASP.NET Identity password hashes, antiforgery tokens on forms, fixed-time API key compare on ingest, UTC storage so session order cannot shift with a local timezone.</td>
-        </tr>
-        <tr>
-            <th scope="row">Availability</th>
-            <td>Rate limits on account and ingest, liveness at <code>/health/live</code>, HSTS@(Model.HstsEnabled ? " on" : " reserved for Production") so browsers keep using HTTPS.</td>
-        </tr>
-        </tbody>
-    </table>
-</section>
-
-<section class="work-panel" aria-labelledby="cert-heading">
-    <h2 id="cert-heading">Secure certificate</h2>
-    <ul>
-        <li>Local: ASP.NET Core HTTPS development certificate on <code>https://localhost:7150</code>.</li>
-        <li>Hosted demo: the platform’s managed certificate (Render / Azure / ACM on a load balancer).</li>
-        <li>Production: AWS Certificate Manager or Azure managed TLS 1.2+, HTTP redirected to HTTPS, HSTS max-age at least one year.</li>
-        <li>This session: <strong>@(Model.HttpsActive ? "HTTPS is active" : "HTTPS is not active")</strong>. HSTS: <strong>@(Model.HstsEnabled ? "enabled" : "off in Development")</strong>.</li>
-    </ul>
+    <h2 id="cia-heading">Confidentiality, integrity, availability</h2>
+    <div class="table-responsive">
+        <table class="table">
+            <caption class="visually-hidden">How confidentiality, integrity and availability are met</caption>
+            <thead><tr><th scope="col">Goal</th><th scope="col">How it is met</th></tr></thead>
+            <tbody>
+                <tr><th scope="row">Confidentiality</th><td>TLS on the connection, role-based sign-in, assignment-scoped caseloads, HttpOnly cookies and no-store cache headers.</td></tr>
+                <tr><th scope="row">Integrity</th><td>Hashed passwords, anti-forgery tokens on forms, and UTC storage so order cannot shift with a local time zone.</td></tr>
+                <tr><th scope="row">Availability</th><td>Rate limits on sign-in and the API, health checks at <code>/health/live</code> and <code>/health/ready</code>, and HSTS in Production.</td></tr>
+            </tbody>
+        </table>
+    </div>
 </section>

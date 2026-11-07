@@ -1,7 +1,9 @@
 > Current status: timeline platform/period filtering and caseload return context
 > were implemented in the readiness pass. Follow-up persistence remains planned.
 > See [NEXT-STEPS.md](NEXT-STEPS.md) and [READINESS-REPORT.md](READINESS-REPORT.md)
-> for current acceptance criteria and test evidence. The research below is retained.
+> for current acceptance criteria and test evidence. See [DESIGN.md](DESIGN.md) for
+> the current visual direction, tokens, component specs and page layouts. The
+> research below is retained as product and implementation context.
 
 # Reflect provider UI implementation plan
 

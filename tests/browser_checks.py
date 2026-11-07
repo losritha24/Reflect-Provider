@@ -25,8 +25,8 @@ def run_browser(base_url, email, password):
                     runOnly: {type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']}
                 })''')
                 (output / (name + '-axe.json')).write_text(json.dumps(results, indent=2))
-                blocking = [v for v in results['violations'] if v['impact'] in ('serious', 'critical')]
-                accessibility_failures.extend((name, v['id'], [n['target'] for n in v['nodes']]) for v in blocking)
+                accessibility_failures.extend(
+                    (name, v['id'], [n['target'] for n in v['nodes']]) for v in results['violations'])
             errors = []
             page.on('pageerror', lambda error: errors.append(str(error)))
             page.goto(base_url + '/')
@@ -43,6 +43,7 @@ def run_browser(base_url, email, password):
             page.get_by_role('button', name='Sign in', exact=True).click()
             page.wait_for_load_state('networkidle')
             assert page.locator('#tourDialog[open]').count() == 1, 'First-time tour opens on first visit'
+            audit('tour')
             page.get_by_role('button', name='Skip', exact=True).click()
             assert page.locator('#tourDialog[open]').count() == 0
             page.reload()
@@ -53,6 +54,31 @@ def run_browser(base_url, email, password):
             assert 'IBM Plex Sans Condensed' in page.locator('h1').evaluate('(e) => getComputedStyle(e).fontFamily')
             audit('dashboard-light')
             page.screenshot(path=str(output / 'dashboard-desktop.png'), full_page=True)
+            page.get_by_role('button', name='Open assistant').click()
+            assert page.locator('#chatPanel').is_visible()
+            page.get_by_label('Your question', exact=True).fill('How do I filter patients?')
+            page.get_by_role('button', name='Send', exact=True).click()
+            page.locator('.chat-msg.chat-bot').nth(1).wait_for(state='visible')
+            assert page.locator('.chat-msg.chat-bot').count() >= 2
+            audit('chat-open')
+            page.keyboard.press('Escape')
+            assert page.locator('#chatPanel').is_hidden()
+            assert page.locator('#chatLauncher').get_attribute('aria-expanded') == 'false'
+            page.goto(base_url + '/Provider/Modules')
+            page.wait_for_load_state('networkidle')
+            assert page.get_by_role('heading', name='Module reference', exact=True).count() == 1
+            assert page.locator('table caption').count() == 2
+            audit('modules')
+            page.goto(base_url + '/Provider/Home/Trust')
+            page.wait_for_load_state('networkidle')
+            assert page.get_by_role('heading', name='How client data is protected', exact=True).count() == 1
+            audit('trust')
+            page.goto(base_url + '/Provider/Home/Graph')
+            page.wait_for_load_state('networkidle')
+            assert page.get_by_role('heading', name='Caseload activity', exact=True).count() == 1
+            audit('caseload-map')
+            page.goto(base_url + '/Provider/Home/Dashboard')
+            page.wait_for_load_state('networkidle')
             page.locator('.account-menu > summary').click()
             page.locator('#a11yPanelToggle').click()
             assert page.locator('#a11yPanelClose').evaluate('(e) => e === document.activeElement')

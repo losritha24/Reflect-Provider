@@ -1,3 +1,4 @@
+using Reflect.ProviderDashboard.Domain.Catalog;
 using Reflect.ProviderDashboard.Domain.Entities;
 using Reflect.ProviderDashboard.Domain.Enums;
 using Reflect.ProviderDashboard.Web.Extensions;
@@ -13,6 +14,7 @@ public class RecentSessionRowViewModel
     public int DurationMinutes { get; set; }
     public string PlatformLabel { get; set; } = string.Empty;
     public string ModuleName { get; set; } = string.Empty;
+    public string ModuleGroup { get; set; } = string.Empty;
 
     public static RecentSessionRowViewModel FromEntity(TherapySession session, string patientName)
     {
@@ -24,7 +26,8 @@ public class RecentSessionRowViewModel
             SessionDateTimeDisplay = session.StartedAtUtc.ToUsDateTimeString(),
             DurationMinutes = session.DurationMinutes,
             PlatformLabel = session.Platform == TherapyPlatform.Vr ? "Reflect XR (VR)" : "Reflect Mobile",
-            ModuleName = session.ModuleName
+            ModuleName = session.ModuleName,
+            ModuleGroup = ReflectModuleCatalog.Find(session.Platform, session.ModuleName)?.Group ?? string.Empty
         };
     }
 }

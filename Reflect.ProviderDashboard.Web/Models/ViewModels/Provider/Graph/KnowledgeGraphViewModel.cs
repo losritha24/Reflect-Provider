@@ -21,7 +21,10 @@ public sealed class KnowledgeGraphViewModel
         CancellationToken ct)
     {
         var allPatients = (await patients.GetAllAsync(ct)).OrderBy(patient => patient.DisplayName).ToList();
-        var allSessions = await sessions.GetAllAsync(ct);
+        var asOfUtc = DateTimeOffset.UtcNow;
+        var allSessions = (await sessions.GetAllAsync(ct))
+            .Where(session => session.StartedAtUtc <= asOfUtc)
+            .ToList();
         var allDevices = await devices.GetAllAsync(ct);
         PatientCount = allPatients.Count;
         SessionCount = allSessions.Count;
@@ -40,7 +43,7 @@ public sealed class KnowledgeGraphViewModel
         Nodes.Add(new GraphNode("attention", "signal", "Needs attention", "Fewer sessions", "/Provider/Home/Dashboard", 150, 800, false));
         Nodes.Add(new GraphNode("affect", "signal", "Below self", "Affect vs baseline", "/Provider/Home/Dashboard", 1030, 800, false));
 
-        var since = DateTimeOffset.UtcNow.AddDays(-7);
+        var since = asOfUtc.AddDays(-7);
         for (var i = 0; i < allPatients.Count; i++)
         {
             var patient = allPatients[i];
@@ -66,11 +69,11 @@ public sealed class KnowledgeGraphViewModel
                 x,
                 y,
                 quieter || belowSelf));
-            Edges.Add(new GraphEdge("hub", id, "assigned", quieter || belowSelf));
+            Edges.Add(new GraphEdge("hub", id, "assigned", quieter || belowSelf, 1, true));
             if (xrCount > 0)
-                Edges.Add(new GraphEdge(id, "xr", $"{xrCount} XR", false));
+                Edges.Add(new GraphEdge(id, "xr", $"{xrCount} XR", false, xrCount));
             if (mobileCount > 0)
-                Edges.Add(new GraphEdge(id, "mobile", $"{mobileCount} mobile", false));
+                Edges.Add(new GraphEdge(id, "mobile", $"{mobileCount} mobile", false, mobileCount));
             if (quieter)
                 Edges.Add(new GraphEdge(id, "attention", "quieter", true));
             if (belowSelf)
@@ -110,5 +113,5 @@ public sealed class KnowledgeGraphViewModel
         double Y,
         bool Alert);
 
-    public sealed record GraphEdge(string From, string To, string Label, bool Alert);
+    public sealed record GraphEdge(string From, string To, string Label, bool Alert, int Weight = 1, bool Structural = false);
 }

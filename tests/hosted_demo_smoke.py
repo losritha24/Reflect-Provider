@@ -21,16 +21,18 @@ with tempfile.TemporaryDirectory(prefix='reflect-smoke-') as directory:
     env = dict(os.environ, ASPNETCORE_ENVIRONMENT='Production', Demo__Enabled='true',
                Demo__Email='reviewer@example.invalid', Demo__Password=password,
                AllowedHosts='127.0.0.1', Hosting__HttpsAtEdge='true',
-               AccountStore__Path=str(Path(directory) / 'accounts/provider.db'))
+               AccountStore__Path=str(Path(directory) / 'accounts/provider.db'),
+               Clinical__Path=str(Path(directory) / 'clinical/clinical.db'))
     with open(Path(directory) / 'server.log', 'w+') as log:
         container_image = os.environ.get('REFLECT_CONTAINER')
         container_name = 'reflect-smoke-' + secrets.token_hex(6)
         if container_image:
             env['AccountStore__Path'] = '/app/App_Data/provider.db'
+            env['Clinical__Path'] = '/app/App_Data/clinical.db'
             command = ['docker', 'run', '--rm', '--name', container_name,
                        '--memory=512m', '--cpus=1', '-p', f'127.0.0.1:{port}:8080']
             for key in ['ASPNETCORE_ENVIRONMENT', 'Demo__Enabled', 'Demo__Email',
-                        'Demo__Password', 'AllowedHosts', 'Hosting__HttpsAtEdge', 'AccountStore__Path']:
+                        'Demo__Password', 'AllowedHosts', 'Hosting__HttpsAtEdge', 'AccountStore__Path', 'Clinical__Path']:
                 command += ['-e', key]
             command += [container_image]
         else:

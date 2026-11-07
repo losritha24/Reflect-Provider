@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Reflect.ProviderDashboard.Domain.Enums;
 using Reflect.ProviderDashboard.Domain.Exceptions;
 using Reflect.ProviderDashboard.Domain.Interfaces;
 using Reflect.ProviderDashboard.Web.Areas.Provider.Controllers;
 using Reflect.ProviderDashboard.Web.Controllers;
+using Reflect.ProviderDashboard.Web.Data;
 using Reflect.ProviderDashboard.Web.Infrastructure;
 using Reflect.ProviderDashboard.Web.Models.Integration;
 using Reflect.ProviderDashboard.Web.Models.ViewModels.Provider.Patients;
@@ -178,35 +181,59 @@ Check(!IngestController.KeyMatches("", "secret") && !IngestController.KeyMatches
 Check(IngestController.KeyMatches("reflect-demo-ingest-key", "reflect-demo-ingest-key"),
     "A matching integration key is accepted");
 
-var ingest = new SessionIngestService(clock);
-var beforeCount = InMemoryDataStore.Sessions.Count;
-var ingested = ingest.Ingest(new SessionIngestRequest
+await using var clinicalConnection = new SqliteConnection("Data Source=:memory:");
+await clinicalConnection.OpenAsync();
+var clinicalOptions = new DbContextOptionsBuilder<ClinicalDbContext>().UseSqlite(clinicalConnection).Options;
+await using var clinicalDb = new ClinicalDbContext(clinicalOptions);
+await ClinicalSeeder.EnsureAsync(clinicalDb, currentUser.UserId!.Value.ToString(), reseed: true);
+var ingest = new SessionIngestService(clinicalDb, clock);
+var beforeCount = await clinicalDb.Sessions.CountAsync();
+var ingested = await ingest.IngestAsync(new SessionIngestRequest
 {
     ExternalPatientId = "PT-10085",
     StartedAt = offsetStamp,
     DurationMinutes = 12,
     Platform = "Mobile",
-    ModuleName = "Ingest Check",
+    ModuleName = "emotions",
     ReflectionSummary = "UTC normalize",
     AffectScore = 6,
     HardwareId = "MOB-7740"
 });
+Check(ingested.ModuleName == "Emotions", "Ingest canonicalizes module names to the catalog");
 Check(ingested.StartedAtUtc.Offset == TimeSpan.Zero && ingested.StartedAtUtc.Hour == 21,
     "Accepted ingest rows are stored in UTC");
-Check(InMemoryDataStore.Sessions.Count == beforeCount + 1, "Ingest appends a session without rewriting history");
+Check(await clinicalDb.Sessions.CountAsync() == beforeCount + 1, "Ingest appends a session without rewriting history");
+var caseyId = InMemoryDataStore.Patients.Single(p => p.ExternalPatientId == "PT-10085").Id;
+var ingestSessions = new EfTherapySessionRepository(clinicalDb, new EfPatientRepository(clinicalDb, currentUser));
+Check((await ingestSessions.GetByPatientIdAsync(caseyId, ct)).Any(s => s.Id == ingested.Id),
+    "Ingested sessions are visible through the clinical repository");
 try
 {
-    ingest.Ingest(new SessionIngestRequest
+    await ingest.IngestAsync(new SessionIngestRequest
     {
         ExternalPatientId = "NO-SUCH",
         StartedAt = offsetStamp,
         DurationMinutes = 10,
         Platform = "Mobile",
-        ModuleName = "Missing"
+        ModuleName = "Emotions"
     });
     throw new Exception("Unknown patient ingest was allowed");
 }
 catch (EntityNotFoundException) { Console.WriteLine("PASS: Unknown patient ingest is rejected"); }
+foreach (var (platform, module) in new[] { ("Mobile", "Hope Tree"), ("Vr", "Emotions"), ("Mobile", "Made Up") })
+{
+    try
+    {
+        await ingest.IngestAsync(new SessionIngestRequest { ExternalPatientId = "PT-10085", StartedAt = offsetStamp, DurationMinutes = 10, Platform = platform, ModuleName = module });
+        throw new Exception($"{platform}/{module} was accepted");
+    }
+    catch (ArgumentException) { Console.WriteLine($"PASS: {platform}/{module} is not a catalog module"); }
+}
+Check(Reflect.ProviderDashboard.Domain.Catalog.ReflectModuleCatalog.All.Count(m => m.Platform == TherapyPlatform.Mobile) == 14
+    && Reflect.ProviderDashboard.Domain.Catalog.ReflectModuleCatalog.All.Count(m => m.Platform == TherapyPlatform.Vr) == 17,
+    "Catalog matches the official 14 mobile and 17 XR modules");
+Check(InMemoryDataStore.Sessions.All(s => Reflect.ProviderDashboard.Domain.Catalog.ReflectModuleCatalog.Find(s.Platform, s.ModuleName) is not null),
+    "Every seeded session uses a catalog module for its platform");
 Check((await new InMemoryPatientRepository(new TestCurrentUserService(currentUser.UserId, true, false)).GetAllAsync(ct)).Count == 0,
     "An authenticated identity without the provider role fails closed");
 
