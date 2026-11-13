@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS build
 WORKDIR /src
 COPY Reflect.ProviderDashboard.Domain/Reflect.ProviderDashboard.Domain.csproj Reflect.ProviderDashboard.Domain/
 COPY Reflect.ProviderDashboard.Web/Reflect.ProviderDashboard.Web.csproj Reflect.ProviderDashboard.Web/
