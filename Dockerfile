@@ -7,7 +7,7 @@ COPY Reflect.ProviderDashboard.Domain/ Reflect.ProviderDashboard.Domain/
 COPY Reflect.ProviderDashboard.Web/ Reflect.ProviderDashboard.Web/
 RUN dotnet publish Reflect.ProviderDashboard.Web/Reflect.ProviderDashboard.Web.csproj -c Release --no-restore -o /out /p:UseAppHost=false
 
-FROM mcr.microsoft.com/dotnet/aspnet:10.0
+FROM mcr.microsoft.com/dotnet/aspnet:11.0
 WORKDIR /app
 COPY --from=build /out ./
 RUN mkdir -p /app/App_Data && chown app:app /app/App_Data && chmod 700 /app/App_Data
